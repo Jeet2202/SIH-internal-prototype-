@@ -80,6 +80,8 @@ function CameraController({ selectedStage, isMobile }: CameraControllerProps) {
     }
   }, [selectedStage])
 
+  const prevSelected = useRef<ProvenanceStage | null>(null)
+
   useFrame((_, delta) => {
     if (selectedStage) {
       // Cinematic smooth damping to the selected node
@@ -87,16 +89,22 @@ function CameraController({ selectedStage, isMobile }: CameraControllerProps) {
       camera.position.lerp(targetPos.current, speed)
       currentLookAt.current.lerp(targetLookAt.current, speed)
       camera.lookAt(currentLookAt.current)
-    } else if (!isMobile) {
-      // On desktop, we still want it to return to center smoothly
-      const speed = Math.min(delta * 2.8, 0.08)
-      targetPos.current.set(0, 1.4, 11.5)
-      targetLookAt.current.set(0, 0.1, 0)
+      prevSelected.current = selectedStage
+    } else if (prevSelected.current !== null) {
+      // Just deselected — do a one-time smooth return to overview position
+      // then stop (let OrbitControls take over)
+      const speed = Math.min(delta * 2.0, 0.05)
+      targetPos.current.set(0, isMobile ? 2.8 : 1.4, isMobile ? 11.5 : 11.5)
+      targetLookAt.current.set(0, isMobile ? 2.8 : 0.1, 0)
       camera.position.lerp(targetPos.current, speed)
       currentLookAt.current.lerp(targetLookAt.current, speed)
       camera.lookAt(currentLookAt.current)
+      // Once close enough to target, stop animating and let OrbitControls handle it
+      if (camera.position.distanceTo(targetPos.current) < 0.05) {
+        prevSelected.current = null
+      }
     }
-    // On mobile when !selectedStage, we do nothing and let OrbitControls handle panning/rotating.
+    // Otherwise: no stage selected, not returning from selection — let OrbitControls fully control the camera
   })
 
   return null
@@ -293,13 +301,63 @@ function Scene({
     }
   }, [isMobile])
 
-  useFrame(() => {
-    if (controlsRef.current && isMobile) {
-      // Lock horizontal panning so user cannot scroll into left/right black space
-      controlsRef.current.target.x = 0
-      controlsRef.current.target.z = 0
+  // Direct wheel scroll — move camera Y and target Y together
+  useEffect(() => {
+    const canvas = document.getElementById('r3f-canvas')
+    if (!canvas) return
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      if (!controlsRef.current) return
+      const controls = controlsRef.current
+      const delta = e.deltaY * 0.012
+      const minY = -5, maxY = 8
+      const newY = Math.max(minY, Math.min(maxY, controls.target.y + delta))
+      const diff = newY - controls.target.y
+      controls.target.y += diff
+      controls.object.position.y += diff
+      controls.update()
     }
-  })
+
+    canvas.addEventListener('wheel', onWheel, { passive: false })
+    return () => canvas.removeEventListener('wheel', onWheel)
+  }, [])
+
+  // Mobile one-finger vertical swipe = scroll Y
+  useEffect(() => {
+    if (!isMobile) return
+    const canvas = document.getElementById('r3f-canvas')
+    if (!canvas) return
+
+    let lastY: number | null = null
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) lastY = e.touches[0].clientY
+    }
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length !== 1 || lastY === null || !controlsRef.current) return
+      e.preventDefault()
+      const dy = (lastY - e.touches[0].clientY) * 0.025
+      lastY = e.touches[0].clientY
+      const controls = controlsRef.current
+      const minY = -5, maxY = 8
+      const newY = Math.max(minY, Math.min(maxY, controls.target.y + dy))
+      const diff = newY - controls.target.y
+      controls.target.y += diff
+      controls.object.position.y += diff
+      controls.update()
+    }
+    const onTouchEnd = () => { lastY = null }
+
+    canvas.addEventListener('touchstart', onTouchStart, { passive: false })
+    canvas.addEventListener('touchmove', onTouchMove, { passive: false })
+    canvas.addEventListener('touchend', onTouchEnd)
+    return () => {
+      canvas.removeEventListener('touchstart', onTouchStart)
+      canvas.removeEventListener('touchmove', onTouchMove)
+      canvas.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [isMobile])
 
   return (
     <>
@@ -386,9 +444,10 @@ function Scene({
         maxPolarAngle={Math.PI - 0.01}
         minAzimuthAngle={-Infinity}
         maxAzimuthAngle={Infinity}
-        enablePan={isMobile}
+        enablePan={true}
         panSpeed={1.2}
-        touches={isMobile ? { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_ROTATE } : undefined}
+        screenSpacePanning={true}
+        touches={isMobile ? { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN } : undefined}
       />
 
       {/* ── Post processing ── */}
