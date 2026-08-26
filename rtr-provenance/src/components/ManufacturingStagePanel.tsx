@@ -1036,88 +1036,48 @@ function DocumentModal({
       position: 'fixed', inset: 0, zIndex: 100,
       background: 'rgba(0,0,0,0.80)', backdropFilter: 'blur(12px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: 20,
     }}>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         style={{
-          background: '#0a0512',
-          border: `1.5px solid ${AMBER}45`,
-          borderRadius: 14,
-          padding: 20,
-          maxWidth: 480,
-          width: '100%',
-          boxShadow: `0 20px 60px rgba(0,0,0,0.9), 0 0 30px ${AMBER_G}`,
-          display: 'flex', flexDirection: 'column', gap: 12,
+          background: 'rgba(5,12,4,0.98)',
+          border: '1px solid rgba(124, 255, 79,0.30)',
+          borderRadius: 16,
+          width: 'min(800px, 96vw)',
+          height: '85vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          boxShadow: '0 28px 90px rgba(0,0,0,0.80), 0 0 60px rgba(124, 255, 79,0.07)',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{
-              width: 28, height: 28, borderRadius: 8,
-              background: `${AMBER}20`, border: `1px solid ${AMBER}40`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <FileText size={14} color={AMBER} />
-            </div>
-            <div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: AMBER, textTransform: 'uppercase', letterSpacing: '0.14em' }}>
-                FORMULATION RECORD
-              </div>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 700, color: '#f0e8d8' }}>
-                {doc.label}
-              </div>
-            </div>
-          </div>
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '12px 16px', borderBottom: '1px solid rgba(124,255,79,0.2)',
+          background: 'rgba(124,255,79,0.05)'
+        }}>
+          <span style={{ fontFamily: "var(--font-display)", color: '#7CFF4F', fontSize: 14, fontWeight: 600 }}>Product Formulation & Manufacturing Batch Record</span>
           <button
             onClick={onClose}
             style={{
-              width: 24, height: 24, borderRadius: '50%',
+              width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
               background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', color: '#c8c0b0',
+              cursor: 'pointer', color: 'rgba(255,255,255,0.6)',
             }}
           >
-            <X size={12} />
+            <X size={14} />
           </button>
         </div>
-
-        <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <MetaRow label="Document Type"   value={doc.label} />
-          <MetaRow label="Related Batch"   value={rec.inputBatch.batchId} mono accent={GREEN} />
-          <MetaRow label="Product Batch"   value={rec.formulation.productBatchId} mono accent={GREEN} />
-          <MetaRow label="Formulation ID"  value={rec.formulation.formulationId} mono />
-          <MetaRow label="Reference Code"  value={doc.ref} mono />
-          <MetaRow label="Status"          value="Verified / Demonstration Record" verified last />
-        </div>
-
-        <div style={{
-          background: `${AMBER}0a`, border: `1px solid ${AMBER}25`,
-          borderRadius: 8, padding: '10px 12px',
-          display: 'flex', alignItems: 'center', gap: 8,
-        }}>
-          <Info size={14} color={AMBER} style={{ flexShrink: 0 }} />
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: '#d0c8b0', lineHeight: 1.5 }}>
-            <strong>FORMULATION DOCUMENT</strong><br />
-            Not attached to current prototype dataset. Available in production enterprise integration.
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <button
-            onClick={onClose}
-            style={{
-              background: `${AMBER}20`, border: `1px solid ${AMBER}50`,
-              borderRadius: 6, padding: '5px 14px',
-              fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#f0e8d8',
-              cursor: 'pointer',
-            }}
-          >
-            Close Viewer
-          </button>
-        </div>
+        
+        {/* PDF Viewer */}
+        <iframe
+          src="/documents/stage4.pdf#toolbar=0"
+          style={{ width: '100%', flex: 1, border: 'none' }}
+          title="Manufacturing Batch Record"
+        />
       </motion.div>
     </div>
   )

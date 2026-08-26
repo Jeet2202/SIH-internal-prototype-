@@ -147,20 +147,22 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
             onClick={onClose}
             style={{ position: 'fixed', inset: 0, zIndex: 90, background: 'rgba(2,6,2,0.93)', backdropFilter: 'blur(14px)' }}
           />
-          <motion.div
-            key="pdoc-modal"
-            initial={{ opacity: 0, scale: 0.93, y: 24 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.93, y: 24 }}
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
-              zIndex: 92, width: 'min(760px, 96vw)', maxHeight: '90vh', overflowY: 'auto',
-              background: 'rgba(2, 8, 4,0.98)', backdropFilter: 'blur(30px)',
-              border: `1px solid ${doc.color}28`, borderTop: `2px solid ${doc.color}70`,
-              borderRadius: 22, boxShadow: '0 28px 90px rgba(0,0,0,0.85)',
-            }}
-          >
+          <div style={{ position: 'fixed', inset: 0, zIndex: 92, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+            <motion.div
+              key="pdoc-modal"
+              initial={{ opacity: 0, scale: 0.93, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.93, y: 24 }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                pointerEvents: 'auto',
+                width: 'min(800px, 96vw)', height: '85vh',
+                display: 'flex', flexDirection: 'column', overflow: 'hidden',
+                background: 'rgba(5, 12, 4, 0.98)', backdropFilter: 'blur(30px)',
+                border: `1px solid ${doc.color}28`, borderTop: `2px solid ${doc.color}70`,
+                borderRadius: 22, boxShadow: '0 28px 90px rgba(0,0,0,0.85)',
+              }}
+            >
             {/* Header */}
             <div style={{ padding: '18px 24px 14px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
               <div style={{ width: 42, height: 42, borderRadius: 12, flexShrink: 0, background: `${doc.color}14`, border: `1.5px solid ${doc.color}36`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -213,66 +215,13 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
                 key={doc.id}
                 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.22 }}
-                style={{ padding: '16px 22px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}
+                style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%' }}
               >
-                {/* Status strip */}
-                <div style={{ padding: '9px 14px', background: `${doc.color}0a`, border: `1px solid ${doc.color}22`, borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <ShieldCheck size={14} color={doc.color} />
-                  <span style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: doc.color }}>Status: VERIFIED</span>
-                  <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 9, color: `${doc.color}60` }}>Ref: {doc.ref}</span>
-                </div>
-
-                {/* Rows section */}
-                <PDocSection title="Record Details" color={doc.color}>
-                  {doc.rows.map((r, i) => (
-                    <PDocRow key={i} label={r.label} value={r.value} mono={(r as any).mono} italic={(r as any).italic} />
-                  ))}
-                </PDocSection>
-
-                {/* Tests (lab tab) */}
-                {doc.tests && (
-                  <PDocSection title="Test Results" color={doc.color}>
-                    {doc.tests.map((t, i) => (
-                      <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: i < doc.tests!.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none' }}>
-                        <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: '#cce6f5' }}>{t.name}</span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'rgba(200,220,240,0.60)' }}>{t.result}</span>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', borderRadius: 6, background: `${doc.color}12`, border: `1px solid ${doc.color}35`, fontFamily: "var(--font-mono)", fontSize: 7.5, color: doc.color, letterSpacing: '0.08em' }}>
-                            <Check size={7} color={doc.color} strokeWidth={3} /> PASS
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </PDocSection>
-                )}
-
-                {/* Steps (manufacturing tab) */}
-                {doc.steps && (
-                  <PDocSection title="Manufacturing Steps" color={doc.color}>
-                    {doc.steps.map((s, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '5px 0', borderBottom: i < doc.steps!.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none' }}>
-                        <div style={{ width: 20, height: 20, borderRadius: '50%', flexShrink: 0, background: `${doc.color}18`, border: `1px solid ${doc.color}45`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "var(--font-mono)", fontSize: 8, color: doc.color }}>{i + 1}</div>
-                        <span style={{ fontSize: 11, color: '#e0d8c0' }}>{s}</span>
-                        <Check size={9} color={doc.color} strokeWidth={3} style={{ marginLeft: 'auto', flexShrink: 0 }} />
-                      </div>
-                    ))}
-                  </PDocSection>
-                )}
-
-                {/* Conclusion */}
-                <div style={{ padding: '10px 14px', background: `${doc.color}08`, border: `1px solid ${doc.color}20`, borderRadius: 10 }}>
-                  <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: '#b8d8b2', lineHeight: 1.65, margin: 0 }}>{doc.conclusion}</p>
-                </div>
-
-                {/* Chain position indicator */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'center', padding: '8px 0' }}>
-                  {DOCS.map((d, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <div style={{ width: i === activeTab ? 10 : 8, height: i === activeTab ? 10 : 8, borderRadius: '50%', background: i === activeTab ? d.color : `${d.color}40`, border: `1.5px solid ${d.color}60`, transition: 'all 0.2s' }} />
-                      {i < DOCS.length - 1 && <div style={{ width: 18, height: 1, background: `linear-gradient(to right, ${d.color}40, ${DOCS[i+1].color}40)` }} />}
-                    </div>
-                  ))}
-                </div>
+                <iframe
+                  src={`/documents/stage${activeTab + 1}.pdf#toolbar=0`}
+                  style={{ width: '100%', height: '100%', minHeight: '600px', flex: 1, border: 'none' }}
+                  title={doc.title}
+                />
               </motion.div>
             </AnimatePresence>
 
@@ -295,7 +244,8 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
                 </button>
               </div>
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
