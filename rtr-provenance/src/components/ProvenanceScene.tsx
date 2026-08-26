@@ -265,7 +265,7 @@ function Scene({
   const controlsRef = useRef<any>(null)
   
   const [isIdle, setIsIdle] = useState(true)
-  const idleTimeout = useRef<NodeJS.Timeout | null>(null)
+  const idleTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const controls = controlsRef.current
