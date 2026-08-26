@@ -1665,12 +1665,12 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
           {/* Modal card */}
           <motion.div
             key="panel-review-modal"
-            initial={{ opacity: 0, scale: 0.94, y: 22 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 22 }}
+            initial={{ opacity: 0, scale: 0.94, x: "-50%", y: "-45%" }}
+            animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+            exit={{ opacity: 0, scale: 0.94, x: "-50%", y: "-45%" }}
             transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+              position: 'fixed', top: '50%', left: '50%',
               zIndex: 90, width: 'min(520px, 94vw)', maxHeight: '88vh', overflowY: 'auto',
               background: 'rgba(6,14,4,0.97)', backdropFilter: 'blur(28px)',
               border: '1px solid rgba(124, 255, 79,0.28)', borderTop: '2px solid rgba(124, 255, 79,0.65)',
