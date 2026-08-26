@@ -23,19 +23,19 @@ export default function VerificationHeader() {
           flex: '0 0 auto',
           background: 'rgba(6,14,4,0.82)',
           backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(126,200,90,0.22)',
+          border: '1px solid rgba(124, 255, 79,0.22)',
           borderRadius: 14,
           padding: '10px 16px',
           minWidth: 160,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 5 }}>
-          <Leaf size={12} color="#7ec85a" strokeWidth={2} />
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#7ec85a' }}>
+          <Leaf size={12} color="#7CFF4F" strokeWidth={2} />
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#7CFF4F' }}>
             Batch ID
           </span>
         </div>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 14, fontWeight: 600, color: '#e4ede0', letterSpacing: '0.04em' }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 14, fontWeight: 600, color: '#e4ede0', letterSpacing: '0.04em' }}>
           {PRODUCT.batch}
         </div>
         {/* Scan pills */}
@@ -60,11 +60,11 @@ export default function VerificationHeader() {
       >
         {/* Brand name */}
         <div style={{
-          fontFamily: "'IBM Plex Mono', monospace",
+          fontFamily: "var(--font-mono)",
           fontSize: 11,
           letterSpacing: '0.35em',
           textTransform: 'uppercase',
-          color: '#7ec85a',
+          color: '#7CFF4F',
           marginBottom: 5,
         }}>
           Root to Remedy
@@ -77,7 +77,7 @@ export default function VerificationHeader() {
           gap: 12,
         }}>
           <div style={{
-            fontFamily: "'Instrument Sans', sans-serif",
+            fontFamily: "var(--font-display)",
             fontSize: 'clamp(22px, 3.2vw, 38px)',
             fontWeight: 700,
             color: '#e4ede0',
@@ -88,18 +88,18 @@ export default function VerificationHeader() {
           </div>
           <div style={{
             width: 34, height: 34, borderRadius: '50%',
-            background: 'rgba(126,200,90,0.18)',
-            border: '2px solid rgba(126,200,90,0.5)',
+            background: 'rgba(124, 255, 79,0.18)',
+            border: '2px solid rgba(124, 255, 79,0.5)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 18px rgba(126,200,90,0.3)',
+            boxShadow: '0 0 18px rgba(124, 255, 79,0.3)',
           }}>
-            <ShieldCheck size={16} color="#7ec85a" strokeWidth={2.2} />
+            <ShieldCheck size={16} color="#7CFF4F" strokeWidth={2.2} />
           </div>
         </div>
 
         {/* Subtitle */}
         <div style={{
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "var(--font-body)",
           fontSize: 12,
           color: 'var(--night-dim)',
           marginTop: 4,
@@ -118,7 +118,7 @@ export default function VerificationHeader() {
           flex: '0 0 auto',
           background: 'rgba(6,14,4,0.82)',
           backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(126,200,90,0.22)',
+          border: '1px solid rgba(124, 255, 79,0.22)',
           borderRadius: 14,
           padding: '10px 18px',
           minWidth: 160,
@@ -126,15 +126,15 @@ export default function VerificationHeader() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 7, justifyContent: 'flex-end', marginBottom: 5 }}>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#7ec85a' }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#7CFF4F' }}>
             5 / 5 STAGES VERIFIED
           </span>
-          <ShieldCheck size={12} color="#7ec85a" strokeWidth={2} />
+          <ShieldCheck size={12} color="#7CFF4F" strokeWidth={2} />
         </div>
-        <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 20, fontWeight: 700, color: '#7ec85a' }}>
+        <div style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 700, color: '#7CFF4F' }}>
           100%
         </div>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--night-dim)' }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)' }}>
           TRACEABLE
         </div>
         {/* Stage dots */}
@@ -155,10 +155,10 @@ function MiniPill({ label }: { label: string }) {
   return (
     <div style={{
       display: 'inline-flex', alignItems: 'center',
-      background: 'rgba(126,200,90,0.08)',
-      border: '1px solid rgba(126,200,90,0.2)',
+      background: 'rgba(124, 255, 79,0.08)',
+      border: '1px solid rgba(124, 255, 79,0.2)',
       borderRadius: 999, padding: '2px 9px',
-      fontFamily: "'IBM Plex Mono', monospace",
+      fontFamily: "var(--font-mono)",
       fontSize: 8.5, letterSpacing: '0.1em', color: '#8fcb6a',
     }}>
       {label}

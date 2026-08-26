@@ -33,7 +33,7 @@ const ACCENT  = '#8b6cd4'
 const ACCENT2 = '#a78bfa'
 const GLOW    = 'rgba(139,108,212,0.55)'
 const GOLD    = '#e8c44a'
-const GREEN   = '#7ec85a'
+const GREEN   = '#7CFF4F'
 const DIM     = 'rgba(143,168,136,0.55)'
 
 /* ─── Leaflet icon fix (webpack/vite asset issue) ───────────────── */
@@ -146,14 +146,14 @@ function PanelHeader({ onClose }: { onClose: () => void }) {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         boxShadow: `0 0 10px ${GLOW}`,
       }}>
-        <span style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 13, fontWeight: 700, color: ACCENT }}>3</span>
+        <span style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 700, color: ACCENT }}>3</span>
       </div>
 
       <div>
-        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.26em', textTransform: 'uppercase', color: ACCENT, lineHeight: 1 }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.26em', textTransform: 'uppercase', color: ACCENT, lineHeight: 1 }}>
           PROOF OF CUSTODY
         </div>
-        <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 11, fontWeight: 700, color: '#ddd8f0' }}>
+        <div style={{ fontFamily: "var(--font-display)", fontSize: 11, fontWeight: 700, color: '#ddd8f0' }}>
           TRANSPORTATION
         </div>
       </div>
@@ -168,7 +168,7 @@ function PanelHeader({ onClose }: { onClose: () => void }) {
       <div style={{ flex: 1 }} />
 
       {/* Shipment ID */}
-      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8.5, color: `${ACCENT}bb`, letterSpacing: '0.06em' }}>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: `${ACCENT}bb`, letterSpacing: '0.06em' }}>
         {TRANSPORTATION_RECORD.shipmentId}
       </div>
 
@@ -220,7 +220,7 @@ function LeftColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
             }}>
               <Truck size={10} color={ACCENT} />
             </div>
-            <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 11, fontWeight: 700, color: '#ddd8f0' }}>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: 11, fontWeight: 700, color: '#ddd8f0' }}>
               {rec.transporter.name}
             </div>
           </div>
@@ -236,7 +236,7 @@ function LeftColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
             <Navigation size={8} color={DIM} />
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: DIM }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: DIM }}>
               Vehicle
             </span>
           </div>
@@ -251,7 +251,7 @@ function LeftColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
             <User size={8} color={DIM} />
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: DIM }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: DIM }}>
               Custody Personnel
             </span>
           </div>
@@ -426,7 +426,7 @@ function MiddleColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
         transition={{ delay: 0.10, duration: 0.28 }}
         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
       >
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8, letterSpacing: '0.20em', textTransform: 'uppercase', color: ACCENT }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.20em', textTransform: 'uppercase', color: ACCENT }}>
           Route · {rec.route.origin.split(',')[0]} → {rec.route.destination.split(',')[0]}
         </span>
         <AnimatePresence>
@@ -435,12 +435,12 @@ function MiddleColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
               initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.28 }}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 5,
-                background: 'rgba(126,200,90,0.10)', border: '1px solid rgba(126,200,90,0.30)',
+                background: 'rgba(124, 255, 79,0.10)', border: '1px solid rgba(124, 255, 79,0.30)',
                 borderRadius: 999, padding: '2px 9px',
               }}
             >
               <Check size={7} color={GREEN} strokeWidth={3} />
-              <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: GREEN, letterSpacing: '0.12em' }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: GREEN, letterSpacing: '0.12em' }}>
                 ROUTE VERIFIED
               </span>
             </motion.div>
@@ -488,7 +488,7 @@ function MiddleColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
           {/* Origin marker */}
           <Marker position={NASHIK} icon={originIcon}>
             <Popup className="rtr-map-popup">
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#d0c8f0' }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: '#d0c8f0' }}>
                 <strong>NASHIK</strong><br />
                 Collection / Dispatch Point<br />
                 Pickup: 07:30 AM IST
@@ -499,7 +499,7 @@ function MiddleColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
           {/* Destination marker */}
           <Marker position={MUMBAI} icon={destIcon}>
             <Popup className="rtr-map-popup">
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#c0f0a0' }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: '#c0f0a0' }}>
                 <strong>MUMBAI</strong><br />
                 Manufacturing Facility<br />
                 Delivered: 02:15 PM IST ✓
@@ -511,7 +511,7 @@ function MiddleColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
           {CHECKPOINT_DOTS.map((pos, i) => (
             <Marker key={i} position={pos} icon={checkpointIcon}>
               <Popup className="rtr-map-popup">
-                <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#c8c0e0' }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#c8c0e0' }}>
                   GPS Checkpoint #{i + 1}<br />
                   Recorded during transit<br />
                   <span style={{ color: GREEN }}>Status: Verified ✓</span>
@@ -553,8 +553,8 @@ function MiddleColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
 function StatChip({ value, label, color }: { value: string; label: string; color: string }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-      <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 13, fontWeight: 700, color, lineHeight: 1 }}>{value}</div>
-      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: DIM, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{label}</div>
+      <div style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 700, color, lineHeight: 1 }}>{value}</div>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: DIM, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{label}</div>
     </div>
   )
 }
@@ -573,7 +573,7 @@ function CustodyTimeline({ routeDone }: { routeDone: boolean }) {
       borderRadius: 10, padding: '8px 12px',
     }}>
       <div style={{
-        fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.18em',
+        fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.18em',
         textTransform: 'uppercase', color: ACCENT, marginBottom: 7,
       }}>
         Custody Timeline
@@ -584,13 +584,13 @@ function CustodyTimeline({ routeDone }: { routeDone: boolean }) {
           <div key={i} style={{ display: 'flex', alignItems: 'center', flex: i === 1 ? 1.5 : 1 }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, minWidth: 60 }}>
               {/* Time */}
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: s.done ? s.color : DIM, transition: 'color 0.5s' }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: s.done ? s.color : DIM, transition: 'color 0.5s' }}>
                 {s.time}
               </div>
               {/* Node */}
               <div style={{
                 width: 18, height: 18, borderRadius: '50%',
-                background: s.done ? `${s.color}22` : 'rgba(255,255,255,0.04)',
+                background: s.done ? `${s.color}22` : 'rgba(124, 255, 79, 0.04)',
                 border: `1.5px solid ${s.done ? s.color : 'rgba(255,255,255,0.10)'}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: s.done ? `0 0 8px ${s.color}60` : 'none',
@@ -599,10 +599,10 @@ function CustodyTimeline({ routeDone }: { routeDone: boolean }) {
                 {s.done && <Check size={8} color={s.color} strokeWidth={3} />}
               </div>
               {/* Label */}
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.10em', textTransform: 'uppercase', color: s.done ? s.color : DIM, transition: 'color 0.5s', textAlign: 'center' }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.10em', textTransform: 'uppercase', color: s.done ? s.color : DIM, transition: 'color 0.5s', textAlign: 'center' }}>
                 {s.label}
               </div>
-              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 7.5, color: 'rgba(200,192,220,0.65)', textAlign: 'center', lineHeight: 1.3 }}>
+              <div style={{ fontFamily: "var(--font-body)", fontSize: 7.5, color: 'rgba(200,192,220,0.65)', textAlign: 'center', lineHeight: 1.3 }}>
                 {s.sub}
               </div>
             </div>
@@ -628,14 +628,14 @@ function CustodyTimeline({ routeDone }: { routeDone: boolean }) {
             initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.28 }}
             style={{
               marginTop: 8, display: 'flex', justifyContent: 'center',
-              fontFamily: "'IBM Plex Mono',monospace", fontSize: 8,
+              fontFamily: "var(--font-mono)", fontSize: 8,
               letterSpacing: '0.14em', textTransform: 'uppercase',
               color: GREEN,
             }}
           >
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
-              background: 'rgba(126,200,90,0.08)', border: '1px solid rgba(126,200,90,0.25)',
+              background: 'rgba(124, 255, 79,0.08)', border: '1px solid rgba(124, 255, 79,0.25)',
               borderRadius: 999, padding: '3px 12px',
             }}>
               <Check size={8} color={GREEN} strokeWidth={3} />
@@ -693,11 +693,11 @@ function AboutCard() {
         }}>
           <Truck size={9} color={ACCENT} />
         </div>
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: ACCENT }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: ACCENT }}>
           About This Stage
         </span>
       </div>
-      <p style={{ fontSize: 10, color: '#b0a8d8', lineHeight: 1.65, fontFamily: "'Inter',sans-serif" }}>
+      <p style={{ fontSize: 10, color: '#b0a8d8', lineHeight: 1.65, fontFamily: "var(--font-body)" }}>
         Transportation creates a verified chain-of-custody record between the tested botanical
         batch and the manufacturing facility. During transit, GPS, environmental conditions, and
         custody events were recorded against the shipment so the batch can be verified after delivery.
@@ -729,18 +729,18 @@ function SmartInsuranceCard({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
             <Shield size={10} color={GOLD} />
           </div>
           <div>
-            <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.20em', textTransform: 'uppercase', color: `${GOLD}aa` }}>SMART INSURANCE</div>
-            <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 11, fontWeight: 700, color: '#f5e8a8' }}>TRANSIT PROTECTION</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.20em', textTransform: 'uppercase', color: `${GOLD}aa` }}>SMART INSURANCE</div>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: 11, fontWeight: 700, color: '#f5e8a8' }}>TRANSIT PROTECTION</div>
           </div>
         </div>
         {/* Completed badge */}
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 5,
-          background: 'rgba(126,200,90,0.12)', border: '1px solid rgba(126,200,90,0.30)',
+          background: 'rgba(124, 255, 79,0.12)', border: '1px solid rgba(124, 255, 79,0.30)',
           borderRadius: 999, padding: '3px 9px',
         }}>
           <Check size={7} color={GREEN} strokeWidth={3} />
-          <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: GREEN, letterSpacing: '0.10em' }}>COMPLETED</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: GREEN, letterSpacing: '0.10em' }}>COMPLETED</span>
         </div>
       </div>
 
@@ -764,14 +764,14 @@ function SmartInsuranceCard({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
               borderRadius: 6, padding: '2px 7px',
             }}>
               <Zap size={6} color={GOLD} />
-              <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: '#ddd090', letterSpacing: '0.04em' }}>{m}</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: '#ddd090', letterSpacing: '0.04em' }}>{m}</span>
             </div>
           ))}
         </div>
         {/* Arrow + automated check */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
           <ArrowDown size={9} color={`${GOLD}70`} />
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: `${GOLD}80`, letterSpacing: '0.10em', textTransform: 'uppercase' }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: `${GOLD}80`, letterSpacing: '0.10em', textTransform: 'uppercase' }}>
             Automated condition check
           </div>
         </div>
@@ -780,11 +780,11 @@ function SmartInsuranceCard({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
           <ArrowDown size={9} color={`${GREEN}80`} />
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
-            background: 'rgba(126,200,90,0.09)', border: '1px solid rgba(126,200,90,0.22)',
+            background: 'rgba(124, 255, 79,0.09)', border: '1px solid rgba(124, 255, 79,0.22)',
             borderRadius: 6, padding: '2px 9px',
           }}>
             <Check size={7} color={GREEN} strokeWidth={3} />
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: GREEN, letterSpacing: '0.08em' }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: GREEN, letterSpacing: '0.08em' }}>
               NO ANOMALY → NO CLAIM TRIGGERED
             </span>
           </div>
@@ -793,14 +793,14 @@ function SmartInsuranceCard({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
 
       {/* Transit outcome */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: `${GOLD}80`, textTransform: 'uppercase', letterSpacing: '0.10em' }}>Transit outcome</span>
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8, color: GREEN, letterSpacing: '0.04em' }}>{rec.insurance.transitStatus}</span>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: `${GOLD}80`, textTransform: 'uppercase', letterSpacing: '0.10em' }}>Transit outcome</span>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: GREEN, letterSpacing: '0.04em' }}>{rec.insurance.transitStatus}</span>
       </div>
 
       {/* Disclaimer */}
       <div style={{ background: 'rgba(255,255,255,0.02)', borderRadius: 7, padding: '5px 8px', display: 'flex', gap: 5, alignItems: 'flex-start' }}>
         <Lock size={7} color={`${GOLD}70`} style={{ flexShrink: 0, marginTop: 1 }} />
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 8.5, color: `${GOLD}80`, lineHeight: 1.55 }}>
+        <p style={{ fontFamily: "var(--font-body)", fontSize: 8.5, color: `${GOLD}80`, lineHeight: 1.55 }}>
           Transport events can be automatically evaluated against predefined protection conditions.
           If a qualifying anomaly occurs during transit, the recorded event can be used to trigger
           the configured insurance workflow.
@@ -819,10 +819,10 @@ function LedgerCard({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
         <Cpu size={9} color={ACCENT2} />
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: ACCENT2 }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: ACCENT2 }}>
           Ledger Record
         </span>
-        <span style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: `${ACCENT}60`, letterSpacing: '0.10em', textTransform: 'uppercase' }}>
+        <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 7, color: `${ACCENT}60`, letterSpacing: '0.10em', textTransform: 'uppercase' }}>
           PROTOTYPE DEMO
         </span>
       </div>
@@ -840,7 +840,7 @@ function LedgerCard({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
           borderRadius: 999, padding: '2px 10px',
         }}>
           <Check size={7} color={ACCENT2} strokeWidth={3} />
-          <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: ACCENT2, letterSpacing: '0.10em' }}>ANCHORED</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: ACCENT2, letterSpacing: '0.10em' }}>ANCHORED</span>
         </div>
       </div>
     </div>
@@ -855,7 +855,7 @@ function ColLabel({ text, icon }: { text: string; icon: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
       {icon}
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: ACCENT }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: ACCENT }}>
         {text}
       </span>
     </div>
@@ -870,7 +870,7 @@ function Pill({ color, text, icon }: { color: string; text: string; icon: React.
       borderRadius: 999, padding: '2px 8px',
     }}>
       {icon}
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.12em', color, textTransform: 'uppercase' }}>{text}</span>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.12em', color, textTransform: 'uppercase' }}>{text}</span>
     </div>
   )
 }
@@ -881,13 +881,13 @@ function MetaRow({ label, value, mono, verified, accent, last }: {
   return (
     <div style={{
       display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8,
-      padding: '3px 0', borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.04)',
+      padding: '3px 0', borderBottom: last ? 'none' : '1px solid rgba(124, 255, 79, 0.04)',
     }}>
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.08em', textTransform: 'uppercase', color: DIM, flexShrink: 0 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.08em', textTransform: 'uppercase', color: DIM, flexShrink: 0 }}>
         {label}
       </span>
       <span style={{
-        fontFamily: mono ? "'IBM Plex Mono',monospace" : "'Inter',sans-serif",
+        fontFamily: mono ? "var(--font-mono)" : "var(--font-body)",
         fontSize: mono ? 8 : 9.5,
         color: verified ? GREEN : (accent ?? '#d0c8f0'),
         textAlign: 'right',
@@ -907,19 +907,19 @@ function CondRow({ icon, label, value, pass, last }: {
     <div style={{
       display: 'flex', alignItems: 'center', gap: 7,
       padding: '3.5px 0',
-      borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.04)',
+      borderBottom: last ? 'none' : '1px solid rgba(124, 255, 79, 0.04)',
     }}>
       {icon}
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: DIM, letterSpacing: '0.06em', minWidth: 72, flexShrink: 0 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: DIM, letterSpacing: '0.06em', minWidth: 72, flexShrink: 0 }}>
         {label}
       </span>
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8, color: '#d0c8f0', flex: 1 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: '#d0c8f0', flex: 1 }}>
         {value}
       </span>
       {pass && (
         <div style={{
           width: 14, height: 14, borderRadius: '50%', flexShrink: 0,
-          background: 'rgba(126,200,90,0.12)', border: '1px solid rgba(126,200,90,0.35)',
+          background: 'rgba(124, 255, 79,0.12)', border: '1px solid rgba(124, 255, 79,0.35)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <Check size={7} color={GREEN} strokeWidth={3} />
@@ -932,8 +932,8 @@ function CondRow({ icon, label, value, pass, last }: {
 function MiniBox({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
     <div style={{ flex: 1, background: `rgba(232,196,74,0.06)`, border: `1px solid rgba(232,196,74,0.15)`, borderRadius: 7, padding: '4px 7px' }}>
-      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 6.5, color: `${GOLD}80`, textTransform: 'uppercase', letterSpacing: '0.10em', marginBottom: 2 }}>{label}</div>
-      <div style={{ fontFamily: mono ? "'IBM Plex Mono',monospace" : "'Inter',sans-serif", fontSize: mono ? 7.5 : 8.5, color: '#f0e090' }}>{value}</div>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 6.5, color: `${GOLD}80`, textTransform: 'uppercase', letterSpacing: '0.10em', marginBottom: 2 }}>{label}</div>
+      <div style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 7.5 : 8.5, color: '#f0e090' }}>{value}</div>
     </div>
   )
 }
@@ -942,12 +942,12 @@ function LedgerRow({ icon, label, value, mono }: { icon: React.ReactNode; label:
   return (
     <div style={{
       display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-      gap: 8, padding: '3.5px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+      gap: 8, padding: '3.5px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.08em', textTransform: 'uppercase', color: DIM }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.08em', textTransform: 'uppercase', color: DIM }}>
         {icon} {label}
       </div>
-      <div style={{ fontFamily: mono ? "'IBM Plex Mono',monospace" : "'Inter',sans-serif", fontSize: mono ? 8 : 9.5, color: '#c8c0e8', textAlign: 'right', wordBreak: 'break-all' }}>
+      <div style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 8 : 9.5, color: '#c8c0e8', textAlign: 'right', wordBreak: 'break-all' }}>
         {value}
       </div>
     </div>

@@ -304,7 +304,7 @@ function NodeLabel({ stage, hovered, isSelected, dimmed, isUp }: {
         color: stage.color,
         lineHeight: 1.0,
         textShadow: `0 0 14px ${stage.color}90, 0 0 28px ${stage.color}40`,
-        fontFamily: "'Instrument Sans', 'Inter', sans-serif",
+        fontFamily: "'Instrument Sans', var(--font-body)",
         letterSpacing: '-0.02em',
       }}>
         {stage.number}
@@ -331,7 +331,7 @@ function NodeLabel({ stage, hovered, isSelected, dimmed, isUp }: {
         letterSpacing: '0.18em',
         textTransform: 'uppercase',
         textShadow: `0 0 8px ${stage.color}70`,
-        fontFamily: "'IBM Plex Mono', monospace",
+        fontFamily: "var(--font-mono)",
         opacity: isSelected || hovered ? 1.0 : 0.75,
       }}>
         {isSelected ? '● SELECTED' : 'Verified'}

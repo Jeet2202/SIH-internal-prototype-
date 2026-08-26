@@ -26,7 +26,7 @@ const DOCS = [
     id:    'botanical',
     label: 'Botanical Source',
     icon:  <Leaf size={12} />,
-    color: '#7ec85a',
+    color: '#7CFF4F',
     ref:   'BOT-COL-ASH-2026-001',
     title: 'Botanical Source / Collection Record',
     rows:  [
@@ -114,7 +114,7 @@ const DOCS = [
     id:    'product',
     label: 'Product Verification',
     icon:  <Package size={12} />,
-    color: '#7ec85a',
+    color: '#7CFF4F',
     ref:   'PROD-VER-ASH-2026-0447',
     title: 'Product Verification Record',
     rows:  [
@@ -156,7 +156,7 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
             style={{
               position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
               zIndex: 92, width: 'min(760px, 96vw)', maxHeight: '90vh', overflowY: 'auto',
-              background: 'rgba(4,10,3,0.98)', backdropFilter: 'blur(30px)',
+              background: 'rgba(2, 8, 4,0.98)', backdropFilter: 'blur(30px)',
               border: `1px solid ${doc.color}28`, borderTop: `2px solid ${doc.color}70`,
               borderRadius: 22, boxShadow: '0 28px 90px rgba(0,0,0,0.85)',
             }}
@@ -167,11 +167,11 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
                 <FileText size={18} color={doc.color} />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: doc.color, marginBottom: 3 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: doc.color, marginBottom: 3 }}>
                   Prototype Record · Root to Remedy Verification Network
                 </div>
-                <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 18, fontWeight: 700, color: '#e4ede0' }}>{doc.title}</div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, color: `${doc.color}70`, marginTop: 2 }}>Ref: {doc.ref}</div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, color: '#e4ede0' }}>{doc.title}</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: `${doc.color}70`, marginTop: 2 }}>Ref: {doc.ref}</div>
               </div>
               <button onClick={onClose} style={{ width: 30, height: 30, borderRadius: '50%', flexShrink: 0, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'rgba(255,255,255,0.4)' }}>
                 <X size={13} />
@@ -189,7 +189,7 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
                     background: i === activeTab ? `${d.color}10` : 'none',
                     borderBottom: i === activeTab ? `2px solid ${d.color}` : '2px solid transparent',
                     color: i === activeTab ? d.color : 'rgba(255,255,255,0.35)',
-                    fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: '0.12em',
+                    fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: '0.12em',
                     textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s',
                   }}
                 >
@@ -202,7 +202,7 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
             {/* Prototype disclaimer */}
             <div style={{ margin: '14px 22px 0', padding: '9px 14px', background: 'rgba(255,165,0,0.07)', border: '1px solid rgba(255,165,0,0.24)', borderRadius: 9, display: 'flex', alignItems: 'flex-start', gap: 9 }}>
               <AlertTriangle size={12} color="rgba(255,165,0,0.80)" style={{ flexShrink: 0, marginTop: 1 }} />
-              <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, color: 'rgba(255,165,0,0.68)', lineHeight: 1.5, margin: 0 }}>
+              <p style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: 'rgba(255,165,0,0.68)', lineHeight: 1.5, margin: 0 }}>
                 <strong style={{ color: 'rgba(255,165,0,0.88)' }}>DEMONSTRATION / PROTOTYPE RECORD</strong> — This document is a simulated record for the Root to Remedy provenance prototype. It is not an official certificate, test report, or legal document. All IDs and values are fictional.
               </p>
             </div>
@@ -218,8 +218,8 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
                 {/* Status strip */}
                 <div style={{ padding: '9px 14px', background: `${doc.color}0a`, border: `1px solid ${doc.color}22`, borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
                   <ShieldCheck size={14} color={doc.color} />
-                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 13, fontWeight: 600, color: doc.color }}>Status: VERIFIED</span>
-                  <span style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: `${doc.color}60` }}>Ref: {doc.ref}</span>
+                  <span style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: doc.color }}>Status: VERIFIED</span>
+                  <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 9, color: `${doc.color}60` }}>Ref: {doc.ref}</span>
                 </div>
 
                 {/* Rows section */}
@@ -233,11 +233,11 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
                 {doc.tests && (
                   <PDocSection title="Test Results" color={doc.color}>
                     {doc.tests.map((t, i) => (
-                      <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: i < doc.tests!.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-                        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: '#cce6f5' }}>{t.name}</span>
+                      <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: i < doc.tests!.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none' }}>
+                        <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: '#cce6f5' }}>{t.name}</span>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'rgba(200,220,240,0.60)' }}>{t.result}</span>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', borderRadius: 6, background: `${doc.color}12`, border: `1px solid ${doc.color}35`, fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: doc.color, letterSpacing: '0.08em' }}>
+                          <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'rgba(200,220,240,0.60)' }}>{t.result}</span>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', borderRadius: 6, background: `${doc.color}12`, border: `1px solid ${doc.color}35`, fontFamily: "var(--font-mono)", fontSize: 7.5, color: doc.color, letterSpacing: '0.08em' }}>
                             <Check size={7} color={doc.color} strokeWidth={3} /> PASS
                           </span>
                         </div>
@@ -250,8 +250,8 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
                 {doc.steps && (
                   <PDocSection title="Manufacturing Steps" color={doc.color}>
                     {doc.steps.map((s, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '5px 0', borderBottom: i < doc.steps!.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-                        <div style={{ width: 20, height: 20, borderRadius: '50%', flexShrink: 0, background: `${doc.color}18`, border: `1px solid ${doc.color}45`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: doc.color }}>{i + 1}</div>
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '5px 0', borderBottom: i < doc.steps!.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none' }}>
+                        <div style={{ width: 20, height: 20, borderRadius: '50%', flexShrink: 0, background: `${doc.color}18`, border: `1px solid ${doc.color}45`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "var(--font-mono)", fontSize: 8, color: doc.color }}>{i + 1}</div>
                         <span style={{ fontSize: 11, color: '#e0d8c0' }}>{s}</span>
                         <Check size={9} color={doc.color} strokeWidth={3} style={{ marginLeft: 'auto', flexShrink: 0 }} />
                       </div>
@@ -261,7 +261,7 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
 
                 {/* Conclusion */}
                 <div style={{ padding: '10px 14px', background: `${doc.color}08`, border: `1px solid ${doc.color}20`, borderRadius: 10 }}>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#b8d8b2', lineHeight: 1.65, margin: 0 }}>{doc.conclusion}</p>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: '#b8d8b2', lineHeight: 1.65, margin: 0 }}>{doc.conclusion}</p>
                 </div>
 
                 {/* Chain position indicator */}
@@ -278,19 +278,19 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
 
             {/* Footer */}
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '12px 22px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'rgba(255,255,255,0.22)', lineHeight: 1.5 }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: 'rgba(255,255,255,0.22)', lineHeight: 1.5 }}>
                 Root to Remedy · Prototype · Not an official document<br />
-                <Hash size={8} color="rgba(126,200,90,0.35)" style={{ display: 'inline', marginRight: 4 }} />
-                <span style={{ color: 'rgba(126,200,90,0.35)' }}>0xf821…44bc</span>
+                <Hash size={8} color="rgba(124, 255, 79,0.35)" style={{ display: 'inline', marginRight: 4 }} />
+                <span style={{ color: 'rgba(124, 255, 79,0.35)' }}>0xf821…44bc</span>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 {activeTab > 0 && (
-                  <button onClick={() => setActiveTab(t => t - 1)} style={{ padding: '7px 14px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.10)', color: 'var(--night-dim)', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, cursor: 'pointer' }}>← Prev</button>
+                  <button onClick={() => setActiveTab(t => t - 1)} style={{ padding: '7px 14px', borderRadius: 8, background: 'rgba(124, 255, 79, 0.04)', border: '1px solid rgba(255,255,255,0.10)', color: 'var(--night-dim)', fontFamily: "var(--font-mono)", fontSize: 9, cursor: 'pointer' }}>← Prev</button>
                 )}
                 {activeTab < DOCS.length - 1 && (
-                  <button onClick={() => setActiveTab(t => t + 1)} style={{ padding: '7px 14px', borderRadius: 8, background: `${doc.color}14`, border: `1px solid ${doc.color}30`, color: doc.color, fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, cursor: 'pointer' }}>Next →</button>
+                  <button onClick={() => setActiveTab(t => t + 1)} style={{ padding: '7px 14px', borderRadius: 8, background: `${doc.color}14`, border: `1px solid ${doc.color}30`, color: doc.color, fontFamily: "var(--font-mono)", fontSize: 9, cursor: 'pointer' }}>Next →</button>
                 )}
-                <button onClick={onClose} style={{ padding: '7px 16px', borderRadius: 8, background: 'rgba(126,200,90,0.12)', border: '1px solid rgba(126,200,90,0.30)', color: '#9fda74', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}>
+                <button onClick={onClose} style={{ padding: '7px 16px', borderRadius: 8, background: 'rgba(124, 255, 79,0.12)', border: '1px solid rgba(124, 255, 79,0.30)', color: '#7CFF4F', fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}>
                   <X size={10} /> Close
                 </button>
               </div>
@@ -305,7 +305,7 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
 function PDocSection({ title, color, children }: { title: string; color: string; children: React.ReactNode }) {
   return (
     <div style={{ background: 'rgba(255,255,255,0.018)', border: `1px solid ${color}16`, borderRadius: 13, overflow: 'hidden' }}>
-      <div style={{ padding: '9px 14px', borderBottom: `1px solid ${color}12`, background: `${color}07`, fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color }}>{title}</div>
+      <div style={{ padding: '9px 14px', borderBottom: `1px solid ${color}12`, background: `${color}07`, fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color }}>{title}</div>
       <div style={{ padding: '8px 14px' }}>{children}</div>
     </div>
   )
@@ -313,9 +313,9 @@ function PDocSection({ title, color, children }: { title: string; color: string;
 
 function PDocRow({ label, value, mono, italic }: { label: string; value: string; mono?: boolean; italic?: boolean }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 12 }}>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'rgba(180,200,170,0.45)', flexShrink: 0, paddingTop: 1 }}>{label}</span>
-      <span style={{ fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif", fontSize: mono ? 9.5 : 11.5, color: '#e0eedc', textAlign: 'right', fontStyle: italic ? 'italic' : 'normal' }}>{value}</span>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)', gap: 12 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'rgba(180,200,170,0.45)', flexShrink: 0, paddingTop: 1 }}>{label}</span>
+      <span style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 9.5 : 11.5, color: '#e0eedc', textAlign: 'right', fontStyle: italic ? 'italic' : 'normal' }}>{value}</span>
     </div>
   )
 }

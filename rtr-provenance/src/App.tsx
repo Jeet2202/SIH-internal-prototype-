@@ -108,7 +108,7 @@ export default function App() {
             >
               <ChevronDown size={12} color="rgba(143,168,136,0.40)" />
               <span style={{
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "var(--font-mono)",
                 fontSize: 10,
                 letterSpacing: '0.22em',
                 textTransform: 'uppercase',
@@ -128,7 +128,7 @@ export default function App() {
         >
           <RefreshCw
             size={11}
-            color={autoRotate ? '#7ec85a' : 'rgba(255,255,255,0.2)'}
+            color={autoRotate ? '#7CFF4F' : 'rgba(255,255,255,0.2)'}
             style={{
               transition: 'transform 0.3s',
               animation: autoRotate ? 'spin-slow 2.4s linear infinite' : 'none',
@@ -136,7 +136,7 @@ export default function App() {
           />
           Auto Rotate
           <span style={{
-            color: autoRotate ? '#7ec85a' : 'rgba(255,255,255,0.2)',
+            color: autoRotate ? '#7CFF4F' : 'rgba(255,255,255,0.2)',
             marginLeft: 3, fontWeight: 600,
           }}>
             {autoRotate ? 'ON' : 'OFF'}
