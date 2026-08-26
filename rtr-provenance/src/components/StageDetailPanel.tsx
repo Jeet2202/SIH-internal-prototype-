@@ -86,7 +86,7 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
               zIndex:         50,
               display:        'flex',
               flexDirection:  'column',
-              background:     'rgba(4,8,4,0.96)',
+              background:     'rgba(2, 8, 4, 0.96)',
               backdropFilter: 'blur(36px)',
               border:         `1.5px solid ${stage.color}50`,
               borderRadius:   20,
@@ -286,18 +286,18 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
           {/* Identity */}
           <div style={{ flex: 1, minWidth: 0, paddingTop: 3 }}>
             <div style={{
-              fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5,
+              fontFamily: "var(--font-mono)", fontSize: 7.5,
               letterSpacing: '0.22em', textTransform: 'uppercase', color: C, marginBottom: 3,
             }}>
               Stage 2 · Laboratory Testing
             </div>
             <div style={{
-              fontFamily: "'Instrument Sans', sans-serif", fontSize: 13,
+              fontFamily: "var(--font-display)", fontSize: 13,
               fontWeight: 700, color: '#dff0f8', lineHeight: 1.2, marginBottom: 2,
             }}>
               {d.labName}
             </div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: `${C}90`, marginBottom: 5 }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: `${C}90`, marginBottom: 5 }}>
               {d.laboratoryId}
             </div>
             <div style={{
@@ -306,7 +306,7 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
               borderRadius: 999, padding: '3px 10px',
             }}>
               <Check size={8} color={C} strokeWidth={3} />
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: '#7dcfee', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: '#7dcfee', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                 Verified
               </span>
             </div>
@@ -326,7 +326,7 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
         {/* Test results — compact rows with PASS indicators */}
         <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24, duration: 0.28 }}>
           <div style={{
-            fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.16em',
+            fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.16em',
             textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 6,
           }}>
             Test Results
@@ -340,13 +340,13 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
               style={{
                 display:      'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding:      '4px 0',
-                borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 8,
+                borderBottom: '1px solid rgba(124, 255, 79, 0.04)', gap: 8,
               }}
             >
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 10.5, color: '#cce6f5', lineHeight: 1.25 }}>{r.label}</div>
                 {r.value !== 'Conforming' && r.value !== 'Within specification' && r.value !== 'Within permissible limits' && (
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: `${C}80`, marginTop: 1 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: `${C}80`, marginTop: 1 }}>
                     {r.value}{r.unit ? ` ${r.unit}` : ''}{r.limit ? ` · limit ${r.limit}` : ''}
                   </div>
                 )}
@@ -356,7 +356,7 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
                 display: 'inline-flex', alignItems: 'center', gap: 3, flexShrink: 0,
                 padding: '2px 8px', borderRadius: 6,
                 background: `${C}12`, border: `1px solid ${C}35`,
-                fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5,
+                fontFamily: "var(--font-mono)", fontSize: 7.5,
                 color: '#7dcfee', letterSpacing: '0.08em',
               }}>
                 <Check size={7} color={C} strokeWidth={3} /> PASS
@@ -375,13 +375,13 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
       }}>
         {/* Location header */}
         <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14, duration: 0.30 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.20em', textTransform: 'uppercase', color: C, marginBottom: 3 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.20em', textTransform: 'uppercase', color: C, marginBottom: 3 }}>
             Laboratory Location
           </div>
-          <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 14, fontWeight: 600, color: '#dff0f8', marginBottom: 2 }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 600, color: '#dff0f8', marginBottom: 2 }}>
             {d.location.city}, {d.location.state}, India
           </div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--night-dim)', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'var(--night-dim)', display: 'flex', alignItems: 'center', gap: 4 }}>
             <MapPin size={8} color="var(--night-dim)" />
             {d.location.lat.toFixed(4)}° N &nbsp; {d.location.lng.toFixed(4)}° E
           </div>
@@ -411,7 +411,7 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
           transition={{ delay: 0.30, duration: 0.28 }}
           style={{ background: `${C}08`, border: `1px solid ${C}20`, borderRadius: 12, padding: '11px 14px' }}
         >
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: C, marginBottom: 9 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: C, marginBottom: 9 }}>
             Sample Chain of Custody
           </div>
           {[
@@ -437,8 +437,8 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
               {/* Content */}
               <div style={{ paddingBottom: i < arr.length - 1 ? 10 : 0, paddingTop: 1 }}>
                 <div style={{ fontSize: 10.5, color: '#cce6f5', lineHeight: 1.25 }}>{step.label}</div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{step.sub}</div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: `${C}70`, marginTop: 1 }}>{step.date}</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{step.sub}</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: `${C}70`, marginTop: 1 }}>{step.date}</div>
               </div>
             </div>
           ))}
@@ -458,23 +458,23 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
             <div style={{ width: 22, height: 22, borderRadius: 7, background: `${C}20`, border: `1px solid ${C}40`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FlaskConical size={11} color={C} />
             </div>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: C }}>About This Stage</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: C }}>About This Stage</span>
           </div>
-          <p style={{ fontSize: 10.5, color: '#b8d8e8', lineHeight: 1.60, fontFamily: "'Inter', sans-serif" }}>{d.description}</p>
+          <p style={{ fontSize: 10.5, color: '#b8d8e8', lineHeight: 1.60, fontFamily: "var(--font-body)" }}>{d.description}</p>
         </motion.div>
 
         {/* Lab Report card */}
         <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28, duration: 0.26 }}
           style={{ background: `${C}0b`, border: `1px solid ${C}28`, borderRadius: 12, padding: '11px 14px' }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: C, marginBottom: 6 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: C, marginBottom: 6 }}>
             Lab Report
           </div>
           <div style={{ fontSize: 11, color: '#cce6f5', marginBottom: 2 }}>Prototype Laboratory Report</div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'var(--night-dim)', marginBottom: 8 }}>{d.reportId}</div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: 'var(--night-dim)', marginBottom: 8 }}>{d.reportId}</div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
               <Check size={9} color={C} strokeWidth={3} />
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#7dcfee' }}>VERIFIED</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#7dcfee' }}>VERIFIED</span>
             </div>
             <button
               onClick={onOpenReport}
@@ -482,7 +482,7 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
                 display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer',
                 padding: '5px 12px', borderRadius: 8,
                 background: `${C}16`, border: `1px solid ${C}35`,
-                color: '#7dcfee', fontFamily: "'IBM Plex Mono', monospace",
+                color: '#7dcfee', fontFamily: "var(--font-mono)",
                 fontSize: 8.5, letterSpacing: '0.10em', textTransform: 'uppercase',
               }}
             >
@@ -491,7 +491,7 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 7, padding: '4px 8px', background: 'rgba(255,165,0,0.07)', border: '1px solid rgba(255,165,0,0.22)', borderRadius: 6 }}>
             <AlertTriangle size={7} color="rgba(255,165,0,0.65)" />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'rgba(255,165,0,0.60)' }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'rgba(255,165,0,0.60)' }}>
               Demonstration Record — not a real laboratory report
             </span>
           </div>
@@ -502,21 +502,21 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
           style={{ background: 'rgba(255,255,255,0.018)', border: `1px solid ${C}1a`, borderRadius: 13, padding: '11px 14px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
             <ShieldCheck size={10} color={C} />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: C }}>Quality Verification</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: C }}>Quality Verification</span>
           </div>
           {d.checks.map((chk, i) => (
             <motion.div key={i}
               initial={{ opacity: 0, x: -5 }}
               animate={{ opacity: checksDone ? 1 : 0, x: checksDone ? 0 : -5 }}
               transition={{ delay: 0.50 + i * 0.09, duration: 0.20 }}
-              style={{ display: 'flex', alignItems: 'flex-start', gap: 7, padding: '4px 0', borderBottom: i < d.checks.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}
+              style={{ display: 'flex', alignItems: 'flex-start', gap: 7, padding: '4px 0', borderBottom: i < d.checks.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none' }}
             >
               <div style={{ width: 15, height: 15, borderRadius: '50%', flexShrink: 0, marginTop: 1, background: `${C}1e`, border: `1px solid ${C}50`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Check size={7} color={C} strokeWidth={3} />
               </div>
               <div>
                 <div style={{ fontSize: 10.5, color: '#cce6f5', lineHeight: 1.30 }}>{chk.label}</div>
-                {chk.detail && <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)', marginTop: 1 }}>{chk.detail}</div>}
+                {chk.detail && <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: 'var(--night-dim)', marginTop: 1 }}>{chk.detail}</div>}
               </div>
             </motion.div>
           ))}
@@ -527,8 +527,8 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
           style={{ background: 'rgba(255,255,255,0.016)', border: `1px solid ${C}18`, borderRadius: 13, padding: '11px 14px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 9 }}>
             <Cpu size={10} color={C} />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: C }}>Ledger Record</span>
-            <span style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, color: `${C}45`, textTransform: 'uppercase', letterSpacing: '0.10em' }}>PROTOTYPE</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: C }}>Ledger Record</span>
+            <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 7, color: `${C}45`, textTransform: 'uppercase', letterSpacing: '0.10em' }}>PROTOTYPE</span>
           </div>
           <BCRow icon={<Hash size={8}  color="var(--night-dim)" />} label="TX Hash"   value={d.blockchain.txHash}    mono />
           <BCRow icon={<Cpu  size={8}  color="var(--night-dim)" />} label="Block"     value={d.blockchain.blockNum}  mono />
@@ -545,12 +545,12 @@ function LabKV({ label, value, C, mono }: { label: string; value: string; C: str
   return (
     <div style={{
       display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-      padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 8,
+      padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)', gap: 8,
     }}>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--night-dim)', flexShrink: 0 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--night-dim)', flexShrink: 0 }}>
         {label}
       </span>
-      <span style={{ fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif", fontSize: mono ? 9 : 10.5, color: '#cce6f5', textAlign: 'right' }}>
+      <span style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 9 : 10.5, color: '#cce6f5', textAlign: 'right' }}>
         {value}
         {' '}<Check size={7} color={C} strokeWidth={3} style={{ display: 'inline', verticalAlign: 'middle' }} />
       </span>
@@ -607,20 +607,20 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
           {/* Name + role + verified */}
           <div style={{ flex: 1, minWidth: 0, paddingTop: 3 }}>
             <div style={{
-              fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5,
+              fontFamily: "var(--font-mono)", fontSize: 7.5,
               letterSpacing: '0.22em', textTransform: 'uppercase',
               color: stage.color, marginBottom: 3,
             }}>
               Stage 1 · Farmer / Collection
             </div>
             <div style={{
-              fontFamily: "'Instrument Sans', sans-serif", fontSize: 16,
+              fontFamily: "var(--font-display)", fontSize: 16,
               fontWeight: 700, color: '#e4ede0', lineHeight: 1.15, marginBottom: 2,
             }}>
               {d.farmerName}
             </div>
             <div style={{
-              fontFamily: "'Inter', sans-serif", fontSize: 10.5, color: 'rgba(200,220,190,0.65)',
+              fontFamily: "var(--font-body)", fontSize: 10.5, color: 'rgba(200,220,190,0.65)',
               marginBottom: 5,
             }}>
               {d.farmerRole}
@@ -628,13 +628,13 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
             {/* Verified pill */}
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 5,
-              background: 'rgba(126,200,90,0.12)', border: '1px solid rgba(126,200,90,0.32)',
+              background: 'rgba(124, 255, 79,0.12)', border: '1px solid rgba(124, 255, 79,0.32)',
               borderRadius: 999, padding: '3px 10px',
             }}>
-              <ShieldCheck size={9} color="#7ec85a" strokeWidth={2.5} />
+              <ShieldCheck size={9} color="#7CFF4F" strokeWidth={2.5} />
               <span style={{
-                fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
-                color: '#9fda74', letterSpacing: '0.12em', textTransform: 'uppercase',
+                fontFamily: "var(--font-mono)", fontSize: 8,
+                color: '#7CFF4F', letterSpacing: '0.12em', textTransform: 'uppercase',
               }}>
                 Verified
               </span>
@@ -676,20 +676,20 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
           transition={{ delay: 0.14, duration: 0.30 }}
         >
           <div style={{
-            fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
+            fontFamily: "var(--font-mono)", fontSize: 8,
             letterSpacing: '0.20em', textTransform: 'uppercase',
             color: stage.color, marginBottom: 3,
           }}>
             Location
           </div>
           <div style={{
-            fontFamily: "'Instrument Sans', sans-serif", fontSize: 14,
+            fontFamily: "var(--font-display)", fontSize: 14,
             fontWeight: 600, color: '#e4ede0', marginBottom: 2,
           }}>
             {d.location.city}, {d.location.state}, India
           </div>
           <div style={{
-            fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--night-dim)',
+            fontFamily: "var(--font-mono)", fontSize: 9, color: 'var(--night-dim)',
             display: 'flex', alignItems: 'center', gap: 4,
           }}>
             <MapPin size={8} color="var(--night-dim)" />
@@ -728,20 +728,20 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
         >
           <div style={{
             display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0,
-            background: 'rgba(126,200,90,0.08)', border: '1px solid rgba(126,200,90,0.22)',
+            background: 'rgba(124, 255, 79,0.08)', border: '1px solid rgba(124, 255, 79,0.22)',
             borderRadius: 8, padding: '5px 10px',
           }}>
-            <Navigation size={9} color="#7ec85a" />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#9fda74', letterSpacing: '0.06em' }}>
+            <Navigation size={9} color="#7CFF4F" />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#7CFF4F', letterSpacing: '0.06em' }}>
               GPS Source Verified
             </span>
           </div>
           <div style={{
             display: 'flex', alignItems: 'center', gap: 5,
-            background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
+            background: 'rgba(124, 255, 79, 0.04)', border: '1px solid rgba(255,255,255,0.09)',
             borderRadius: 8, padding: '5px 10px',
           }}>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'var(--night-dim)' }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: 'var(--night-dim)' }}>
               GPS Accuracy: ±{d.gpsAccuracyM} m
             </span>
           </div>
@@ -758,7 +758,7 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
           }}
         >
           <div style={{
-            fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
+            fontFamily: "var(--font-mono)", fontSize: 8,
             letterSpacing: '0.16em', textTransform: 'uppercase',
             color: stage.color, marginBottom: 6,
           }}>
@@ -768,7 +768,7 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
             Botanical Source / Collection Record
           </div>
           <div style={{
-            fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
+            fontFamily: "var(--font-mono)", fontSize: 8.5,
             color: 'var(--night-dim)', marginBottom: 8,
           }}>
             {d.documents[0].ref}
@@ -776,8 +776,8 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
             {/* Status */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Check size={9} color="#7ec85a" strokeWidth={3} />
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#9fda74' }}>
+              <Check size={9} color="#7CFF4F" strokeWidth={3} />
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#7CFF4F' }}>
                 VERIFIED
               </span>
             </div>
@@ -787,8 +787,8 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
               style={{
                 display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer',
                 padding: '5px 12px', borderRadius: 8,
-                background: 'rgba(126,200,90,0.14)', border: '1px solid rgba(126,200,90,0.32)',
-                color: '#9fda74', fontFamily: "'IBM Plex Mono', monospace",
+                background: 'rgba(124, 255, 79,0.14)', border: '1px solid rgba(124, 255, 79,0.32)',
+                color: '#7CFF4F', fontFamily: "var(--font-mono)",
                 fontSize: 8.5, letterSpacing: '0.10em', textTransform: 'uppercase',
                 transition: 'all 0.2s',
               }}
@@ -803,7 +803,7 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
             border: '1px solid rgba(255,165,0,0.22)', borderRadius: 6,
           }}>
             <AlertTriangle size={7} color="rgba(255,165,0,0.65)" />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'rgba(255,165,0,0.60)' }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'rgba(255,165,0,0.60)' }}>
               Prototype Record — not an official document
             </span>
           </div>
@@ -834,13 +834,13 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
               <Leaf size={11} color={stage.color} />
             </div>
             <span style={{
-              fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
+              fontFamily: "var(--font-mono)", fontSize: 8.5,
               letterSpacing: '0.16em', textTransform: 'uppercase', color: stage.color,
             }}>
               About This Stage
             </span>
           </div>
-          <p style={{ fontSize: 10.5, color: '#b8d8b2', lineHeight: 1.60, fontFamily: "'Inter', sans-serif" }}>
+          <p style={{ fontSize: 10.5, color: '#b8d8b2', lineHeight: 1.60, fontFamily: "var(--font-body)" }}>
             {d.description}
           </p>
         </motion.div>
@@ -859,7 +859,7 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
           }}>
             <ShieldCheck size={10} color={stage.color} />
             <span style={{
-              fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
+              fontFamily: "var(--font-mono)", fontSize: 8.5,
               letterSpacing: '0.14em', textTransform: 'uppercase', color: stage.color,
             }}>
               Source Verification
@@ -873,7 +873,7 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
               transition={{ delay: 0.50 + i * 0.08, duration: 0.20 }}
               style={{
                 display: 'flex', alignItems: 'flex-start', gap: 7,
-                padding: '4px 0', borderBottom: i < d.checks.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                padding: '4px 0', borderBottom: i < d.checks.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none',
               }}
             >
               <div style={{
@@ -884,9 +884,9 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
                 <Check size={7} color={stage.color} strokeWidth={3} />
               </div>
               <div>
-                <div style={{ fontSize: 10.5, color: '#d8e8d4', lineHeight: 1.30 }}>{chk.label}</div>
+                <div style={{ fontSize: 10.5, color: '#e4ede0', lineHeight: 1.30 }}>{chk.label}</div>
                 {chk.detail && (
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)', marginTop: 1 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: 'var(--night-dim)', marginTop: 1 }}>
                     {chk.detail}
                   </div>
                 )}
@@ -900,21 +900,21 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
           initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.40, duration: 0.28 }}
           style={{
-            background: 'rgba(255,255,255,0.018)', border: '1px solid rgba(126,200,90,0.16)',
+            background: 'rgba(255,255,255,0.018)', border: '1px solid rgba(124, 255, 79,0.16)',
             borderRadius: 13, padding: '11px 14px',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 9 }}>
-            <Cpu size={10} color="#7ec85a" />
+            <Cpu size={10} color="#7CFF4F" />
             <span style={{
-              fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
-              letterSpacing: '0.16em', textTransform: 'uppercase', color: '#7ec85a',
+              fontFamily: "var(--font-mono)", fontSize: 8.5,
+              letterSpacing: '0.16em', textTransform: 'uppercase', color: '#7CFF4F',
             }}>
               Blockchain / Ledger Record
             </span>
             <span style={{
-              marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 7,
-              color: 'rgba(126,200,90,0.42)', textTransform: 'uppercase', letterSpacing: '0.10em',
+              marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 7,
+              color: 'rgba(124, 255, 79,0.42)', textTransform: 'uppercase', letterSpacing: '0.10em',
             }}>
               PROTOTYPE DEMO
             </span>
@@ -937,12 +937,12 @@ function FarmerDataRow({ icon, label, value, color, mono, italic }: {
   return (
     <div style={{
       display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
-      padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 8,
+      padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)', gap: 8,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
         {icon}
         <span style={{
-          fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5,
+          fontFamily: "var(--font-mono)", fontSize: 7.5,
           letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--night-dim)',
         }}>
           {label}
@@ -950,7 +950,7 @@ function FarmerDataRow({ icon, label, value, color, mono, italic }: {
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, textAlign: 'right' }}>
         <span style={{
-          fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif",
+          fontFamily: mono ? "var(--font-mono)" : "var(--font-body)",
           fontSize: mono ? 9 : 10.5, color: '#e0eedc',
           fontStyle: italic ? 'italic' : 'normal',
         }}>
@@ -985,21 +985,21 @@ function Column1Generic({ stage, checksDone }: { stage: ProvenanceStage; checksD
           background: `${stage.color}18`, border: `1.5px solid ${stage.color}45`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 17, fontWeight: 700, color: stage.color }}>
+          <span style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 700, color: stage.color }}>
             {stage.number}
           </span>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.22em', textTransform: 'uppercase', color: stage.color, marginBottom: 2 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.22em', textTransform: 'uppercase', color: stage.color, marginBottom: 2 }}>
             {stage.subtitle}
           </div>
-          <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 15, fontWeight: 700, color: '#e4ede0', lineHeight: 1.15, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 700, color: '#e4ede0', lineHeight: 1.15, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {stage.title}
           </div>
         </div>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0, background: 'rgba(126,200,90,0.12)', border: '1px solid rgba(126,200,90,0.30)', borderRadius: 999, padding: '3px 9px' }}>
-          <Check size={8} color="#7ec85a" strokeWidth={3} />
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, letterSpacing: '0.14em', color: '#9fda74', textTransform: 'uppercase' }}>Verified</span>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0, background: 'rgba(124, 255, 79,0.12)', border: '1px solid rgba(124, 255, 79,0.30)', borderRadius: 999, padding: '3px 9px' }}>
+          <Check size={8} color="#7CFF4F" strokeWidth={3} />
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.14em', color: '#7CFF4F', textTransform: 'uppercase' }}>Verified</span>
         </div>
       </motion.div>
 
@@ -1015,7 +1015,7 @@ function Column1Generic({ stage, checksDone }: { stage: ProvenanceStage; checksD
       </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.28, duration: 0.28 }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 5 }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 5 }}>
           Verification
         </div>
         {d.checks.slice(0, 4).map((chk, i) => (
@@ -1024,14 +1024,14 @@ function Column1Generic({ stage, checksDone }: { stage: ProvenanceStage; checksD
             initial={{ opacity: 0, x: -5 }}
             animate={{ opacity: checksDone ? 1 : 0, x: checksDone ? 0 : -5 }}
             transition={{ delay: 0.45 + i * 0.09, duration: 0.22 }}
-            style={{ display: 'flex', alignItems: 'flex-start', gap: 7, padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+            style={{ display: 'flex', alignItems: 'flex-start', gap: 7, padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)' }}
           >
             <div style={{ width: 15, height: 15, borderRadius: '50%', flexShrink: 0, marginTop: 1, background: `${stage.color}1e`, border: `1px solid ${stage.color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Check size={7} color={stage.color} strokeWidth={3} />
             </div>
             <div>
-              <div style={{ fontSize: 10.5, color: '#d8e8d4', lineHeight: 1.35 }}>{chk.label}</div>
-              {chk.detail && <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)', marginTop: 1 }}>{chk.detail}</div>}
+              <div style={{ fontSize: 10.5, color: '#e4ede0', lineHeight: 1.35 }}>{chk.label}</div>
+              {chk.detail && <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: 'var(--night-dim)', marginTop: 1 }}>{chk.detail}</div>}
             </div>
           </motion.div>
         ))}
@@ -1050,9 +1050,9 @@ function Column2Generic({ stage }: { stage: ProvenanceStage }) {
       overflowY:   'auto',
     }}>
       <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16, duration: 0.30 }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.20em', textTransform: 'uppercase', color: stage.color, marginBottom: 4 }}>{loc.label}</div>
-        <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 14, fontWeight: 600, color: '#e4ede0', marginBottom: 3 }}>{loc.city}, {loc.state}</div>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--night-dim)', display: 'flex', alignItems: 'center', gap: 5 }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.20em', textTransform: 'uppercase', color: stage.color, marginBottom: 4 }}>{loc.label}</div>
+        <div style={{ fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 600, color: '#e4ede0', marginBottom: 3 }}>{loc.city}, {loc.state}</div>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'var(--night-dim)', display: 'flex', alignItems: 'center', gap: 5 }}>
           <MapPin size={9} color="var(--night-dim)" />{loc.lat.toFixed(4)}° N, {loc.lng.toFixed(4)}° E
         </div>
       </motion.div>
@@ -1076,9 +1076,9 @@ function Column2Generic({ stage }: { stage: ProvenanceStage }) {
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.38, duration: 0.25 }}
         style={{ background: `${stage.color}0e`, border: `1px solid ${stage.color}25`, borderRadius: 10, padding: '8px 12px' }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: stage.color, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 3 }}>Responsible Entity</div>
-        <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: '#d4e8ce' }}>{stage.data.entity}</div>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)', marginTop: 2 }}>{stage.data.entityType}</div>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: stage.color, letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 3 }}>Responsible Entity</div>
+        <div style={{ fontFamily: "var(--font-body)", fontSize: 11, color: '#d4e8ce' }}>{stage.data.entity}</div>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: 'var(--night-dim)', marginTop: 2 }}>{stage.data.entityType}</div>
       </motion.div>
     </div>
   )
@@ -1094,9 +1094,9 @@ function Column3Generic({ stage }: { stage: ProvenanceStage }) {
           <div style={{ width: 22, height: 22, borderRadius: 7, background: `${stage.color}20`, border: `1px solid ${stage.color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <StageIconSmall type={stage.type} color={stage.color} />
           </div>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: stage.color }}>About This Stage</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: stage.color }}>About This Stage</span>
         </div>
-        <p style={{ fontSize: 11, color: '#b8d8b2', lineHeight: 1.60, fontFamily: "'Inter', sans-serif" }}>{d.description}</p>
+        <p style={{ fontSize: 11, color: '#b8d8b2', lineHeight: 1.60, fontFamily: "var(--font-body)" }}>{d.description}</p>
       </motion.div>
 
       <StageExtraContent stage={stage} />
@@ -1105,18 +1105,18 @@ function Column3Generic({ stage }: { stage: ProvenanceStage }) {
         style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 13, padding: '11px 14px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
           <FileText size={10} color="var(--night-dim)" />
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--night-dim)' }}>Linked Documents</span>
-          <span style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, color: 'rgba(255,165,0,0.55)', textTransform: 'uppercase', letterSpacing: '0.10em' }}>⚠ PROTOTYPE</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--night-dim)' }}>Linked Documents</span>
+          <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 7, color: 'rgba(255,165,0,0.55)', textTransform: 'uppercase', letterSpacing: '0.10em' }}>⚠ PROTOTYPE</span>
         </div>
         {d.documents.slice(0, 4).map((doc, i) => <DocRow key={i} doc={doc} />)}
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.28 }}
-        style={{ background: 'rgba(255,255,255,0.018)', border: '1px solid rgba(126,200,90,0.16)', borderRadius: 13, padding: '11px 14px' }}>
+        style={{ background: 'rgba(255,255,255,0.018)', border: '1px solid rgba(124, 255, 79,0.16)', borderRadius: 13, padding: '11px 14px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 9 }}>
-          <Cpu size={10} color="#7ec85a" />
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#7ec85a' }}>Ledger Record</span>
-          <span style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, color: 'rgba(126,200,90,0.42)', textTransform: 'uppercase', letterSpacing: '0.10em' }}>PROTOTYPE</span>
+          <Cpu size={10} color="#7CFF4F" />
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#7CFF4F' }}>Ledger Record</span>
+          <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 7, color: 'rgba(124, 255, 79,0.42)', textTransform: 'uppercase', letterSpacing: '0.10em' }}>PROTOTYPE</span>
         </div>
         <BCRow icon={<Hash size={8}  color="var(--night-dim)" />} label="TX Hash"   value={d.blockchain.txHash}    mono />
         <BCRow icon={<Cpu  size={8}  color="var(--night-dim)" />} label="Block"     value={d.blockchain.blockNum}  mono />
@@ -1146,17 +1146,17 @@ function LabResultsCard({ data, color }: { data: LabStageData; color: string }) 
       style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
         <Microscope size={10} color={color} />
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>Test Results</span>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>Test Results</span>
       </div>
-      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#9fda74', padding: '5px 9px', background: 'rgba(126,200,90,0.08)', borderRadius: 7, marginBottom: 7 }}>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: '#7CFF4F', padding: '5px 9px', background: 'rgba(124, 255, 79,0.08)', borderRadius: 7, marginBottom: 7 }}>
         Withanolide content: {data.withanolideContent}
       </div>
       {data.results.slice(0, 4).map((r, i) => (
-        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'var(--night-dim)', flexShrink: 0 }}>{r.label}</span>
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)' }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: 'var(--night-dim)', flexShrink: 0 }}>{r.label}</span>
           <div style={{ textAlign: 'right' }}>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#e0eedc' }}>{r.value}{r.unit ? ` ${r.unit}` : ''}</span>
-            {r.limit && <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)' }}>limit {r.limit}</div>}
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: '#e0eedc' }}>{r.value}{r.unit ? ` ${r.unit}` : ''}</span>
+            {r.limit && <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)' }}>limit {r.limit}</div>}
           </div>
           <Check size={8} color={color} strokeWidth={3} style={{ marginLeft: 5, marginTop: 2, flexShrink: 0 }} />
         </div>
@@ -1171,19 +1171,19 @@ function TransportMetricsCard({ data, color }: { data: TransportStageData; color
       style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
         <TruckIcon size={10} color={color} />
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>Transit Conditions</span>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>Transit Conditions</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#d4e8ce', padding: '5px 9px', background: `${color}0d`, borderRadius: 7, marginBottom: 7 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#d4e8ce', padding: '5px 9px', background: `${color}0d`, borderRadius: 7, marginBottom: 7 }}>
         <span style={{ color }}>{data.origin.split(',')[0]}</span>
         <ArrowRight size={9} color="var(--night-dim)" />
         <span style={{ color }}>{data.destination.split(',')[0]}</span>
         <span style={{ color: 'var(--night-dim)', marginLeft: 'auto' }}>{data.distanceKm} km</span>
       </div>
       {data.metrics.slice(0, 5).map((m, i) => (
-        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'var(--night-dim)' }}>{m.label}</span>
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)' }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: 'var(--night-dim)' }}>{m.label}</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, color: '#e0eedc' }}>{m.value}</span>
+            <span style={{ fontFamily: "var(--font-body)", fontSize: 10, color: '#e0eedc' }}>{m.value}</span>
             <Check size={7} color={color} strokeWidth={3} />
           </div>
         </div>
@@ -1198,18 +1198,18 @@ function MfgStepsCard({ data, color }: { data: ManufacturingStageData; color: st
       style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
         <Boxes size={10} color={color} />
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>Process Steps</span>
-        <span style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)' }}>{data.steps.length} steps</span>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>Process Steps</span>
+        <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 8, color: 'var(--night-dim)' }}>{data.steps.length} steps</span>
       </div>
-      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#9fda74', padding: '4px 9px', background: `${color}0d`, borderRadius: 7, marginBottom: 7 }}>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#7CFF4F', padding: '4px 9px', background: `${color}0d`, borderRadius: 7, marginBottom: 7 }}>
         {data.dosagePerUnit} per tablet · {data.tabletCount} tablets/bottle
       </div>
       {data.steps.slice(0, 4).map((s, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 7, padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-          <div style={{ width: 14, height: 14, borderRadius: '50%', flexShrink: 0, marginTop: 1, background: `${color}18`, border: `1px solid ${color}45`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, color }}>{s.step}</div>
+        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 7, padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)' }}>
+          <div style={{ width: 14, height: 14, borderRadius: '50%', flexShrink: 0, marginTop: 1, background: `${color}18`, border: `1px solid ${color}45`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "var(--font-mono)", fontSize: 7, color }}>{s.step}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 10, color: '#d8e8d4' }}>{s.name}</div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{s.detail}</div>
+            <div style={{ fontSize: 10, color: '#e4ede0' }}>{s.name}</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{s.detail}</div>
           </div>
           <Check size={7} color={color} strokeWidth={3} style={{ flexShrink: 0, marginTop: 2 }} />
         </div>
@@ -1224,21 +1224,21 @@ function ProductChainCard({ data, color }: { data: ProductStageData; color: stri
       style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
         <ThumbsUp size={10} color={color} />
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>Chain Summary</span>
-        <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: '#9fda74' }}>
-          <ShieldCheck size={9} color="#9fda74" /> 5 / 5
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>Chain Summary</span>
+        <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4, fontFamily: "var(--font-mono)", fontSize: 8, color: '#7CFF4F' }}>
+          <ShieldCheck size={9} color="#7CFF4F" /> 5 / 5
         </span>
       </div>
       {data.chainSummary.map((s, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+        <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)' }}>
           <div>
-            <div style={{ fontSize: 10, color: '#d8e8d4' }}>{s.stage}</div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)' }}>{s.eventId}</div>
+            <div style={{ fontSize: 10, color: '#e4ede0' }}>{s.stage}</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)' }}>{s.eventId}</div>
           </div>
           <Check size={9} color={color} strokeWidth={3} />
         </div>
       ))}
-      <div style={{ marginTop: 8, padding: '6px 9px', background: `${color}0d`, borderRadius: 7, fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#9fda74' }}>
+      <div style={{ marginTop: 8, padding: '6px 9px', background: `${color}0d`, borderRadius: 7, fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#7CFF4F' }}>
         Pack: {data.packSerial} · {data.tabletCount} tablets · Exp. {data.expiry}
       </div>
     </motion.div>
@@ -1309,9 +1309,9 @@ function StageKeyRows({ stage }: { stage: ProvenanceStage }) {
 
 function KV({ label, value, c, mono }: { label: string; value: string; c: string; mono?: boolean }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 8 }}>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--night-dim)', flexShrink: 0, paddingTop: 1 }}>{label}</span>
-      <span style={{ fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif", fontSize: mono ? 9 : 10.5, color: '#e0eedc', textAlign: 'right' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)', gap: 8 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--night-dim)', flexShrink: 0, paddingTop: 1 }}>{label}</span>
+      <span style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 9 : 10.5, color: '#e0eedc', textAlign: 'right' }}>
         {value}{' '}<Check size={7} color={c} strokeWidth={3} style={{ display: 'inline', verticalAlign: 'middle' }} />
       </span>
     </div>
@@ -1320,7 +1320,7 @@ function KV({ label, value, c, mono }: { label: string; value: string; c: string
 
 function MicroTag({ icon, text, color }: { icon: React.ReactNode; text: string; color: string }) {
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 999, padding: '3px 9px', fontFamily: "'Inter', sans-serif", fontSize: 10, color, maxWidth: '100%', overflow: 'hidden' }}>
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(124, 255, 79, 0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 999, padding: '3px 9px', fontFamily: "var(--font-body)", fontSize: 10, color, maxWidth: '100%', overflow: 'hidden' }}>
       {icon}
       <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{text}</span>
     </div>
@@ -1329,11 +1329,11 @@ function MicroTag({ icon, text, color }: { icon: React.ReactNode; text: string; 
 
 function DocRow({ doc }: { doc: LinkedDocument }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)' }}>
       <FileText size={8} color="rgba(255,165,0,0.55)" style={{ flexShrink: 0 }} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 10, color: '#c8dcc4', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.label}</div>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)' }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)' }}>
           {doc.ref}{doc._proto && <span style={{ color: 'rgba(255,165,0,0.45)', marginLeft: 5 }}>[prototype]</span>}
         </div>
       </div>
@@ -1343,11 +1343,11 @@ function DocRow({ doc }: { doc: LinkedDocument }) {
 
 function BCRow({ icon, label, value, mono, last }: { icon: React.ReactNode; label: string; value: string; mono?: boolean; last?: boolean }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, padding: '5px 0', borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.04)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--night-dim)' }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, padding: '5px 0', borderBottom: last ? 'none' : '1px solid rgba(124, 255, 79, 0.04)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--night-dim)' }}>
         {icon} {label}
       </div>
-      <div style={{ fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif", fontSize: mono ? 9 : 10.5, color: '#c8e0c4', textAlign: 'right', wordBreak: 'break-all' }}>
+      <div style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 9 : 10.5, color: '#c8e0c4', textAlign: 'right', wordBreak: 'break-all' }}>
         {value}
       </div>
     </div>
@@ -1376,7 +1376,7 @@ void User
 /* ══════════════════════════════════════════════════════════════════
    PRODUCT PANEL LAYOUT
    The CLIMAX stage — Stage 5 Final Product / Packaging
-   Accent colour: #7ec85a (Root to Remedy green)
+   Accent colour: #7CFF4F (Root to Remedy green)
 
    Col1: Product bottle image + QR identity + product identity card
    Col2: 5/5 Traceability arc + chain summary indicators
@@ -1384,11 +1384,11 @@ void User
 ══════════════════════════════════════════════════════════════════ */
 
 const STAGE_COLORS: Record<string, string> = {
-  farmer:        '#7ec85a',
+  farmer:        '#7CFF4F',
   lab:           '#4ea8d2',
   transport:     '#8b6cd4',
   manufacturing: '#e8a84a',
-  product:       '#7ec85a',
+  product:       '#7CFF4F',
 }
 
 function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, onOpenReview }: {
@@ -1399,7 +1399,7 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
   onOpenReview:  () => void
 }) {
   const d = stage.data as ProductStageData
-  const C = '#7ec85a'
+  const C = '#7CFF4F'
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '34% 30% 36%', gap: 0, minHeight: 0 }}>
@@ -1440,13 +1440,13 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
 
         {/* Product identity */}
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14, duration: 0.28 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, letterSpacing: '0.22em', textTransform: 'uppercase', color: `${C}80`, marginBottom: 2, textAlign: 'center' }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.22em', textTransform: 'uppercase', color: `${C}80`, marginBottom: 2, textAlign: 'center' }}>
             ✓ Product Verified
           </div>
-          <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 15, fontWeight: 700, color: '#dff0f8', textAlign: 'center', lineHeight: 1.2, marginBottom: 1 }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: 15, fontWeight: 700, color: '#dff0f8', textAlign: 'center', lineHeight: 1.2, marginBottom: 1 }}>
             {d.productName}
           </div>
-          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, color: 'var(--night-dim)', textAlign: 'center', marginBottom: 6 }}>
+          <div style={{ fontFamily: "var(--font-body)", fontSize: 10, color: 'var(--night-dim)', textAlign: 'center', marginBottom: 6 }}>
             Pure Herbs &nbsp;·&nbsp; {d.tabletCount} Tablets
           </div>
           <div style={{ height: 1, background: `linear-gradient(to right, transparent, ${C}40, transparent)`, marginBottom: 7 }} />
@@ -1456,9 +1456,9 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
             { label: 'Mfg.',        value: d.manufactured             },
             { label: 'Expiry',      value: d.expiry                   },
           ].map(({ label, value, mono }, i) => (
-            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 8 }}>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--night-dim)', flexShrink: 0 }}>{label}</span>
-              <span style={{ fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif", fontSize: mono ? 9 : 10, color: '#dff0f8', textAlign: 'right' }}>{value}</span>
+            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)', gap: 8 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--night-dim)', flexShrink: 0 }}>{label}</span>
+              <span style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 9 : 10, color: '#dff0f8', textAlign: 'right' }}>{value}</span>
             </div>
           ))}
         </motion.div>
@@ -1469,15 +1469,15 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
           transition={{ delay: 0.22, duration: 0.26 }}
           style={{ background: `${C}08`, border: `1px solid ${C}28`, borderRadius: 11, padding: '9px 12px' }}
         >
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: C, marginBottom: 5, display: 'flex', alignItems: 'center', gap: 5 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: C, marginBottom: 5, display: 'flex', alignItems: 'center', gap: 5 }}>
             <Package size={8} color={C} /> QR Provenance Link
           </div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, color: '#a8e890', letterSpacing: '0.04em', wordBreak: 'break-all', lineHeight: 1.4 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: '#a8e890', letterSpacing: '0.04em', wordBreak: 'break-all', lineHeight: 1.4 }}>
             {d.qrIdentifier}
           </div>
           <div style={{ marginTop: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: C, boxShadow: `0 0 6px ${C}` }} />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: `${C}80`, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Active · Scan Verified</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: `${C}80`, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Active · Scan Verified</span>
           </div>
         </motion.div>
       </div>
@@ -1489,13 +1489,13 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
       }}>
         {/* Traceability header */}
         <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12, duration: 0.28 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, letterSpacing: '0.20em', textTransform: 'uppercase', color: C, marginBottom: 3 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.20em', textTransform: 'uppercase', color: C, marginBottom: 3 }}>
             Traceability
           </div>
-          <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 20, fontWeight: 800, color: '#dff0f8', lineHeight: 1.1 }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 800, color: '#dff0f8', lineHeight: 1.1 }}>
             {d.stagesVerified} / 5 <span style={{ fontSize: 11, fontWeight: 400, color: 'var(--night-dim)' }}>stages</span>
           </div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: `${C}90`, marginTop: 2 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: `${C}90`, marginTop: 2 }}>
             {d.traceabilityPct}% TRACEABLE
           </div>
         </motion.div>
@@ -1520,8 +1520,8 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
               transition={{ delay: 0.45, duration: 1.2, ease: 'easeOut' }}
               style={{ filter: `drop-shadow(0 0 6px ${C}90)` }}
             />
-            <text x="45" y="41" textAnchor="middle" fontFamily="'Instrument Sans', sans-serif" fontSize="16" fontWeight="800" fill="#dff0f8">{d.traceabilityPct}%</text>
-            <text x="45" y="55" textAnchor="middle" fontFamily="'IBM Plex Mono', monospace" fontSize="7" fill={`${C}80`} letterSpacing="1">TRACEABLE</text>
+            <text x="45" y="41" textAnchor="middle" fontFamily="var(--font-display)" fontSize="16" fontWeight="800" fill="#dff0f8">{d.traceabilityPct}%</text>
+            <text x="45" y="55" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="7" fill={`${C}80`} letterSpacing="1">TRACEABLE</text>
           </svg>
         </motion.div>
 
@@ -1550,11 +1550,11 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
               </div>
               <div style={{ paddingBottom: i < d.chainSummary.length - 1 ? 6 : 0 }}>
                 <div style={{ fontSize: 11, color: '#dff0f8', lineHeight: 1.2 }}>{s.stage}</div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{s.eventId}</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{s.eventId}</div>
               </div>
               <div style={{ marginLeft: 'auto', paddingBottom: i < d.chainSummary.length - 1 ? 6 : 0, flexShrink: 0 }}>
                 <span style={{
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 7,
+                  fontFamily: "var(--font-mono)", fontSize: 7,
                   padding: '2px 6px', borderRadius: 5,
                   background: `${s.color}12`, border: `1px solid ${s.color}30`, color: s.color,
                   letterSpacing: '0.08em',
@@ -1576,7 +1576,7 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <FileText size={9} color={C} />
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: C }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: C }}>
                 Provenance Documents
               </span>
             </div>
@@ -1586,7 +1586,7 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
                 display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer',
                 padding: '4px 10px', borderRadius: 7,
                 background: `${C}14`, border: `1px solid ${C}30`,
-                color: '#9fda74', fontFamily: "'IBM Plex Mono', monospace",
+                color: '#7CFF4F', fontFamily: "var(--font-mono)",
                 fontSize: 8, letterSpacing: '0.10em', textTransform: 'uppercase',
               }}
             >
@@ -1594,18 +1594,18 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
             </button>
           </div>
           {d.documents.map((doc, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0', borderBottom: i < d.documents.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0', borderBottom: i < d.documents.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none' }}>
               <Check size={8} color={C} strokeWidth={3} style={{ flexShrink: 0 }} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 10, color: '#dff0f8', lineHeight: 1.25 }}>{doc.label}</div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{doc.ref}</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{doc.ref}</div>
               </div>
               <button
                 onClick={onOpenDocs}
                 style={{
                   flexShrink: 0, padding: '2px 8px', borderRadius: 6, cursor: 'pointer',
                   background: `${C}10`, border: `1px solid ${C}25`,
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: `${C}90`,
+                  fontFamily: "var(--font-mono)", fontSize: 7.5, color: `${C}90`,
                 }}
               >View</button>
             </div>
@@ -1617,7 +1617,7 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
           style={{ background: `${C}08`, border: `1px solid ${C}25`, borderRadius: 12, padding: '10px 12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
             <ShieldCheck size={10} color={C} />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: C }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.16em', textTransform: 'uppercase', color: C }}>
               Verify This Product
             </span>
           </div>
@@ -1626,12 +1626,12 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
             { label: 'QR',     value: d.qrIdentifier   },
             { label: 'Status', value: 'AUTHENTIC PROVENANCE RECORD', highlight: true },
           ].map(({ label, value, highlight }, i) => (
-            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '3px 0', borderBottom: i < 2 ? '1px solid rgba(255,255,255,0.04)' : 'none', gap: 6 }}>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--night-dim)', flexShrink: 0 }}>{label}</span>
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: highlight ? 8 : 8.5, color: highlight ? C : '#dff0f8', textAlign: 'right', fontWeight: highlight ? 600 : 400 }}>{value}</span>
+            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '3px 0', borderBottom: i < 2 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none', gap: 6 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--night-dim)', flexShrink: 0 }}>{label}</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: highlight ? 8 : 8.5, color: highlight ? C : '#dff0f8', textAlign: 'right', fontWeight: highlight ? 600 : 400 }}>{value}</span>
             </div>
           ))}
-          <div style={{ marginTop: 7, textAlign: 'center', fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'var(--night-dim)', letterSpacing: '0.14em' }}>
+          <div style={{ marginTop: 7, textAlign: 'center', fontFamily: "var(--font-mono)", fontSize: 8.5, color: 'var(--night-dim)', letterSpacing: '0.14em' }}>
             Scan → Trace → Verify
           </div>
         </motion.div>
@@ -1645,16 +1645,16 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
               padding: '10px 0', borderRadius: 11, cursor: 'pointer',
               background: `linear-gradient(135deg, ${C}1a, ${C}08)`,
               border: `1.5px solid ${C}40`,
-              color: '#9fda74', fontFamily: "'Instrument Sans', sans-serif",
+              color: '#7CFF4F', fontFamily: "var(--font-display)",
               fontSize: 12, fontWeight: 600, letterSpacing: '0.04em',
               boxShadow: `0 0 18px ${C}12`,
               transition: 'all 0.22s',
             }}
           >
-            <Leaf size={12} color="#9fda74" />
+            <Leaf size={12} color="#7CFF4F" />
             Share Your Experience
           </button>
-          <div style={{ textAlign: 'center', marginTop: 5, fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)', letterSpacing: '0.12em' }}>
+          <div style={{ textAlign: 'center', marginTop: 5, fontFamily: "var(--font-mono)", fontSize: 8, color: 'var(--night-dim)', letterSpacing: '0.12em' }}>
             Enter scratch code on bottle back to leave a verified review
           </div>
         </motion.div>
@@ -1662,7 +1662,7 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
         {/* Bottom: 100% traceable tagline */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.50, duration: 0.28 }}
           style={{ marginTop: 'auto', textAlign: 'center', padding: '6px 0' }}>
-          <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 10.5, color: `${C}70`, fontWeight: 600, letterSpacing: '0.04em', lineHeight: 1.45 }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: 10.5, color: `${C}70`, fontWeight: 600, letterSpacing: '0.04em', lineHeight: 1.45 }}>
             This product is 100% traceable<br/>from root to remedy
           </div>
         </motion.div>
@@ -1750,9 +1750,9 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
               position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
               zIndex: 90, width: 'min(520px, 94vw)', maxHeight: '88vh', overflowY: 'auto',
               background: 'rgba(6,14,4,0.97)', backdropFilter: 'blur(28px)',
-              border: '1px solid rgba(126,200,90,0.28)', borderTop: '2px solid rgba(126,200,90,0.65)',
+              border: '1px solid rgba(124, 255, 79,0.28)', borderTop: '2px solid rgba(124, 255, 79,0.65)',
               borderRadius: 22, padding: '28px 28px 30px',
-              boxShadow: '0 24px 80px rgba(0,0,0,0.75), 0 0 60px rgba(126,200,90,0.08)',
+              boxShadow: '0 24px 80px rgba(0,0,0,0.75), 0 0 60px rgba(124, 255, 79,0.08)',
             }}
           >
             {/* Close button */}
@@ -1766,10 +1766,10 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
             {/* ── Code entry ── */}
             {phase === 'code' && (
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: '0.26em', textTransform: 'uppercase', color: '#7ec85a', marginBottom: 7 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: '0.26em', textTransform: 'uppercase', color: '#7CFF4F', marginBottom: 7 }}>
                   Share Your Experience
                 </div>
-                <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 22, fontWeight: 700, color: '#e4ede0', marginBottom: 14 }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: '#e4ede0', marginBottom: 14 }}>
                   Enter Scratch Code
                 </div>
                 <p style={{ fontSize: 13, color: 'var(--night-dim)', marginBottom: 18, lineHeight: 1.6 }}>
@@ -1787,20 +1787,20 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
                       background: 'rgba(255,255,255,0.05)',
                       border: `1.5px solid ${error ? 'rgba(200,80,60,0.5)' : 'rgba(255,255,255,0.12)'}`,
                       borderRadius: 13, color: '#e4ede0',
-                      fontFamily: "'IBM Plex Mono', monospace", fontSize: 18,
+                      fontFamily: "var(--font-mono)", fontSize: 18,
                       letterSpacing: '0.18em', textTransform: 'uppercase', outline: 'none',
                     }}
                   />
                   <button
                     onClick={verify}
-                    style={{ padding: '0 22px', height: 48, borderRadius: 13, background: 'rgba(126,200,90,0.16)', border: '1.5px solid rgba(126,200,90,0.40)', color: '#9fda74', fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, cursor: 'pointer', letterSpacing: '0.10em' }}
+                    style={{ padding: '0 22px', height: 48, borderRadius: 13, background: 'rgba(124, 255, 79,0.16)', border: '1.5px solid rgba(124, 255, 79,0.40)', color: '#7CFF4F', fontFamily: "var(--font-mono)", fontSize: 12, cursor: 'pointer', letterSpacing: '0.10em' }}
                   >
                     Verify
                   </button>
                 </div>
                 {error && <div style={{ fontSize: 12, color: '#d97070', marginBottom: 6 }}>{error}</div>}
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--night-dim)' }}>
-                  Demo code: <span style={{ color: '#7ec85a' }}>{PANEL_SCRATCH_CODE}</span>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)' }}>
+                  Demo code: <span style={{ color: '#7CFF4F' }}>{PANEL_SCRATCH_CODE}</span>
                 </div>
               </div>
             )}
@@ -1809,12 +1809,12 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
             {phase === 'verified' && (
               <div style={{ textAlign: 'center', padding: '14px 0' }}>
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 300 }}>
-                  <div style={{ width: 54, height: 54, borderRadius: '50%', background: 'rgba(126,200,90,0.16)', border: '2px solid rgba(126,200,90,0.42)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
-                    <Check size={22} color="#7ec85a" strokeWidth={3} />
+                  <div style={{ width: 54, height: 54, borderRadius: '50%', background: 'rgba(124, 255, 79,0.16)', border: '2px solid rgba(124, 255, 79,0.42)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
+                    <Check size={22} color="#7CFF4F" strokeWidth={3} />
                   </div>
                 </motion.div>
-                <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 20, fontWeight: 700, color: '#9fda74' }}>✓ Code Verified</div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--night-dim)', marginTop: 6 }}>Loading review form…</div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 700, color: '#7CFF4F' }}>✓ Code Verified</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', marginTop: 6 }}>Loading review form…</div>
               </div>
             )}
 
@@ -1822,14 +1822,14 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
             {phase === 'form' && (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 18 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7ec85a' }} />
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#9fda74', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7CFF4F' }} />
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: '#7CFF4F', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
                     Code Verified — Leave a Verified Review
                   </div>
                 </div>
                 {/* Stars */}
                 <div style={{ marginBottom: 18 }}>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 10 }}>Your Rating</div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 10 }}>Your Rating</div>
                   <div style={{ display: 'flex', gap: 6 }}>
                     {[1,2,3,4,5].map(n => (
                       <button key={n} onClick={() => setRating(n)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
@@ -1840,22 +1840,22 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
                 </div>
                 {/* Text */}
                 <div style={{ marginBottom: 16 }}>
-                  <label style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', display: 'block', marginBottom: 8 }}>Your Review</label>
+                  <label style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', display: 'block', marginBottom: 8 }}>Your Review</label>
                   <textarea
                     value={text} onChange={e => setText(e.target.value)} rows={3}
                     placeholder="What did you notice?"
-                    style={{ width: '100%', padding: '12px 14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 13, color: '#e4ede0', resize: 'vertical', fontFamily: "'Inter', sans-serif", fontSize: 14, lineHeight: 1.6, outline: 'none', boxSizing: 'border-box' }}
+                    style={{ width: '100%', padding: '12px 14px', background: 'rgba(124, 255, 79, 0.04)', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 13, color: '#e4ede0', resize: 'vertical', fontFamily: "var(--font-body)", fontSize: 14, lineHeight: 1.6, outline: 'none', boxSizing: 'border-box' }}
                   />
                 </div>
                 {/* Tags */}
                 <div style={{ marginBottom: 22 }}>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 9 }}>Experience Tags</div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 9 }}>Experience Tags</div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
                     {PANEL_REVIEW_TAGS.map(t => (
                       <button
                         key={t}
                         onClick={() => setTags(p => p.includes(t) ? p.filter(x => x !== t) : [...p, t])}
-                        style={{ padding: '5px 13px', borderRadius: 999, cursor: 'pointer', fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, transition: 'all 0.2s', background: tags.includes(t) ? 'rgba(126,200,90,0.18)' : 'rgba(255,255,255,0.05)', border: tags.includes(t) ? '1px solid rgba(126,200,90,0.45)' : '1px solid rgba(255,255,255,0.09)', color: tags.includes(t) ? '#9fda74' : 'var(--night-dim)' }}
+                        style={{ padding: '5px 13px', borderRadius: 999, cursor: 'pointer', fontFamily: "var(--font-mono)", fontSize: 10, transition: 'all 0.2s', background: tags.includes(t) ? 'rgba(124, 255, 79,0.18)' : 'rgba(255,255,255,0.05)', border: tags.includes(t) ? '1px solid rgba(124, 255, 79,0.45)' : '1px solid rgba(255,255,255,0.09)', color: tags.includes(t) ? '#7CFF4F' : 'var(--night-dim)' }}
                       >{t}</button>
                     ))}
                   </div>
@@ -1863,7 +1863,7 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
                 <button
                   onClick={submit}
                   disabled={rating === 0}
-                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '13px 0', borderRadius: 13, background: rating > 0 ? 'rgba(126,200,90,0.16)' : 'rgba(255,255,255,0.04)', border: `1.5px solid ${rating > 0 ? 'rgba(126,200,90,0.40)' : 'rgba(255,255,255,0.08)'}`, color: rating > 0 ? '#9fda74' : 'var(--night-dim)', fontFamily: "'Instrument Sans', sans-serif", fontSize: 14, fontWeight: 600, cursor: rating > 0 ? 'pointer' : 'default', transition: 'all 0.2s' }}
+                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '13px 0', borderRadius: 13, background: rating > 0 ? 'rgba(124, 255, 79,0.16)' : 'rgba(124, 255, 79, 0.04)', border: `1.5px solid ${rating > 0 ? 'rgba(124, 255, 79,0.40)' : 'rgba(255,255,255,0.08)'}`, color: rating > 0 ? '#7CFF4F' : 'var(--night-dim)', fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 600, cursor: rating > 0 ? 'pointer' : 'default', transition: 'all 0.2s' }}
                 >
                   <Leaf size={14} />
                   Submit Verified Review
@@ -1875,17 +1875,17 @@ function PanelReviewModal({ open, onClose }: PanelReviewModalProps) {
             {phase === 'done' && (
               <div style={{ textAlign: 'center', padding: '6px 0' }}>
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 260, delay: 0.1 }}>
-                  <div style={{ width: 58, height: 58, borderRadius: '50%', background: 'rgba(126,200,90,0.16)', border: '2px solid rgba(126,200,90,0.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-                    <Check size={24} color="#7ec85a" strokeWidth={2.5} />
+                  <div style={{ width: 58, height: 58, borderRadius: '50%', background: 'rgba(124, 255, 79,0.16)', border: '2px solid rgba(124, 255, 79,0.38)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                    <Check size={24} color="#7CFF4F" strokeWidth={2.5} />
                   </div>
                 </motion.div>
-                <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 22, fontWeight: 700, color: '#9fda74', marginBottom: 8 }}>Verified Review ✓</div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: '#7CFF4F', marginBottom: 8 }}>Verified Review ✓</div>
                 <div style={{ fontSize: 13.5, color: 'var(--night-dim)', lineHeight: 1.6, marginBottom: 20 }}>
                   Thank you for helping future customers.
                 </div>
                 <button
                   onClick={handleClose}
-                  style={{ padding: '11px 30px', borderRadius: 13, background: 'rgba(126,200,90,0.14)', border: '1.5px solid rgba(126,200,90,0.36)', color: '#9fda74', fontFamily: "'Instrument Sans', sans-serif", fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
+                  style={{ padding: '11px 30px', borderRadius: 13, background: 'rgba(124, 255, 79,0.14)', border: '1.5px solid rgba(124, 255, 79,0.36)', color: '#7CFF4F', fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
                 >
                   Close
                 </button>

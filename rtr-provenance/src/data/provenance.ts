@@ -63,8 +63,8 @@ export const PRODUCT: ProvenanceProduct = {
       subtitle:     'PROOF OF ORIGIN',
       purposeLabel: 'Origin Verified',
       status:       'verified',
-      color:        '#7ec85a',
-      glowColor:    'rgba(126,200,90,0.6)',
+      color:        '#7CFF4F',
+      glowColor:    'rgba(124, 255, 79,0.6)',
       nodePosition: 'up',
       tPosition:    0.10,
       data: {
@@ -453,8 +453,8 @@ export const PRODUCT: ProvenanceProduct = {
       subtitle:     'PROOF OF AUTHENTICITY',
       purposeLabel: 'Product Verified',
       status:       'verified',
-      color:        '#7ec85a',
-      glowColor:    'rgba(126,200,90,0.6)',
+      color:        '#7CFF4F',
+      glowColor:    'rgba(124, 255, 79,0.6)',
       nodePosition: 'up',
       tPosition:    0.88,
       data: {
@@ -496,11 +496,11 @@ export const PRODUCT: ProvenanceProduct = {
         },
 
         chainSummary: [
-          { stage: 'Farmer / Collection', eventId: 'EVT-COL-2026-001',  status: 'pass', color: '#7ec85a', icon: 'leaf'    },
+          { stage: 'Farmer / Collection', eventId: 'EVT-COL-2026-001',  status: 'pass', color: '#7CFF4F', icon: 'leaf'    },
           { stage: 'Laboratory Testing',  eventId: 'EVT-LAB-2026-014',  status: 'pass', color: '#4ea8d2', icon: 'flask'   },
           { stage: 'Transportation',      eventId: 'EVT-TRN-2026-014',  status: 'pass', color: '#8b6cd4', icon: 'truck'   },
           { stage: 'Manufacturing',       eventId: 'EVT-MFG-2026-0447', status: 'pass', color: '#e8a84a', icon: 'factory' },
-          { stage: 'Final Product',       eventId: 'EVT-PROD-2026-0447',status: 'pass', color: '#7ec85a', icon: 'package' },
+          { stage: 'Final Product',       eventId: 'EVT-PROD-2026-0447',status: 'pass', color: '#7CFF4F', icon: 'package' },
         ],
 
         documents: [

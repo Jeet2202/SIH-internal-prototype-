@@ -59,7 +59,7 @@ export default function NavArrows({ selectedStage, onSelectStage, detailOpen }: 
           borderRadius: '50%',
           background: 'rgba(8,18,5,0.82)',
           backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(126,200,90,0.30)',
+          border: '1px solid rgba(124, 255, 79,0.30)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer',
           color: 'rgba(143,168,136,0.70)',
@@ -68,14 +68,14 @@ export default function NavArrows({ selectedStage, onSelectStage, detailOpen }: 
         }}
         onMouseEnter={e => {
           const el = e.currentTarget
-          el.style.borderColor = 'rgba(126,200,90,0.65)'
+          el.style.borderColor = 'rgba(124, 255, 79,0.65)'
           el.style.color = '#a0d870'
           el.style.transform = 'translateY(-50%) scale(1.08)'
-          el.style.boxShadow = '0 0 18px rgba(126,200,90,0.25)'
+          el.style.boxShadow = '0 0 18px rgba(124, 255, 79,0.25)'
         }}
         onMouseLeave={e => {
           const el = e.currentTarget
-          el.style.borderColor = 'rgba(126,200,90,0.30)'
+          el.style.borderColor = 'rgba(124, 255, 79,0.30)'
           el.style.color = 'rgba(143,168,136,0.70)'
           el.style.transform = 'translateY(-50%) scale(1)'
           el.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)'
@@ -99,7 +99,7 @@ export default function NavArrows({ selectedStage, onSelectStage, detailOpen }: 
           borderRadius: '50%',
           background: 'rgba(8,18,5,0.82)',
           backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(126,200,90,0.30)',
+          border: '1px solid rgba(124, 255, 79,0.30)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer',
           color: 'rgba(143,168,136,0.70)',
@@ -108,14 +108,14 @@ export default function NavArrows({ selectedStage, onSelectStage, detailOpen }: 
         }}
         onMouseEnter={e => {
           const el = e.currentTarget
-          el.style.borderColor = 'rgba(126,200,90,0.65)'
+          el.style.borderColor = 'rgba(124, 255, 79,0.65)'
           el.style.color = '#a0d870'
           el.style.transform = 'translateY(-50%) scale(1.08)'
-          el.style.boxShadow = '0 0 18px rgba(126,200,90,0.25)'
+          el.style.boxShadow = '0 0 18px rgba(124, 255, 79,0.25)'
         }}
         onMouseLeave={e => {
           const el = e.currentTarget
-          el.style.borderColor = 'rgba(126,200,90,0.30)'
+          el.style.borderColor = 'rgba(124, 255, 79,0.30)'
           el.style.color = 'rgba(143,168,136,0.70)'
           el.style.transform = 'translateY(-50%) scale(1)'
           el.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)'

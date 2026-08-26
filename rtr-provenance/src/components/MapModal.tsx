@@ -19,15 +19,15 @@ export default function MapModal({ onClose }: MapModalProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
-        style={{ borderTop: '2px solid #7ec85a' }}
+        style={{ borderTop: '2px solid #7CFF4F' }}
       >
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
           <div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: '0.2em', color: '#7ec85a', textTransform: 'uppercase', marginBottom: 4 }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: '0.2em', color: '#7CFF4F', textTransform: 'uppercase', marginBottom: 4 }}>
               Collection Origin
             </div>
-            <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 22, fontWeight: 600, color: '#e4ede0' }}>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 600, color: '#e4ede0' }}>
               Collection Hub Location
             </div>
           </div>
@@ -82,7 +82,7 @@ export default function MapModal({ onClose }: MapModalProps) {
             { label: 'Zone Status',    value: 'Approved Zone ✓' },
           ].map((item) => (
             <div key={item.label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 12, padding: '12px 14px' }}>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 4 }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 4 }}>
                 {item.label}
               </div>
               <div style={{ fontSize: 13, color: '#e4ede0' }}>{item.value}</div>
@@ -90,8 +90,8 @@ export default function MapModal({ onClose }: MapModalProps) {
           ))}
         </div>
 
-        <div style={{ marginTop: 16, padding: '10px 14px', background: 'rgba(126,200,90,0.06)', border: '1px solid rgba(126,200,90,0.15)', borderRadius: 10 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--night-dim)', lineHeight: 1.5 }}>
+        <div style={{ marginTop: 16, padding: '10px 14px', background: 'rgba(124, 255, 79,0.06)', border: '1px solid rgba(124, 255, 79,0.15)', borderRadius: 10 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', lineHeight: 1.5 }}>
             Locality view only · Exact GPS coordinates are not shown publicly to protect collector privacy · Collection hub location is verified by the platform
           </div>
         </div>

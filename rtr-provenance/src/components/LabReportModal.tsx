@@ -135,20 +135,20 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
+                  fontFamily: "var(--font-mono)", fontSize: 8.5,
                   letterSpacing: '0.28em', textTransform: 'uppercase',
                   color: '#4ea8d2', marginBottom: 4,
                 }}>
                   Prototype Record · Root to Remedy Verification Network
                 </div>
                 <div style={{
-                  fontFamily: "'Instrument Sans', sans-serif",
+                  fontFamily: "var(--font-display)",
                   fontSize: 20, fontWeight: 700, color: '#dff0f8',
                 }}>
                   Prototype Laboratory Report
                 </div>
                 <div style={{
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 10.5,
+                  fontFamily: "var(--font-mono)", fontSize: 10.5,
                   color: 'rgba(78,168,210,0.55)', marginTop: 3, letterSpacing: '0.06em',
                 }}>
                   Report ID: LAB-RPT-ASH-2026-014 &nbsp;·&nbsp; Test ID: LAB-ASH-2026-014
@@ -180,7 +180,7 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
             }}>
               <AlertTriangle size={14} color="rgba(255,165,0,0.80)" style={{ flexShrink: 0, marginTop: 1 }} />
               <p style={{
-                fontFamily: "'IBM Plex Mono', monospace", fontSize: 10,
+                fontFamily: "var(--font-mono)", fontSize: 10,
                 color: 'rgba(255,165,0,0.70)', lineHeight: 1.55, margin: 0,
               }}>
                 <strong style={{ color: 'rgba(255,165,0,0.90)' }}>DEMONSTRATION / PROTOTYPE RECORD</strong>
@@ -201,14 +201,14 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
             }}>
               <ShieldCheck size={16} color="#4ea8d2" />
               <div>
-                <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 13, fontWeight: 600, color: '#7dcfee' }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: '#7dcfee' }}>
                   Report Status: VERIFIED &nbsp;·&nbsp; All Parameters: PASS
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'rgba(78,168,210,0.55)', marginTop: 2 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'rgba(78,168,210,0.55)', marginTop: 2 }}>
                   Issued: 18 August 2026 &nbsp;·&nbsp; Certified Botanical Testing Laboratory, Mumbai
                 </div>
               </div>
-              <div style={{ marginLeft: 'auto', textAlign: 'right', fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'rgba(78,168,210,0.65)' }}>
+              <div style={{ marginLeft: 'auto', textAlign: 'right', fontFamily: "var(--font-mono)", fontSize: 9, color: 'rgba(78,168,210,0.65)' }}>
                 <div>LAB-MH-0241</div>
                 <div>18 Aug 2026</div>
               </div>
@@ -250,7 +250,7 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
                 }}>
                   {['Parameter', 'Method', 'Specification', 'Result', 'Status'].map((h) => (
                     <div key={h} style={{
-                      fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
+                      fontFamily: "var(--font-mono)", fontSize: 8,
                       letterSpacing: '0.12em', textTransform: 'uppercase',
                       color: 'rgba(78,168,210,0.55)',
                     }}>{h}</div>
@@ -261,19 +261,19 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
                     display: 'grid',
                     gridTemplateColumns: '26% 28% 22% 14% 10%',
                     gap: 8, padding: '6px 0', alignItems: 'center',
-                    borderBottom: i < TEST_ROWS.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                    borderBottom: i < TEST_ROWS.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none',
                   }}>
                     <div style={{ fontSize: 11, color: '#cce6f5' }}>{row.parameter}</div>
-                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'rgba(200,220,240,0.50)' }}>{row.method}</div>
-                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'rgba(200,220,240,0.60)' }}>{row.specification}</div>
-                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, color: '#cce6f5' }}>{row.result}</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: 'rgba(200,220,240,0.50)' }}>{row.method}</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'rgba(200,220,240,0.60)' }}>{row.specification}</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: '#cce6f5' }}>{row.result}</div>
                     <div>
                       <span style={{
                         display: 'inline-flex', alignItems: 'center', gap: 3,
                         padding: '2px 7px', borderRadius: 6,
                         background: 'rgba(78,168,210,0.14)',
                         border: '1px solid rgba(78,168,210,0.35)',
-                        fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
+                        fontFamily: "var(--font-mono)", fontSize: 8,
                         color: '#7dcfee', letterSpacing: '0.08em',
                       }}>
                         <Check size={7} color="#7dcfee" strokeWidth={3} /> {row.status}
@@ -313,7 +313,7 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
                       }}>
                         <Check size={8} color="#4ea8d2" strokeWidth={3} />
                       </div>
-                      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#b8dcee' }}>{item}</span>
+                      <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: '#b8dcee' }}>{item}</span>
                     </div>
                   ))}
                 </div>
@@ -332,7 +332,7 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
                 </div>
                 <div style={{
                   marginTop: 8,
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
+                  fontFamily: "var(--font-mono)", fontSize: 8.5,
                   color: 'rgba(78,168,210,0.40)', lineHeight: 1.55,
                 }}>
                   <Globe size={9} color="rgba(78,168,210,0.40)" style={{ display: 'inline', verticalAlign: 'middle', marginRight: 5 }} />
@@ -347,7 +347,7 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
               padding: '14px 24px 20px',
               display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14,
             }}>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'rgba(255,255,255,0.22)', lineHeight: 1.5 }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'rgba(255,255,255,0.22)', lineHeight: 1.5 }}>
                 Root to Remedy · Provenance Prototype · Demo Record<br />
                 Demonstration / Prototype Record · Not a genuine laboratory report
               </div>
@@ -356,7 +356,7 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
                 style={{
                   padding: '9px 20px', borderRadius: 10,
                   background: 'rgba(78,168,210,0.12)', border: '1px solid rgba(78,168,210,0.30)',
-                  color: '#7dcfee', fontFamily: "'IBM Plex Mono', monospace",
+                  color: '#7dcfee', fontFamily: "var(--font-mono)",
                   fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
                 }}
@@ -382,7 +382,7 @@ function LabSection({ title, icon, color, children }: {
         background: `${color}08`, display: 'flex', alignItems: 'center', gap: 8,
       }}>
         {icon}
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.18em', textTransform: 'uppercase', color }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.18em', textTransform: 'uppercase', color }}>
           {title}
         </span>
       </div>
@@ -396,12 +396,12 @@ function LabRow({ label, value, mono, last }: { label: string; value: string; mo
   return (
     <div style={{
       display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-      padding: '5px 0', borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.04)', gap: 12,
+      padding: '5px 0', borderBottom: last ? 'none' : '1px solid rgba(124, 255, 79, 0.04)', gap: 12,
     }}>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'rgba(78,168,210,0.45)', flexShrink: 0, paddingTop: 1 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'rgba(78,168,210,0.45)', flexShrink: 0, paddingTop: 1 }}>
         {label}
       </span>
-      <span style={{ fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif", fontSize: mono ? 10 : 12, color: '#cce6f5', textAlign: 'right' }}>
+      <span style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 10 : 12, color: '#cce6f5', textAlign: 'right' }}>
         {value}
       </span>
     </div>

@@ -59,15 +59,15 @@ export default function VerificationSequence({ open, onClose }: VerificationSequ
             exit={{ opacity: 0, scale: 0.97 }}
             transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
-            style={{ borderTop: '2px solid #7ec85a', maxWidth: 520 }}
+            style={{ borderTop: '2px solid #7CFF4F', maxWidth: 520 }}
           >
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#7ec85a', marginBottom: 5 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#7CFF4F', marginBottom: 5 }}>
                   Provenance Verification
                 </div>
-                <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 22, fontWeight: 600, color: '#e4ede0' }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 600, color: '#e4ede0' }}>
                   Verify the Chain
                 </div>
               </div>
@@ -84,12 +84,12 @@ export default function VerificationSequence({ open, onClose }: VerificationSequ
               <div style={{ textAlign: 'center', padding: '8px 0 24px' }}>
                 <div style={{
                   width: 60, height: 60, borderRadius: '50%',
-                  background: 'rgba(126,200,90,0.1)',
-                  border: '1.5px solid rgba(126,200,90,0.28)',
+                  background: 'rgba(124, 255, 79,0.1)',
+                  border: '1.5px solid rgba(124, 255, 79,0.28)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   margin: '0 auto 20px',
                 }}>
-                  <ShieldCheck size={26} color="#7ec85a" strokeWidth={1.6} />
+                  <ShieldCheck size={26} color="#7CFF4F" strokeWidth={1.6} />
                 </div>
                 <p style={{ fontSize: 14, color: 'var(--night-dim)', lineHeight: 1.6, marginBottom: 24, maxWidth: 360, margin: '0 auto 24px' }}>
                   Re-read every provenance record and confirm the supply-chain integrity from source to your hands.
@@ -128,7 +128,7 @@ export default function VerificationSequence({ open, onClose }: VerificationSequ
                           <div style={{
                             width: 20, height: 20, borderRadius: '50%',
                             border: '2px solid transparent',
-                            borderTopColor: '#7ec85a',
+                            borderTopColor: '#7CFF4F',
                             animation: 'spin-slow 0.7s linear infinite',
                           }} />
                         )}
@@ -137,9 +137,9 @@ export default function VerificationSequence({ open, onClose }: VerificationSequ
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                            style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(126,200,90,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(124, 255, 79,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           >
-                            <Check size={13} color="#7ec85a" strokeWidth={3} />
+                            <Check size={13} color="#7CFF4F" strokeWidth={3} />
                           </motion.div>
                         )}
                       </div>
@@ -148,7 +148,7 @@ export default function VerificationSequence({ open, onClose }: VerificationSequ
                         <div style={{ fontSize: 13, color: stepStates[i] === 'done' ? '#e4ede0' : 'var(--night-dim)' }}>
                           {step.label}
                         </div>
-                        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--night-dim)', marginTop: 2 }}>
+                        <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', marginTop: 2 }}>
                           {step.detail}
                         </div>
                       </div>
@@ -157,7 +157,7 @@ export default function VerificationSequence({ open, onClose }: VerificationSequ
                         <motion.span
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#7ec85a' }}
+                          style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#7CFF4F' }}
                         >
                           ✓
                         </motion.span>
@@ -175,15 +175,15 @@ export default function VerificationSequence({ open, onClose }: VerificationSequ
                       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                       style={{
                         padding: '20px 24px', borderRadius: 18, textAlign: 'center',
-                        background: 'rgba(126,200,90,0.1)',
-                        border: '1px solid rgba(126,200,90,0.28)',
-                        boxShadow: '0 0 32px rgba(126,200,90,0.12)',
+                        background: 'rgba(124, 255, 79,0.1)',
+                        border: '1px solid rgba(124, 255, 79,0.28)',
+                        boxShadow: '0 0 32px rgba(124, 255, 79,0.12)',
                       }}
                     >
-                      <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 20, fontWeight: 700, color: '#9fda74' }}>
+                      <div style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 700, color: '#7CFF4F' }}>
                         Provenance Integrity Verified
                       </div>
-                      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: 'var(--night-dim)', marginTop: 6 }}>
+                      <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: 'var(--night-dim)', marginTop: 6 }}>
                         5 / 5 stages verified · No tampering detected
                       </div>
 
@@ -191,7 +191,7 @@ export default function VerificationSequence({ open, onClose }: VerificationSequ
                         {PRODUCT.stages.map((s) => (
                           <div key={s.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
                             <div style={{ width: 8, height: 8, borderRadius: '50%', background: s.color }} />
-                            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)', letterSpacing: '0.1em' }}>
+                            <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: 'var(--night-dim)', letterSpacing: '0.1em' }}>
                               {s.number}
                             </div>
                           </div>

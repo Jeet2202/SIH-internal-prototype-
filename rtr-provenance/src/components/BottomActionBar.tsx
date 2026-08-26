@@ -44,9 +44,9 @@ export default function BottomActionBar({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '10px 24px',
-        background: 'rgba(4,10,3,0.82)',
+        background: 'rgba(2, 8, 4,0.82)',
         backdropFilter: 'blur(16px)',
-        borderTop: '1px solid rgba(126,200,90,0.14)',
+        borderTop: '1px solid rgba(124, 255, 79,0.14)',
       }}
     >
       {/* LEFT */}
@@ -57,9 +57,9 @@ export default function BottomActionBar({
         style={{
           display: 'flex', alignItems: 'center', gap: 8,
           background: 'none', border: 'none', cursor: selectedStage ? 'pointer' : 'default',
-          fontFamily: "'IBM Plex Mono', monospace",
+          fontFamily: "var(--font-mono)",
           fontSize: 11, letterSpacing: '0.08em',
-          color: selectedStage ? '#9fda74' : 'rgba(143,168,136,0.35)',
+          color: selectedStage ? '#7CFF4F' : 'rgba(143,168,136,0.35)',
           transition: 'color 0.2s',
           padding: '6px 0',
         }}
@@ -79,11 +79,11 @@ export default function BottomActionBar({
             transition={{ duration: 0.25 }}
             style={{
               display: 'flex', alignItems: 'center', gap: 8,
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 12, color: '#9fda74',
+              fontFamily: "var(--font-body)",
+              fontSize: 12, color: '#7CFF4F',
             }}
           >
-            <ShieldCheck size={14} color="#7ec85a" />
+            <ShieldCheck size={14} color="#7CFF4F" />
             This product is 100% traceable from root to remedy
           </motion.div>
         ) : (
@@ -121,10 +121,10 @@ export default function BottomActionBar({
               id="btn-verify-another"
               style={{
                 display: 'flex', alignItems: 'center', gap: 7,
-                background: 'rgba(255,255,255,0.04)',
+                background: 'rgba(124, 255, 79, 0.04)',
                 border: '1px solid rgba(255,255,255,0.10)',
                 borderRadius: 999, padding: '7px 16px',
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "var(--font-mono)",
                 fontSize: 10.5, letterSpacing: '0.06em',
                 color: 'var(--night-dim)', cursor: 'pointer',
                 transition: 'all 0.2s',
@@ -147,16 +147,16 @@ export default function BottomActionBar({
               id="btn-share-experience"
               style={{
                 display: 'flex', alignItems: 'center', gap: 7,
-                background: 'rgba(255,255,255,0.04)',
+                background: 'rgba(124, 255, 79, 0.04)',
                 border: '1px solid rgba(255,255,255,0.10)',
                 borderRadius: 999, padding: '7px 16px',
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "var(--font-mono)",
                 fontSize: 10.5, letterSpacing: '0.06em',
                 color: 'var(--night-dim)', cursor: 'pointer',
                 transition: 'all 0.2s',
               }}
               onMouseEnter={e => {
-                ;(e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(126,200,90,0.35)'
+                ;(e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(124, 255, 79,0.35)'
                 ;(e.currentTarget as HTMLButtonElement).style.color = '#b0cc90'
               }}
               onMouseLeave={e => {

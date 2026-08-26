@@ -122,11 +122,11 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
               overflowY: 'auto',
               background: 'rgba(6,14,4,0.96)',
               backdropFilter: 'blur(28px)',
-              border: '1px solid rgba(126,200,90,0.28)',
-              borderTop: '2px solid rgba(126,200,90,0.65)',
+              border: '1px solid rgba(124, 255, 79,0.28)',
+              borderTop: '2px solid rgba(124, 255, 79,0.65)',
               borderRadius: 24,
               padding: '30px 30px 32px',
-              boxShadow: '0 24px 80px rgba(0,0,0,0.7), 0 0 60px rgba(126,200,90,0.08)',
+              boxShadow: '0 24px 80px rgba(0,0,0,0.7), 0 0 60px rgba(124, 255, 79,0.08)',
             }}
           >
             {/* Close button */}
@@ -150,10 +150,10 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
             {phase === 'code' && (
               <div>
                 <div style={{ marginBottom: 22 }}>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: '0.28em', textTransform: 'uppercase', color: '#7ec85a', marginBottom: 8 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: '0.28em', textTransform: 'uppercase', color: '#7CFF4F', marginBottom: 8 }}>
                     Share Your Experience
                   </div>
-                  <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 22, fontWeight: 700, color: '#e4ede0' }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: '#e4ede0' }}>
                     Verify Your Pack
                   </div>
                 </div>
@@ -172,7 +172,7 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
                       background: 'rgba(255,255,255,0.05)',
                       border: `1.5px solid ${error ? 'rgba(200,80,60,0.5)' : 'rgba(255,255,255,0.12)'}`,
                       borderRadius: 14, color: '#e4ede0',
-                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontFamily: "var(--font-mono)",
                       fontSize: 20, letterSpacing: '0.22em', textTransform: 'uppercase',
                       outline: 'none',
                       transition: 'border-color 0.2s',
@@ -191,8 +191,8 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
                     {error}
                   </div>
                 )}
-                <div style={{ marginTop: 14, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--night-dim)' }}>
-                  Demo code: <span style={{ color: '#7ec85a' }}>R2R-60-2026</span>
+                <div style={{ marginTop: 14, fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)' }}>
+                  Demo code: <span style={{ color: '#7CFF4F' }}>R2R-60-2026</span>
                 </div>
               </div>
             )}
@@ -203,18 +203,18 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 300 }}>
                   <div style={{
                     width: 56, height: 56, borderRadius: '50%',
-                    background: 'rgba(126,200,90,0.16)',
-                    border: '2px solid rgba(126,200,90,0.42)',
+                    background: 'rgba(124, 255, 79,0.16)',
+                    border: '2px solid rgba(124, 255, 79,0.42)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     margin: '0 auto 16px',
                   }}>
-                    <Check size={24} color="#7ec85a" strokeWidth={3} />
+                    <Check size={24} color="#7CFF4F" strokeWidth={3} />
                   </div>
                 </motion.div>
-                <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 20, fontWeight: 700, color: '#9fda74' }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 700, color: '#7CFF4F' }}>
                   Pack Verified ✓
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--night-dim)', marginTop: 6 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: 'var(--night-dim)', marginTop: 6 }}>
                   Loading review form…
                 </div>
               </div>
@@ -224,15 +224,15 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
             {phase === 'form' && (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 22 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7ec85a' }} />
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#9fda74', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#7CFF4F' }} />
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#7CFF4F', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
                     Pack Verified — Leave a Verified Review
                   </div>
                 </div>
 
                 {/* Rating */}
                 <div style={{ marginBottom: 20 }}>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 12 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 12 }}>
                     Your Rating
                   </div>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -251,7 +251,7 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
 
                 {/* Text */}
                 <div style={{ marginBottom: 18 }}>
-                  <label style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', display: 'block', marginBottom: 10 }}>
+                  <label style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', display: 'block', marginBottom: 10 }}>
                     Your Review
                   </label>
                   <textarea
@@ -261,10 +261,10 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
                     placeholder="What did you notice?"
                     style={{
                       width: '100%', padding: '13px 16px',
-                      background: 'rgba(255,255,255,0.04)',
+                      background: 'rgba(124, 255, 79, 0.04)',
                       border: '1px solid rgba(255,255,255,0.09)',
                       borderRadius: 14, color: '#e4ede0', resize: 'vertical',
-                      fontFamily: "'Inter', sans-serif", fontSize: 14, lineHeight: 1.6,
+                      fontFamily: "var(--font-body)", fontSize: 14, lineHeight: 1.6,
                       outline: 'none', boxSizing: 'border-box',
                     }}
                   />
@@ -272,7 +272,7 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
 
                 {/* Tags */}
                 <div style={{ marginBottom: 24 }}>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 10 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 10 }}>
                     Experience Tags
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -305,18 +305,18 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 260, delay: 0.1 }}>
                   <div style={{
                     width: 60, height: 60, borderRadius: '50%',
-                    background: 'rgba(126,200,90,0.16)',
-                    border: '2px solid rgba(126,200,90,0.38)',
+                    background: 'rgba(124, 255, 79,0.16)',
+                    border: '2px solid rgba(124, 255, 79,0.38)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     margin: '0 auto 18px',
                   }}>
-                    <Check size={26} color="#7ec85a" strokeWidth={2.5} />
+                    <Check size={26} color="#7CFF4F" strokeWidth={2.5} />
                   </div>
                 </motion.div>
-                <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 22, fontWeight: 700, color: '#9fda74' }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: '#7CFF4F' }}>
                   Verified Review ✓
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: 'var(--night-dim)', marginTop: 8 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: 'var(--night-dim)', marginTop: 8 }}>
                   {reviews[0]?.rating} ★ · {reviews[0]?.createdAt}
                 </div>
                 <div style={{ fontSize: 13.5, color: 'var(--night-dim)', marginTop: 12, lineHeight: 1.6 }}>
@@ -324,20 +324,20 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
                 </div>
                 {reviews.length > 0 && (
                   <div style={{ marginTop: 22, textAlign: 'left' }}>
-                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 12 }}>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 12 }}>
                       All Reviews ({reviews.length})
                     </div>
                     {reviews.slice(0, 3).map((r, i) => (
                       <div key={i} style={{ padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 5 }}>
                           <span style={{ color: '#b9d45c' }}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
-                          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--night-dim)' }}>{r.createdAt}</span>
+                          <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)' }}>{r.createdAt}</span>
                         </div>
                         {r.text && <div style={{ fontSize: 13.5, color: '#c4dfb8', lineHeight: 1.55 }}>{r.text}</div>}
                         {r.tags.length > 0 && (
                           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
                             {r.tags.map((t) => (
-                              <span key={t} style={{ padding: '2px 10px', borderRadius: 999, background: 'rgba(126,200,90,0.12)', border: '1px solid rgba(126,200,90,0.22)', fontSize: 11, color: '#9fda74' }}>
+                              <span key={t} style={{ padding: '2px 10px', borderRadius: 999, background: 'rgba(124, 255, 79,0.12)', border: '1px solid rgba(124, 255, 79,0.22)', fontSize: 11, color: '#7CFF4F' }}>
                                 {t}
                               </span>
                             ))}

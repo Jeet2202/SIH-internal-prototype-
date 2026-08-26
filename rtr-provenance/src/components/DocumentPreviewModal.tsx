@@ -57,10 +57,10 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
               overflowY:      'auto',
               background:     'rgba(5,12,4,0.98)',
               backdropFilter: 'blur(30px)',
-              border:         '1px solid rgba(126,200,90,0.30)',
-              borderTop:      '2px solid rgba(126,200,90,0.70)',
+              border:         '1px solid rgba(124, 255, 79,0.30)',
+              borderTop:      '2px solid rgba(124, 255, 79,0.70)',
               borderRadius:   22,
-              boxShadow:      '0 28px 90px rgba(0,0,0,0.80), 0 0 60px rgba(126,200,90,0.07)',
+              boxShadow:      '0 28px 90px rgba(0,0,0,0.80), 0 0 60px rgba(124, 255, 79,0.07)',
             }}
           >
             {/* ── Document header bar ── */}
@@ -74,29 +74,29 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
               {/* Icon */}
               <div style={{
                 width: 44, height: 44, borderRadius: 12, flexShrink: 0,
-                background: 'rgba(126,200,90,0.14)',
-                border:     '1.5px solid rgba(126,200,90,0.36)',
+                background: 'rgba(124, 255, 79,0.14)',
+                border:     '1.5px solid rgba(124, 255, 79,0.36)',
                 display:    'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <FileText size={20} color="#7ec85a" />
+                <FileText size={20} color="#7CFF4F" />
               </div>
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 9,
+                  fontFamily: "var(--font-mono)", fontSize: 9,
                   letterSpacing: '0.26em', textTransform: 'uppercase',
-                  color: '#7ec85a', marginBottom: 4,
+                  color: '#7CFF4F', marginBottom: 4,
                 }}>
                   Prototype Record · Root to Remedy Verification Network
                 </div>
                 <div style={{
-                  fontFamily: "'Instrument Sans', sans-serif",
+                  fontFamily: "var(--font-display)",
                   fontSize: 20, fontWeight: 700, color: '#e4ede0',
                 }}>
                   Botanical Source / Collection Record
                 </div>
                 <div style={{
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 10.5,
+                  fontFamily: "var(--font-mono)", fontSize: 10.5,
                   color: 'rgba(200,220,190,0.6)', marginTop: 3, letterSpacing: '0.06em',
                 }}>
                   Record ID: BOT-COL-ASH-2026-001
@@ -129,7 +129,7 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
             }}>
               <AlertTriangle size={14} color="rgba(255,165,0,0.80)" style={{ flexShrink: 0, marginTop: 1 }} />
               <p style={{
-                fontFamily: "'IBM Plex Mono', monospace", fontSize: 10,
+                fontFamily: "var(--font-mono)", fontSize: 10,
                 color: 'rgba(255,165,0,0.70)', lineHeight: 1.55, margin: 0,
               }}>
                 <strong style={{ color: 'rgba(255,165,0,0.90)' }}>PROTOTYPE RECORD</strong>{' '}
@@ -143,33 +143,33 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
             <div style={{
               margin: '14px 24px 0',
               padding: '10px 16px',
-              background:  'rgba(126,200,90,0.08)',
-              border:      '1px solid rgba(126,200,90,0.25)',
+              background:  'rgba(124, 255, 79,0.08)',
+              border:      '1px solid rgba(124, 255, 79,0.25)',
               borderRadius: 10,
               display:     'flex', alignItems: 'center', gap: 10,
             }}>
-              <ShieldCheck size={16} color="#7ec85a" />
+              <ShieldCheck size={16} color="#7CFF4F" />
               <div>
                 <div style={{
-                  fontFamily: "'Instrument Sans', sans-serif",
-                  fontSize: 13, fontWeight: 600, color: '#9fda74',
+                  fontFamily: "var(--font-display)",
+                  fontSize: 13, fontWeight: 600, color: '#7CFF4F',
                 }}>
                   Status: VERIFIED
                 </div>
                 <div style={{
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 9,
-                  color: 'rgba(126,200,90,0.55)', marginTop: 2, letterSpacing: '0.06em',
+                  fontFamily: "var(--font-mono)", fontSize: 9,
+                  color: 'rgba(124, 255, 79,0.55)', marginTop: 2, letterSpacing: '0.06em',
                 }}>
                   Issued by: Root to Remedy Verification Network (Prototype Demo)
                 </div>
               </div>
               <div style={{
                 marginLeft: 'auto',
-                fontFamily: "'IBM Plex Mono', monospace", fontSize: 9,
-                color: '#7ec85a', textAlign: 'right',
+                fontFamily: "var(--font-mono)", fontSize: 9,
+                color: '#7CFF4F', textAlign: 'right',
               }}>
                 <div>14 Aug 2026</div>
-                <div style={{ color: 'rgba(126,200,90,0.5)' }}>08:45 AM IST</div>
+                <div style={{ color: 'rgba(124, 255, 79,0.5)' }}>08:45 AM IST</div>
               </div>
             </div>
 
@@ -177,7 +177,7 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
             <div style={{ padding: '20px 24px 28px', display: 'flex', flexDirection: 'column', gap: 16 }}>
 
               {/* Section: Collector Details */}
-              <DocSection title="Collector Details" icon={<User size={12} color="#7ec85a" />} color="#7ec85a">
+              <DocSection title="Collector Details" icon={<User size={12} color="#7CFF4F" />} color="#7CFF4F">
                 <DocRow label="Collector Name"  value="Mahesh Patil" />
                 <DocRow label="Role"            value="Registered Botanical Collector" />
                 <DocRow label="Cooperative"     value="Nashik Herbal Growers Cooperative" />
@@ -186,7 +186,7 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
               </DocSection>
 
               {/* Section: Botanical Material */}
-              <DocSection title="Botanical Material" icon={<Leaf size={12} color="#7ec85a" />} color="#7ec85a">
+              <DocSection title="Botanical Material" icon={<Leaf size={12} color="#7CFF4F" />} color="#7CFF4F">
                 <DocRow label="Common Name"       value="Ashwagandha" />
                 <DocRow label="Scientific Name"   value="Withania somnifera" italic />
                 <DocRow label="Plant Part"        value="Root" />
@@ -195,7 +195,7 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
               </DocSection>
 
               {/* Section: Collection Event */}
-              <DocSection title="Collection Event" icon={<Clock size={12} color="#7ec85a" />} color="#7ec85a">
+              <DocSection title="Collection Event" icon={<Clock size={12} color="#7CFF4F" />} color="#7CFF4F">
                 <DocRow label="Collection ID"     value="COL-ASH-2026-001" mono />
                 <DocRow label="Batch ID"          value="ASH-2026-001" mono />
                 <DocRow label="Harvest Date"      value="14 August 2026" />
@@ -205,7 +205,7 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
               </DocSection>
 
               {/* Section: Geographic Origin */}
-              <DocSection title="Geographic Origin" icon={<MapPin size={12} color="#7ec85a" />} color="#7ec85a">
+              <DocSection title="Geographic Origin" icon={<MapPin size={12} color="#7CFF4F" />} color="#7CFF4F">
                 <DocRow label="Locality"     value="Nashik" />
                 <DocRow label="District"     value="Nashik" />
                 <DocRow label="State"        value="Maharashtra" />
@@ -216,7 +216,7 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
               </DocSection>
 
               {/* Section: Compliance / Verification */}
-              <DocSection title="Compliance Verification" icon={<ShieldCheck size={12} color="#7ec85a" />} color="#7ec85a">
+              <DocSection title="Compliance Verification" icon={<ShieldCheck size={12} color="#7CFF4F" />} color="#7CFF4F">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingTop: 4 }}>
                   {[
                     'GPS source verified',
@@ -229,12 +229,12 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
                     <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                       <div style={{
                         width: 16, height: 16, borderRadius: '50%', flexShrink: 0,
-                        background: 'rgba(126,200,90,0.14)', border: '1px solid rgba(126,200,90,0.35)',
+                        background: 'rgba(124, 255, 79,0.14)', border: '1px solid rgba(124, 255, 79,0.35)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}>
-                        <Check size={8} color="#7ec85a" strokeWidth={3} />
+                        <Check size={8} color="#7CFF4F" strokeWidth={3} />
                       </div>
-                      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#c8e0c0' }}>
+                      <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: '#c8e0c0' }}>
                         {item}
                       </span>
                     </div>
@@ -243,10 +243,10 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
               </DocSection>
 
               {/* Section: Ledger Record */}
-              <DocSection title="Ledger Record" icon={<Hash size={12} color="#7ec85a" />} color="#7ec85a">
+              <DocSection title="Ledger Record" icon={<Hash size={12} color="#7CFF4F" />} color="#7CFF4F">
                 <div style={{
-                  background:   'rgba(126,200,90,0.05)',
-                  border:       '1px solid rgba(126,200,90,0.18)',
+                  background:   'rgba(124, 255, 79,0.05)',
+                  border:       '1px solid rgba(124, 255, 79,0.18)',
                   borderRadius: 10, padding: '12px 14px',
                 }}>
                   <DocRow label="Transaction ID" value="0x7d3f…a9b21c" mono />
@@ -256,10 +256,10 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
                 </div>
                 <div style={{
                   marginTop: 8,
-                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
-                  color: 'rgba(126,200,90,0.40)', lineHeight: 1.55,
+                  fontFamily: "var(--font-mono)", fontSize: 8.5,
+                  color: 'rgba(124, 255, 79,0.40)', lineHeight: 1.55,
                 }}>
-                  <Globe size={9} color="rgba(126,200,90,0.40)" style={{ display: 'inline', verticalAlign: 'middle', marginRight: 5 }} />
+                  <Globe size={9} color="rgba(124, 255, 79,0.40)" style={{ display: 'inline', verticalAlign: 'middle', marginRight: 5 }} />
                   PROTOTYPE: In production, this hash would reference an immutable on-chain record.
                   This demonstration uses a simulated transaction ID.
                 </div>
@@ -275,7 +275,7 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
               gap: 14,
             }}>
               <div style={{
-                fontFamily: "'IBM Plex Mono', monospace", fontSize: 9,
+                fontFamily: "var(--font-mono)", fontSize: 9,
                 color: 'rgba(255,255,255,0.25)', lineHeight: 1.5,
               }}>
                 Root to Remedy · Provenance Prototype · Demo Record<br />
@@ -285,8 +285,8 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
                 onClick={onClose}
                 style={{
                   padding: '9px 20px', borderRadius: 10,
-                  background: 'rgba(126,200,90,0.14)', border: '1px solid rgba(126,200,90,0.32)',
-                  color: '#9fda74', fontFamily: "'IBM Plex Mono', monospace",
+                  background: 'rgba(124, 255, 79,0.14)', border: '1px solid rgba(124, 255, 79,0.32)',
+                  color: '#7CFF4F', fontFamily: "var(--font-mono)",
                   fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
                 }}
@@ -322,7 +322,7 @@ function DocSection({ title, icon, color, children }: {
       }}>
         {icon}
         <span style={{
-          fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
+          fontFamily: "var(--font-mono)", fontSize: 8.5,
           letterSpacing: '0.18em', textTransform: 'uppercase', color,
         }}>
           {title}
@@ -349,18 +349,18 @@ function DocRow({ label, value, mono, italic, last }: {
       justifyContent: 'space-between',
       alignItems:    'flex-start',
       padding:       '5px 0',
-      borderBottom:  last ? 'none' : '1px solid rgba(255,255,255,0.04)',
+      borderBottom:  last ? 'none' : '1px solid rgba(124, 255, 79, 0.04)',
       gap:           12,
     }}>
       <span style={{
-        fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5,
+        fontFamily: "var(--font-mono)", fontSize: 8.5,
         letterSpacing: '0.10em', textTransform: 'uppercase',
         color: 'rgba(160,180,150,0.55)', flexShrink: 0, paddingTop: 1,
       }}>
         {label}
       </span>
       <span style={{
-        fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif",
+        fontFamily: mono ? "var(--font-mono)" : "var(--font-body)",
         fontSize:   mono ? 10 : 12,
         color:      '#e0eedc',
         fontStyle:  italic ? 'italic' : 'normal',

@@ -277,11 +277,11 @@ function Scene({
       <pointLight position={[0, -3.5, 1]} intensity={0.30} color="#0c1f06" distance={12} />
 
       {/* Node accent spotlights at DNA helix waypoints */}
-      <pointLight position={[-5.5,  1.2, 1.5]} intensity={0.65} color="#7ec85a" distance={6} />
+      <pointLight position={[-5.5,  1.2, 1.5]} intensity={0.65} color="#7CFF4F" distance={6} />
       <pointLight position={[-1.8, -1.2, 1.5]} intensity={0.50} color="#4ea8d2" distance={6} />
       <pointLight position={[ 0.2,  1.2, 1.5]} intensity={0.50} color="#c8922e" distance={6} />
       <pointLight position={[ 3.2, -1.2, 1.5]} intensity={0.50} color="#8b6cd4" distance={6} />
-      <pointLight position={[ 5.5,  1.2, 1.5]} intensity={0.50} color="#7ec85a" distance={6} />
+      <pointLight position={[ 5.5,  1.2, 1.5]} intensity={0.50} color="#7CFF4F" distance={6} />
 
       {/* Reactive stage light */}
       <StageLighting selectedStage={selectedStage} />

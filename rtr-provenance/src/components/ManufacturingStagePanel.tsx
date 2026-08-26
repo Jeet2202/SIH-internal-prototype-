@@ -32,8 +32,8 @@ import { LocationMap } from './maps'
 const AMBER   = '#c8922e'
 const AMBER2  = '#e0aa4e'
 const AMBER_G = 'rgba(200,146,46,0.50)'
-const GREEN   = '#7ec85a'
-const GREEN_G = 'rgba(126,200,90,0.35)'
+const GREEN   = '#7CFF4F'
+const GREEN_G = 'rgba(124, 255, 79,0.35)'
 const DIM     = 'rgba(200,190,160,0.45)'
 const SURFACE = 'rgba(255,255,255,0.02)'
 const BORDER  = 'rgba(255,255,255,0.07)'
@@ -139,6 +139,54 @@ function PanelHeader({ onClose, rec }: { onClose: () => void; rec: typeof MANUFA
       borderBottom: `1px solid ${AMBER}20`,
       background: 'rgba(255,255,255,0.015)',
     }}>
+      {/* Stage badge */}
+      <div style={{
+        width: 28, height: 28, borderRadius: 8, flexShrink: 0,
+        background: `${AMBER}1a`, border: `1.5px solid ${AMBER}45`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        boxShadow: `0 0 10px ${AMBER_G}`,
+      }}>
+        <span style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 700, color: AMBER }}>4</span>
+      </div>
+
+      <div style={{ marginLeft: 12 }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.26em', textTransform: 'uppercase', color: AMBER, lineHeight: 1 }}>
+          PROOF OF PROCESSING
+        </div>
+        <div style={{ fontFamily: "var(--font-display)", fontSize: 11, fontWeight: 700, color: '#f0e8d8' }}>
+          MANUFACTURING
+        </div>
+      </div>
+
+      <div style={{ marginLeft: 16 }}>
+        <Pill color={GREEN}  text="VERIFIED"              icon={<Check   size={7} color={GREEN}  strokeWidth={3} />} />
+      </div>
+
+      <div style={{ marginLeft: 8 }}>
+        <Pill color={AMBER2} text="MANUFACTURING COMPLETED" icon={<Factory size={7} color={AMBER2} />} />
+      </div>
+
+      <div style={{ marginLeft: 8 }}>
+        <Pill color={GREEN}  text={`PRODUCT BATCH ${rec.packaging.productBatchId}`} icon={<Package size={7} color={GREEN} />} />
+      </div>
+
+      <div style={{ flex: 1 }} />
+
+      {/* Demo badge */}
+      <div style={{
+        fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.12em',
+        textTransform: 'uppercase', color: `${AMBER}70`,
+        background: `${AMBER}0a`, border: `1px solid ${AMBER}22`,
+        borderRadius: 5, padding: '2px 7px',
+        marginRight: 8
+      }}>
+        DEMONSTRATION RECORD
+      </div>
+
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: `${AMBER}bb`, letterSpacing: '0.06em', marginRight: 16 }}>
+        {rec.manufacturing.manufacturingId}
+      </div>
+
       {/* Back button */}
       <button
         onClick={onClose}
@@ -244,10 +292,10 @@ function LeftColumn({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
               <Factory size={10} color={AMBER} />
             </div>
             <div>
-              <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 11, fontWeight: 700, color: '#f0e8d8' }}>
+              <div style={{ fontFamily: "var(--font-display)", fontSize: 11, fontWeight: 700, color: '#f0e8d8' }}>
                 {rec.manufacturer.name}
               </div>
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: `${AMBER}99`, letterSpacing: '0.08em' }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: `${AMBER}99`, letterSpacing: '0.08em' }}>
                 DEMONSTRATION RECORD
               </div>
             </div>
@@ -332,7 +380,7 @@ function LeftColumn({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
                   : <AlertCircle size={7} color="#ff6450" />}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: c.status === 'pass' ? '#c8d8c0' : '#ffb0a0', lineHeight: 1.4 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: c.status === 'pass' ? '#c8d8c0' : '#ffb0a0', lineHeight: 1.4 }}>
                   {c.label}
                 </div>
               </div>
@@ -373,13 +421,13 @@ function ProvenanceLineageStrip() {
             border: s.hl ? `1px solid ${AMBER}40` : 'none',
           }}>
             <span style={{
-              fontFamily: "'IBM Plex Mono',monospace", fontSize: 7,
+              fontFamily: "var(--font-mono)", fontSize: 7,
               fontWeight: s.hl || s.batch ? 700 : 400,
               color: s.hl ? AMBER2 : s.batch ? GREEN : '#c8c0b0',
             }}>
               {s.label}
             </span>
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 6, color: DIM }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 6, color: DIM }}>
               {s.code}
             </span>
           </div>
@@ -424,20 +472,20 @@ function MiddleColumn({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD; on
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.10, duration: 0.26 }}
         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
       >
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8, letterSpacing: '0.20em', textTransform: 'uppercase', color: AMBER }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.20em', textTransform: 'uppercase', color: AMBER }}>
           Processing Pipeline
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: DIM }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: DIM }}>
             {rec.manufacturing.acceptedAt.split(',')[0]} → {rec.manufacturing.completedAt.split(',')[0]}
           </span>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 4,
-            background: GREEN_G, border: '1px solid rgba(126,200,90,0.25)',
+            background: GREEN_G, border: '1px solid rgba(124, 255, 79,0.25)',
             borderRadius: 999, padding: '2px 8px',
           }}>
             <Check size={7} color={GREEN} strokeWidth={3} />
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: GREEN, letterSpacing: '0.10em' }}>ALL STEPS COMPLETED</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: GREEN, letterSpacing: '0.10em' }}>ALL STEPS COMPLETED</span>
           </div>
         </div>
       </motion.div>
@@ -523,16 +571,16 @@ function StepCard({ step, expanded, onToggle, isLast }: {
         }}>
           {isLast
             ? <Check size={9} color={GREEN} strokeWidth={3} />
-            : <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: AMBER, fontWeight: 700 }}>{step.step}</span>
+            : <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: AMBER, fontWeight: 700 }}>{step.step}</span>
           }
         </div>
 
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 10, color: '#e8dcc8', fontWeight: 600 }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: 10, color: '#e8dcc8', fontWeight: 600 }}>
             {step.name}
           </div>
           {!expanded && (step.inputQty || step.outputQty) && (
-            <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: DIM, marginTop: 1 }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: DIM, marginTop: 1 }}>
               {step.inputQty && `In: ${step.inputQty}`}
               {step.inputQty && step.outputQty && ' · '}
               {step.outputQty && `Out: ${step.outputQty}`}
@@ -543,11 +591,11 @@ function StepCard({ step, expanded, onToggle, isLast }: {
         {/* Status chip */}
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 4,
-          background: GREEN_G, border: '1px solid rgba(126,200,90,0.22)',
+          background: GREEN_G, border: '1px solid rgba(124, 255, 79,0.22)',
           borderRadius: 999, padding: '1.5px 7px', flexShrink: 0,
         }}>
           <Check size={6} color={GREEN} strokeWidth={3} />
-          <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 6.5, color: GREEN, letterSpacing: '0.08em' }}>COMPLETED</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 6.5, color: GREEN, letterSpacing: '0.08em' }}>COMPLETED</span>
         </div>
 
         {expanded ? <ChevronDown size={10} color={AMBER} /> : <ChevronRight size={10} color={DIM} />}
@@ -568,7 +616,7 @@ function StepCard({ step, expanded, onToggle, isLast }: {
               borderRadius: '0 0 8px 8px', padding: '7px 10px',
               margin: '0 0 2px 0',
             }}>
-              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 9.5, color: '#c0b8a0', lineHeight: 1.60, marginBottom: 6 }}>
+              <div style={{ fontFamily: "var(--font-body)", fontSize: 9.5, color: '#c0b8a0', lineHeight: 1.60, marginBottom: 6 }}>
                 {step.detail}
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 3 }}>
@@ -580,7 +628,7 @@ function StepCard({ step, expanded, onToggle, isLast }: {
               </div>
               <div style={{
                 marginTop: 5, display: 'flex', alignItems: 'center', gap: 5,
-                fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: GREEN,
+                fontFamily: "var(--font-mono)", fontSize: 7, color: GREEN,
               }}>
                 <Check size={7} color={GREEN} strokeWidth={3} />
                 {step.anomaly ? 'Anomaly flagged — see records' : 'No anomaly detected ✓'}
@@ -607,7 +655,7 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
         marginBottom: 7,
       }}>
         <div style={{
-          fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5,
+          fontFamily: "var(--font-mono)", fontSize: 7.5,
           letterSpacing: '0.16em', textTransform: 'uppercase', color: AMBER,
           display: 'flex', alignItems: 'center', gap: 5,
         }}>
@@ -622,7 +670,7 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
             display: 'inline-flex', alignItems: 'center', gap: 4,
             background: `${AMBER}15`, border: `1px solid ${AMBER}40`,
             borderRadius: 6, padding: '2px 7px',
-            fontFamily: "'IBM Plex Mono',monospace", fontSize: 6.5, color: AMBER2,
+            fontFamily: "var(--font-mono)", fontSize: 6.5, color: AMBER2,
             cursor: 'pointer',
           }}
         >
@@ -634,13 +682,13 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
         {/* Input batches */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3, flexShrink: 0 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 6, color: DIM, textTransform: 'uppercase' }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 6, color: DIM, textTransform: 'uppercase' }}>
             Input Botanical Batch
           </div>
           {rec.formulation.inputBatches.map((b, i) => (
             <div key={i} style={{
-              fontFamily: "'IBM Plex Mono',monospace", fontSize: 8.5, fontWeight: 700,
-              color: GREEN, background: GREEN_G, border: '1px solid rgba(126,200,90,0.25)',
+              fontFamily: "var(--font-mono)", fontSize: 8.5, fontWeight: 700,
+              color: GREEN, background: GREEN_G, border: '1px solid rgba(124, 255, 79,0.25)',
               borderRadius: 6, padding: '3px 9px',
             }}>
               {b}
@@ -657,10 +705,10 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
           display: 'flex', flexDirection: 'column', alignItems: 'center',
         }}>
           <FlaskConical size={10} color={AMBER} />
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: AMBER, letterSpacing: '0.08em', marginTop: 2 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: AMBER, letterSpacing: '0.08em', marginTop: 2 }}>
             FORMULATION
           </div>
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 6.5, color: DIM }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 6.5, color: DIM }}>
             {rec.formulation.formulationId}
           </div>
         </div>
@@ -669,12 +717,12 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
 
         {/* Output product batch */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 3, flexShrink: 0 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 6, color: DIM, textTransform: 'uppercase' }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 6, color: DIM, textTransform: 'uppercase' }}>
             Product Batch
           </div>
           <div style={{
-            fontFamily: "'IBM Plex Mono',monospace", fontSize: 8.5, fontWeight: 700,
-            color: GREEN, background: GREEN_G, border: '1px solid rgba(126,200,90,0.25)',
+            fontFamily: "var(--font-mono)", fontSize: 8.5, fontWeight: 700,
+            color: GREEN, background: GREEN_G, border: '1px solid rgba(124, 255, 79,0.25)',
             borderRadius: 6, padding: '3px 9px',
           }}>
             {rec.formulation.productBatchId}
@@ -689,7 +737,7 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
           style={{
             background: 'none', border: 'none', padding: 0, cursor: 'pointer',
             display: 'flex', alignItems: 'center', gap: 5,
-            fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: AMBER2,
+            fontFamily: "var(--font-mono)", fontSize: 7, color: AMBER2,
           }}
         >
           {showComposition ? <ChevronDown size={8} color={AMBER2} /> : <ChevronRight size={8} color={AMBER2} />}
@@ -698,7 +746,7 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
 
         {showComposition && (
           <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.5fr', padding: '2px 4px', fontFamily: "'IBM Plex Mono',monospace", fontSize: 6, color: DIM, textTransform: 'uppercase' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.5fr', padding: '2px 4px', fontFamily: "var(--font-mono)", fontSize: 6, color: DIM, textTransform: 'uppercase' }}>
               <span>Ingredient</span>
               <span>Amount</span>
               <span style={{ textAlign: 'right' }}>Source Batch</span>
@@ -707,9 +755,9 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
               <div key={i} style={{
                 display: 'grid', gridTemplateColumns: '2fr 1fr 1.5fr',
                 padding: '3px 4px', borderRadius: 4,
-                background: c.sourceBatch === rec.inputBatch.batchId ? 'rgba(126,200,90,0.08)' : 'rgba(255,255,255,0.02)',
-                border: c.sourceBatch === rec.inputBatch.batchId ? '1px solid rgba(126,200,90,0.20)' : `1px solid ${BORDER}`,
-                fontFamily: "'IBM Plex Mono',monospace", fontSize: 7,
+                background: c.sourceBatch === rec.inputBatch.batchId ? 'rgba(124, 255, 79,0.08)' : 'rgba(255,255,255,0.02)',
+                border: c.sourceBatch === rec.inputBatch.batchId ? '1px solid rgba(124, 255, 79,0.20)' : `1px solid ${BORDER}`,
+                fontFamily: "var(--font-mono)", fontSize: 7,
               }}>
                 <span style={{ color: c.sourceBatch === rec.inputBatch.batchId ? GREEN : '#e0d8c0' }}>{c.ingredient}</span>
                 <span style={{ color: DIM }}>{c.amount}</span>
@@ -722,7 +770,7 @@ function FormulationFlow({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD;
 
       <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 5 }}>
         <Check size={7} color={GREEN} strokeWidth={3} />
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: GREEN }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: GREEN }}>
           FORMULATION COMPLETED ✓
         </span>
       </div>
@@ -773,11 +821,11 @@ function AboutCard() {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
         <Factory size={9} color={AMBER} />
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: AMBER }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: AMBER }}>
           About This Stage
         </span>
       </div>
-      <p style={{ fontSize: 10, color: '#c0b0a0', lineHeight: 1.65, fontFamily: "'Inter',sans-serif" }}>
+      <p style={{ fontSize: 10, color: '#c0b0a0', lineHeight: 1.65, fontFamily: "var(--font-body)" }}>
         The verified botanical batch was received, processed through the recorded manufacturing steps,
         transformed into a finished product batch, packaged, and released for downstream distribution.
         Each processing event remains linked to the original botanical batch.
@@ -795,13 +843,13 @@ function ProductBatchCard({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
         <Package size={9} color={AMBER2} />
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: AMBER2 }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: AMBER2 }}>
           Finished Product Batch
         </span>
       </div>
 
       <div style={{
-        fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, fontWeight: 700,
+        fontFamily: "var(--font-mono)", fontSize: 10, fontWeight: 700,
         color: GREEN, marginBottom: 5,
       }}>
         {rec.packaging.productBatchId}
@@ -821,25 +869,25 @@ function ProductBatchCard({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
       <div style={{ marginTop: 7, padding: '6px 9px', background: `${AMBER}08`, borderRadius: 8, border: `1px solid ${AMBER}20` }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 4 }}>
           <QrCode size={8} color={AMBER} />
-          <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.14em', textTransform: 'uppercase', color: AMBER }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.14em', textTransform: 'uppercase', color: AMBER }}>
             QR Provenance Link
           </span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: DIM }}>Pack Serial</span>
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: '#e0d8c0' }}>{rec.qrLink.packSerial}</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: DIM }}>Pack Serial</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: '#e0d8c0' }}>{rec.qrLink.packSerial}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: DIM }}>QR Status</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: DIM }}>QR Status</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <Check size={7} color={GREEN} strokeWidth={3} />
-              <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: GREEN }}>ISSUED</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: GREEN }}>ISSUED</span>
             </div>
           </div>
         </div>
         {/* QR chain mini-flow */}
-        <div style={{ marginTop: 5, fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: DIM, textAlign: 'center', lineHeight: 1.7 }}>
+        <div style={{ marginTop: 5, fontFamily: "var(--font-mono)", fontSize: 7, color: DIM, textAlign: 'center', lineHeight: 1.7 }}>
           MANUFACTURING → PRODUCT BATCH CREATED → QR ISSUED → CUSTOMER SCANS → THIS PAGE
         </div>
       </div>
@@ -864,10 +912,10 @@ function ManufacturingStatusCard({ rec }: { rec: typeof MANUFACTURING_RECORD }) 
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
         <Layers size={9} color={AMBER} />
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: AMBER }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: AMBER }}>
           Manufacturing Status
         </span>
-        <div style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: DIM }}>
+        <div style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 7, color: DIM }}>
           QC: {rec.qualityRelease.releaseRecord}
         </div>
       </div>
@@ -879,12 +927,12 @@ function ManufacturingStatusCard({ rec }: { rec: typeof MANUFACTURING_RECORD }) 
         }}>
           <div style={{
             width: 13, height: 13, borderRadius: '50%', flexShrink: 0,
-            background: GREEN_G, border: '1px solid rgba(126,200,90,0.28)',
+            background: GREEN_G, border: '1px solid rgba(124, 255, 79,0.28)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <Check size={6} color={GREEN} strokeWidth={3} />
           </div>
-          <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: '#b8c8b0' }}>{it.label}</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: '#b8c8b0' }}>{it.label}</span>
         </div>
       ))}
     </div>
@@ -900,7 +948,7 @@ function DocumentsCard({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD; o
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
         <FileText size={9} color={DIM} />
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: DIM }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: DIM }}>
           Manufacturing Documents
         </span>
       </div>
@@ -913,7 +961,7 @@ function DocumentsCard({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD; o
             onClick={() => onOpenDoc(d.label, d.ref)}
             style={{
               background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-              fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: '#b0a898',
+              fontFamily: "var(--font-mono)", fontSize: 7, color: '#b0a898',
               display: 'flex', alignItems: 'center', gap: 4, textAlign: 'left',
             }}
           >
@@ -921,17 +969,17 @@ function DocumentsCard({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD; o
             <span style={{ textDecoration: 'underline' }}>{d.label}</span>
           </button>
           <span style={{
-            fontFamily: "'IBM Plex Mono',monospace", fontSize: 6.5,
+            fontFamily: "var(--font-mono)", fontSize: 6.5,
             color: d.attached ? GREEN : DIM,
             background: d.attached ? GREEN_G : 'transparent',
-            border: `1px solid ${d.attached ? 'rgba(126,200,90,0.25)' : 'transparent'}`,
+            border: `1px solid ${d.attached ? 'rgba(124, 255, 79,0.25)' : 'transparent'}`,
             borderRadius: 4, padding: '1px 5px', flexShrink: 0,
           }}>
             {d.attached ? 'ATTACHED' : 'NOT IN DATASET'}
           </span>
         </div>
       ))}
-      <div style={{ marginTop: 5, fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: DIM }}>
+      <div style={{ marginTop: 5, fontFamily: "var(--font-mono)", fontSize: 7, color: DIM }}>
         Documents available in production system · DEMONSTRATION RECORD
       </div>
     </div>
@@ -947,10 +995,10 @@ function LedgerCard({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
         <Cpu size={9} color={AMBER2} />
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: AMBER2 }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: AMBER2 }}>
           Ledger Record
         </span>
-        <span style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: `${AMBER}60`, letterSpacing: '0.10em' }}>
+        <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 7, color: `${AMBER}60`, letterSpacing: '0.10em' }}>
           PROTOTYPE DEMO
         </span>
       </div>
@@ -965,7 +1013,7 @@ function LedgerCard({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
           borderRadius: 999, padding: '2px 10px',
         }}>
           <Check size={7} color={AMBER2} strokeWidth={3} />
-          <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, color: AMBER2, letterSpacing: '0.10em' }}>ANCHORED</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: AMBER2, letterSpacing: '0.10em' }}>ANCHORED</span>
         </div>
       </div>
     </div>
@@ -1015,10 +1063,10 @@ function DocumentModal({
               <FileText size={14} color={AMBER} />
             </div>
             <div>
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, color: AMBER, textTransform: 'uppercase', letterSpacing: '0.14em' }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: AMBER, textTransform: 'uppercase', letterSpacing: '0.14em' }}>
                 FORMULATION RECORD
               </div>
-              <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 13, fontWeight: 700, color: '#f0e8d8' }}>
+              <div style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 700, color: '#f0e8d8' }}>
                 {doc.label}
               </div>
             </div>
@@ -1051,7 +1099,7 @@ function DocumentModal({
           display: 'flex', alignItems: 'center', gap: 8,
         }}>
           <Info size={14} color={AMBER} style={{ flexShrink: 0 }} />
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8, color: '#d0c8b0', lineHeight: 1.5 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: '#d0c8b0', lineHeight: 1.5 }}>
             <strong>FORMULATION DOCUMENT</strong><br />
             Not attached to current prototype dataset. Available in production enterprise integration.
           </div>
@@ -1063,7 +1111,7 @@ function DocumentModal({
             style={{
               background: `${AMBER}20`, border: `1px solid ${AMBER}50`,
               borderRadius: 6, padding: '5px 14px',
-              fontFamily: "'IBM Plex Mono',monospace", fontSize: 8.5, color: '#f0e8d8',
+              fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#f0e8d8',
               cursor: 'pointer',
             }}
           >
@@ -1082,7 +1130,7 @@ function ColLabel({ text, icon }: { text: string; icon: React.ReactNode }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
       {icon}
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: AMBER }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: AMBER }}>
         {text}
       </span>
     </div>
@@ -1097,7 +1145,7 @@ function Pill({ color, text, icon }: { color: string; text: string; icon: React.
       borderRadius: 999, padding: '2px 8px',
     }}>
       {icon}
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.10em', color, textTransform: 'uppercase' }}>{text}</span>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.10em', color, textTransform: 'uppercase' }}>{text}</span>
     </div>
   )
 }
@@ -1110,11 +1158,11 @@ function MetaRow({ label, value, mono, verified, italic, accent, last }: {
       display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8,
       padding: '3px 0', borderBottom: last ? 'none' : `1px solid ${BORDER}`,
     }}>
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.06em', textTransform: 'uppercase', color: DIM, flexShrink: 0 }}>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.06em', textTransform: 'uppercase', color: DIM, flexShrink: 0 }}>
         {label}
       </span>
       <span style={{
-        fontFamily: mono ? "'IBM Plex Mono',monospace" : italic ? "'Inter',sans-serif" : "'Inter',sans-serif",
+        fontFamily: mono ? "var(--font-mono)" : italic ? "var(--font-body)" : "var(--font-body)",
         fontStyle:  italic ? 'italic' : 'normal',
         fontSize:   mono ? 8 : 9.5,
         color: verified ? GREEN : (accent ?? '#d8cec0'),
@@ -1137,9 +1185,9 @@ function MiniStat({ label, value, icon }: { label: string; value: string; icon?:
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
         {icon}
-        <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 6.5, color: DIM, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</span>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 6.5, color: DIM, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</span>
       </div>
-      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8.5, color: AMBER2 }}>{value}</span>
+      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: AMBER2 }}>{value}</span>
     </div>
   )
 }
@@ -1150,10 +1198,10 @@ function LedgerRow({ icon, label, value, mono }: { icon: React.ReactNode; label:
       display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
       gap: 8, padding: '3.5px 0', borderBottom: `1px solid ${BORDER}`,
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, fontFamily: "'IBM Plex Mono',monospace", fontSize: 7.5, letterSpacing: '0.06em', textTransform: 'uppercase', color: DIM }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.06em', textTransform: 'uppercase', color: DIM }}>
         {icon} {label}
       </div>
-      <div style={{ fontFamily: mono ? "'IBM Plex Mono',monospace" : "'Inter',sans-serif", fontSize: mono ? 8 : 9.5, color: '#c8c0b0', textAlign: 'right', wordBreak: 'break-all' }}>
+      <div style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 8 : 9.5, color: '#c8c0b0', textAlign: 'right', wordBreak: 'break-all' }}>
         {value}
       </div>
     </div>
