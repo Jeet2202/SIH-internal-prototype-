@@ -1,6 +1,0 @@
-{
-  "buildCommand": "cd rtr-provenance && npm install && npm run build",
-  "outputDirectory": "rtr-provenance/dist",
-  "installCommand": "echo 'skip root install'",
-  "framework": null
-}
