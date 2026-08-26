@@ -1,98 +1,213 @@
-// All provenance types for the Root to Remedy customer experience
+/*
+ * Root to Remedy — Provenance Type System
+ *
+ * Designed to match production data shape so a real backend can replace
+ * static data without touching component logic.
+ *
+ * PROTOTYPE NOTE: All document IDs, blockchain hashes, GPS coordinates,
+ * and certificate numbers are simulated for demonstration purposes.
+ * They are clearly marked with _proto: true so an integration layer
+ * can filter / replace them later.
+ */
+
+/* ── Primitive shared types ─────────────────────────────────────── */
 
 export type StageStatus = 'verified' | 'pending' | 'failed';
+export type StageType   = 'farmer' | 'lab' | 'transport' | 'manufacturing' | 'product';
 
-export type StageType = 'farmer' | 'lab' | 'manufacturing' | 'transport' | 'product';
-
+/** A single verification assertion */
 export interface VerificationCheck {
-  label: string;
+  label:   string;
   detail?: string;
-  status: 'pass' | 'fail' | 'warning';
+  status:  'pass' | 'fail' | 'warning';
+  _proto?: boolean;   // true = simulated in prototype
 }
 
-export interface FarmerStageData {
-  type: 'farmer';
-  collectionHub: string;
-  location: string;
-  species: string;
-  botanicalName: string;
-  collectionDate: string;
-  batchId: string;
-  farmerCount: number;
-  totalCollection: string;
-  checks: VerificationCheck[];
+/** A linked document (test report, permit, certificate, etc.) */
+export interface LinkedDocument {
+  label:    string;     // "NABL Test Report"
+  ref:      string;     // human-readable ID / filename
+  url?:     string;     // future: real URL
+  _proto:   boolean;    // always true in prototype
 }
 
-export interface LabStageData {
-  type: 'lab';
-  labName: string;
-  accreditation: string;
-  sampleId: string;
-  testDate: string;
-  results: { label: string; value: string; status: 'pass' | 'warning'; detail?: string }[];
-  certificateId: string;
-  checks: VerificationCheck[];
+/** Blockchain / ledger record — stub shape matching production intent */
+export interface BlockchainRecord {
+  txHash:    string;
+  blockNum:  string;
+  timestamp: string;
+  network:   string;
+  _proto:    boolean;
 }
 
-export interface ManufacturingStageData {
-  type: 'manufacturing';
-  manufacturer: string;
-  inputBatch: string;
-  outputBatch: string;
-  steps: { name: string; detail: string; input?: string; output?: string; status: 'pass' }[];
-  checks: VerificationCheck[];
+/** GPS coordinates */
+export interface GeoPoint {
+  lat:     number;
+  lng:     number;
+  label:   string;
+  city:    string;
+  state:   string;
+  country: string;
 }
 
-export interface TransportStageData {
-  type: 'transport';
-  partner: string;
-  pickupDate: string;
-  destination: string;
-  metrics: { label: string; value: string; status: 'pass' | 'warning' }[];
-  checks: VerificationCheck[];
+/* ══════════════════════════════════════════════════════════════════
+   STAGE-SPECIFIC DATA SHAPES
+   Every stage extends a shared BaseStageData, then adds its own
+   domain-specific fields. This mirrors what a production API would return.
+══════════════════════════════════════════════════════════════════════ */
+
+/** Shared base — present on every stage */
+interface BaseStageData {
+  stageId:     string;
+  eventId:     string;           // unique event / record ID
+  date:        string;           // ISO-8601 or human display string
+  entity:      string;           // responsible party name
+  entityType:  string;           // "Farm Cooperative" | "Laboratory" | ...
+  description: string;           // full paragraph for "About this stage"
+  location:    GeoPoint;
+  documents:   LinkedDocument[];
+  blockchain:  BlockchainRecord;
+  checks:      VerificationCheck[];
 }
 
-export interface ProductStageData {
-  type: 'product';
-  productName: string;
-  brand: string;
-  batch: string;
+/* ─── Stage 1: Farmer / Collection ─────────────────────────────── */
+export interface FarmerStageData extends BaseStageData {
+  type:              'farmer';
+  collectionHub:     string;
+  species:           string;
+  botanicalName:     string;
+  partUsed:          string;     // "Root"
+  cultivationType:   string;     // "Organic / Wild-collected"
+  harvestSeason:     string;
+  totalCollection:   string;     // "640 kg"
+  farmerCount:       number;
+  farmerCooperative: string;
+  batchId:           string;
+  soilHealthStatus:  string;
+  collectorLicense:  string;
+}
+
+/* ─── Stage 2: Laboratory Testing ──────────────────────────────── */
+export interface LabStageData extends BaseStageData {
+  type:            'lab';
+  labName:         string;
+  accreditation:   string;
+  sampleId:        string;
+  testDate:        string;
+  certificateId:   string;
+  withanolideContent: string;    // key active compound for Ashwagandha
+  results: {
+    label:   string;
+    value:   string;
+    unit?:   string;
+    limit?:  string;
+    status:  'pass' | 'warning' | 'fail';
+    detail?: string;
+  }[];
+}
+
+/* ─── Stage 3: Transportation ───────────────────────────────────── */
+export interface TransportStageData extends BaseStageData {
+  type:            'transport';
+  carrier:         string;
+  vehicleId:       string;
+  pickupDate:      string;
+  deliveryDate:    string;
+  origin:          string;
+  destination:     string;
+  distanceKm:      number;
+  storageCondition: string;
+  metrics: {
+    label:   string;
+    value:   string;
+    status:  'pass' | 'warning' | 'fail';
+  }[];
+}
+
+/* ─── Stage 4: Manufacturing ────────────────────────────────────── */
+export interface ManufacturingStageData extends BaseStageData {
+  type:           'manufacturing';
+  manufacturer:   string;
+  facilityLicense: string;
+  gmpCertificate: string;
+  inputBatch:     string;
+  outputBatch:    string;
+  tabletCount:    number;
+  dosagePerUnit:  string;         // "300 mg"
+  excipients:     string[];
+  steps: {
+    step:    number;
+    name:    string;
+    detail:  string;
+    input?:  string;
+    output?: string;
+    status:  'pass' | 'warning';
+  }[];
+}
+
+/* ─── Stage 5: Final Product / Packaging ───────────────────────── */
+export interface ProductStageData extends BaseStageData {
+  type:         'product';
+  productName:  string;
+  brand:        string;
+  skuCode:      string;
+  batchCode:    string;
+  packSerial:   string;
+  tabletCount:  number;
+  netWeight:    string;
   manufactured: string;
-  expiry: string;
-  packSerial: string;
-  chainSummary: { label: string; status: 'pass' }[];
-  checks: VerificationCheck[];
+  expiry:       string;
+  qrLinkedTo:   string;
+  chainSummary: {
+    stage:   string;
+    eventId: string;
+    status:  'pass' | 'fail';
+  }[];
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   DISCRIMINATED UNION
+══════════════════════════════════════════════════════════════════════ */
 export type StageData =
   | FarmerStageData
   | LabStageData
-  | ManufacturingStageData
   | TransportStageData
+  | ManufacturingStageData
   | ProductStageData;
 
+/* ── ProvenanceStage ────────────────────────────────────────────── */
 export interface ProvenanceStage {
-  id: string;
-  number: number;
-  type: StageType;
-  title: string;
-  subtitle: string;
-  purposeLabel: string;
-  status: StageStatus;
-  color: string;            // hex
-  glowColor: string;        // rgba
-  nodePosition: 'up' | 'down';
-  tPosition: number;        // 0–1 along DNA axis
-  data: StageData;
+  id:            string;
+  number:        number;
+  type:          StageType;
+  title:         string;
+  subtitle:      string;
+  purposeLabel:  string;
+  status:        StageStatus;
+  color:         string;          // hex
+  glowColor:     string;          // rgba
+  nodePosition:  'up' | 'down';
+  tPosition:     number;          // 0–1 along DNA axis
+  data:          StageData;
 }
 
+/* ── ProvenanceProduct ──────────────────────────────────────────── */
 export interface ProvenanceProduct {
-  name: string;
-  brand: string;
-  batch: string;
-  packSerial: string;
-  status: 'PRODUCT VERIFIED';
-  traceabilityLabel: string;
-  stages: ProvenanceStage[];
-  scratchCode: string;
+  productName:        string;
+  brand:              string;
+  category:           string;
+  skuCode:            string;
+  batchCode:          string;
+  packSerial:         string;
+  tabletCount:        number;
+  netWeight:          string;
+  manufacturedDate:   string;
+  expiryDate:         string;
+  status:             'PRODUCT VERIFIED';
+  traceabilityLabel:  string;
+  scratchCode:        string;
+  // Legacy aliases kept for backward-compat with existing components
+  batch:              string;
+  name:               string;
+  stages:             ProvenanceStage[];
 }

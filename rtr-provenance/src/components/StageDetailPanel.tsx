@@ -2,95 +2,52 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Check, MapPin, FlaskConical, Factory, Truck, Package,
-  Cpu, Clock, Globe, Hash,
+  Cpu, Clock, Globe, Hash, Leaf, FileText, AlertCircle,
+  ShieldCheck, Microscope, TestTube, Boxes, TruckIcon,
+  ThumbsUp, ArrowRight, X,
 } from 'lucide-react'
 import type {
-  ProvenanceStage, FarmerStageData, LabStageData,
-  ManufacturingStageData, TransportStageData, ProductStageData
+  ProvenanceStage,
+  FarmerStageData,
+  LabStageData,
+  ManufacturingStageData,
+  TransportStageData,
+  ProductStageData,
+  LinkedDocument,
 } from '../types/provenance'
 
 /* ---------------------------------------------------------------------------
-   StageDetailPanel — bottom-docked, full-width, 3-column provenance panel
+   StageDetailPanel — bottom-docked, full-width, 3-column provenance panel.
 
-   Matches IMAGE 1 layout:
-   ┌─────────────────────────────────────────────────────────────────────────┐
-   │ [COL 1 — 30%]            [COL 2 — 35%]         [COL 3 — 35%]          │
-   │  Stage # + Title          Location / Map         About This Stage       │
-   │  Stage avatar             Map preview            Blockchain Record      │
-   │  Key-value rows           Coordinates            TX ID / Block / Time   │
-   │  Verification checks                                                     │
-   └─────────────────────────────────────────────────────────────────────────┘
+   Layout:
+   ┌──────────────────┬──────────────────┬──────────────────────────────────┐
+   │ COL 1 (30%)      │ COL 2 (35%)      │ COL 3 (35%)                      │
+   │ Stage badge      │ Location / Map   │ About + stage-specific detail     │
+   │ Key fields       │ Location chip    │ Documents list                    │
+   │ Verification ✓   │ Stylised map     │ Blockchain record (PROTOTYPE tag) │
+   └──────────────────┴──────────────────┴──────────────────────────────────┘
 --------------------------------------------------------------------------- */
 
-/* Hardcoded blockchain demo data per stage */
-const BLOCKCHAIN_DATA: Record<string, {
-  txId: string; block: string; timestamp: string; network: string
-}> = {
-  farmer: {
-    txId: '0x7d3f...a9b210',
-    block: '4587123',
-    timestamp: '20 Aug 2026, 09:14 AM IST',
-    network: 'Ethereum (Permissioned)',
-  },
-  lab: {
-    txId: '0x2c8a...f3d901',
-    block: '4587456',
-    timestamp: '22 Aug 2026, 11:38 AM IST',
-    network: 'Ethereum (Permissioned)',
-  },
-  manufacturing: {
-    txId: '0xa14e...c6b732',
-    block: '4588902',
-    timestamp: '24 Aug 2026, 08:22 AM IST',
-    network: 'Ethereum (Permissioned)',
-  },
-  transport: {
-    txId: '0x5f9c...e2a445',
-    block: '4589211',
-    timestamp: '24 Aug 2026, 03:47 PM IST',
-    network: 'Ethereum (Permissioned)',
-  },
-  product: {
-    txId: '0xb82d...17c893',
-    block: '4589890',
-    timestamp: '25 Aug 2026, 02:05 PM IST',
-    network: 'Ethereum (Permissioned)',
-  },
-}
+/* ── Location metadata ────────────────────────────────────────────── */
+// Pulled directly from stage.data.location in the new data model.
 
-const STAGE_ABOUT: Record<string, string> = {
-  farmer: 'Herb is collected from 27 verified farmers in approved GPS zones, cross-checked for species identity, quantity, and seasonal compliance before any batch is recorded.',
-  lab: 'Batch samples undergo NABL-accredited multi-parameter testing — species ID via DNA barcoding, heavy metals, pesticide residue, and moisture — before a numbered certificate is issued.',
-  manufacturing: 'Raw material is traceable step-by-step through drying, grinding, capsule formulation, and packaging at a licensed GMP facility with yield tracking at every stage.',
-  transport: 'Cold chain and route integrity monitored end-to-end via IoT sensors. Any temperature deviation or route anomaly would have been flagged and logged.',
-  product: 'The finished product pack is linked to the full provenance chain. The QR code on this pack uniquely identifies it and cannot be reused or duplicated.',
-}
-
-const LOCATION_INFO: Record<string, { city: string; state: string; coords: string; label: string }> = {
-  farmer:        { city: 'Khedgaon', state: 'Maharashtra', coords: '19.9975° N, 73.7898° E', label: 'Collection Hub' },
-  lab:           { city: 'Nashik', state: 'Maharashtra', coords: '19.9975° N, 73.7898° E', label: 'Laboratory' },
-  manufacturing: { city: 'Nashik', state: 'Maharashtra', coords: '20.0059° N, 73.7897° E', label: 'Facility' },
-  transport:     { city: 'Mumbai', state: 'Maharashtra', coords: '19.0760° N, 72.8777° E', label: 'Distribution Centre' },
-  product:       { city: 'Mumbai', state: 'Maharashtra', coords: '19.0760° N, 72.8777° E', label: 'Verified Product' },
-}
-
-/* ─── Props ──────────────────────────────────────────────────── */
-
+/* ── Props ──────────────────────────────────────────────────────── */
 interface StageDetailPanelProps {
-  stage: ProvenanceStage | null
+  stage:   ProvenanceStage | null
   onClose: () => void
-  hidden?: boolean   // set true when ReviewModal is open
+  hidden?: boolean
 }
 
-/* ─── Panel ──────────────────────────────────────────────────── */
-
+/* ══════════════════════════════════════════════════════════════════
+   ROOT PANEL
+══════════════════════════════════════════════════════════════════ */
 export default function StageDetailPanel({ stage, onClose, hidden = false }: StageDetailPanelProps) {
   const [checksDone, setChecksDone] = useState(false)
 
   useEffect(() => {
     setChecksDone(false)
     if (stage) {
-      const t = setTimeout(() => setChecksDone(true), 900)
+      const t = setTimeout(() => setChecksDone(true), 700)
       return () => clearTimeout(t)
     }
   }, [stage?.id])
@@ -109,42 +66,47 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
           initial={{ y: '100%', opacity: 0 }}
           animate={{ y: 0, opacity: hidden ? 0 : 1 }}
           exit={{ y: '100%', opacity: 0 }}
-          transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.50, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 40,
-            maxHeight: '42vh',
-            overflowY: 'auto',
-            background: 'rgba(4,10,3,0.94)',
-            backdropFilter: 'blur(24px)',
-            borderTop: `1.5px solid ${stage.color}50`,
-            boxShadow: `0 -8px 60px rgba(0,0,0,0.7), 0 -1px 0 ${stage.color}20`,
-            pointerEvents: hidden ? 'none' : 'auto',
+            position:       'fixed',
+            bottom:         0, left: 0, right: 0,
+            zIndex:         40,
+            maxHeight:      '44vh',
+            overflowY:      'auto',
+            background:     'rgba(4,10,3,0.96)',
+            backdropFilter: 'blur(28px)',
+            borderTop:      `1.5px solid ${stage.color}55`,
+            boxShadow:      `0 -8px 60px rgba(0,0,0,0.75), 0 -1px 0 ${stage.color}22`,
+            pointerEvents:  hidden ? 'none' : 'auto',
           }}
         >
-          {/* ── Thin colored top accent bar ── */}
+          {/* Coloured top bar */}
           <div style={{
-            height: 2,
-            background: `linear-gradient(90deg, transparent, ${stage.color}80, ${stage.color}, ${stage.color}80, transparent)`,
+            height:     2,
+            background: `linear-gradient(90deg, transparent, ${stage.color}70, ${stage.color}, ${stage.color}70, transparent)`,
           }} />
 
-          {/* ── Panel inner ── */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '30% 1fr 1fr',
-            gap: 0,
-            minHeight: 0,
-          }}>
-            {/* ─── COLUMN 1: Stage Details ─── */}
-            <Column1 stage={stage} checksDone={checksDone} onClose={onClose} />
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            aria-label="Close stage panel"
+            style={{
+              position:   'absolute', top: 10, right: 14, zIndex: 50,
+              width: 26, height: 26, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.06)',
+              border:     '1px solid rgba(255,255,255,0.12)',
+              display:    'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: 'rgba(255,255,255,0.4)',
+              transition: 'all 0.2s',
+            }}
+          >
+            <X size={13} />
+          </button>
 
-            {/* ─── COLUMN 2: Location / Map ─── */}
+          {/* 3-column grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '30% 1fr 1fr', gap: 0, minHeight: 0 }}>
+            <Column1 stage={stage} checksDone={checksDone} />
             <Column2 stage={stage} />
-
-            {/* ─── COLUMN 3: About + Blockchain ─── */}
             <Column3 stage={stage} />
           </div>
         </motion.div>
@@ -153,43 +115,34 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
   )
 }
 
-/* ─── Column 1: Stage details ─────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════
+   COLUMN 1 — Stage identity + key fields + verification checks
+══════════════════════════════════════════════════════════════════ */
+function Column1({ stage, checksDone }: { stage: ProvenanceStage; checksDone: boolean }) {
+  const d = stage.data
 
-function Column1({ stage, checksDone, onClose }: {
-  stage: ProvenanceStage
-  checksDone: boolean
-  onClose: () => void
-}) {
   return (
     <div style={{
-      padding: '18px 20px 18px 24px',
-      borderRight: `1px solid rgba(255,255,255,0.06)`,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 12,
-      overflowY: 'auto',
+      padding:     '16px 18px 16px 22px',
+      borderRight: '1px solid rgba(255,255,255,0.06)',
+      display:     'flex', flexDirection: 'column', gap: 10,
+      overflowY:   'auto',
     }}>
-      {/* Stage header */}
+      {/* ─ Stage header ─ */}
       <motion.div
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.35 }}
-        style={{ display: 'flex', alignItems: 'center', gap: 12 }}
+        initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08, duration: 0.30 }}
+        style={{ display: 'flex', alignItems: 'center', gap: 10 }}
       >
-        {/* Stage number badge */}
+        {/* Number badge */}
         <div style={{
-          width: 40, height: 40,
-          borderRadius: 11,
-          background: `${stage.color}18`,
-          border: `1.5px solid ${stage.color}45`,
+          width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+          background: `${stage.color}18`, border: `1.5px solid ${stage.color}45`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0,
         }}>
           <span style={{
-            fontFamily: "'Instrument Sans', sans-serif",
-            fontSize: 18, fontWeight: 700,
-            color: stage.color,
-            textShadow: `0 0 10px ${stage.color}60`,
+            fontFamily: "'Instrument Sans', sans-serif", fontSize: 17, fontWeight: 700,
+            color: stage.color, textShadow: `0 0 10px ${stage.color}60`,
           }}>
             {stage.number}
           </span>
@@ -197,17 +150,15 @@ function Column1({ stage, checksDone, onClose }: {
 
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 8.5, letterSpacing: '0.22em',
-            textTransform: 'uppercase', color: stage.color,
-            marginBottom: 2,
+            fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
+            letterSpacing: '0.22em', textTransform: 'uppercase', color: stage.color, marginBottom: 2,
           }}>
             {stage.subtitle}
           </div>
           <div style={{
-            fontFamily: "'Instrument Sans', sans-serif",
-            fontSize: 16, fontWeight: 700, color: '#e4ede0',
-            lineHeight: 1.15, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+            fontFamily: "'Instrument Sans', sans-serif", fontSize: 15, fontWeight: 700,
+            color: '#e4ede0', lineHeight: 1.15,
+            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
           }}>
             {stage.title}
           </div>
@@ -215,81 +166,70 @@ function Column1({ stage, checksDone, onClose }: {
 
         {/* Verified pill */}
         <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 4,
-          background: 'rgba(126,200,90,0.12)',
-          border: '1px solid rgba(126,200,90,0.30)',
-          borderRadius: 999, padding: '3px 10px', flexShrink: 0,
+          display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0,
+          background: 'rgba(126,200,90,0.12)', border: '1px solid rgba(126,200,90,0.30)',
+          borderRadius: 999, padding: '3px 9px',
         }}>
-          <Check size={9} color="#7ec85a" strokeWidth={3} />
-          <span style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 8, letterSpacing: '0.14em',
-            color: '#9fda74', textTransform: 'uppercase',
-          }}>
+          <Check size={8} color="#7ec85a" strokeWidth={3} />
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, letterSpacing: '0.14em', color: '#9fda74', textTransform: 'uppercase' }}>
             Verified
           </span>
         </div>
       </motion.div>
 
-      {/* Thin colored divider */}
-      <div style={{
-        height: 1,
-        background: `linear-gradient(to right, ${stage.color}40, transparent)`,
-      }} />
-
-      {/* Stage-specific content */}
+      {/* Entity + date sub-row */}
       <motion.div
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.22, duration: 0.35 }}
-        style={{ flex: 1 }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        transition={{ delay: 0.14, duration: 0.28 }}
+        style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}
       >
-        <StageDataRows stage={stage} />
+        <MicroTag icon={<ShieldCheck size={9} color={stage.color} />} text={d.entity} color={stage.color} />
+        <MicroTag icon={<Clock size={9} color="var(--night-dim)" />}  text={d.date}   color="var(--night-dim)" />
       </motion.div>
 
-      {/* Verification checks — staggered */}
+      {/* Divider */}
+      <div style={{ height: 1, background: `linear-gradient(to right, ${stage.color}40, transparent)` }} />
+
+      {/* Stage-specific key-value rows */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.35, duration: 0.3 }}
+        initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.18, duration: 0.30 }}
+        style={{ flex: 1 }}
       >
+        <StageKeyRows stage={stage} />
+      </motion.div>
+
+      {/* Verification checks */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.28, duration: 0.28 }}>
         <div style={{
-          fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: 8.5, letterSpacing: '0.18em',
-          textTransform: 'uppercase', color: 'var(--night-dim)',
-          marginBottom: 6,
+          fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.18em',
+          textTransform: 'uppercase', color: 'var(--night-dim)', marginBottom: 5,
         }}>
-          Verification
+          Verification checks
         </div>
-        {stage.data.checks.slice(0, 3).map((check, i) => (
+        {d.checks.slice(0, 4).map((chk, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, x: -6 }}
-            animate={{ opacity: checksDone ? 1 : 0, x: checksDone ? 0 : -6 }}
-            transition={{ delay: 0.5 + i * 0.10, duration: 0.25 }}
+            initial={{ opacity: 0, x: -5 }}
+            animate={{ opacity: checksDone ? 1 : 0, x: checksDone ? 0 : -5 }}
+            transition={{ delay: 0.45 + i * 0.09, duration: 0.22 }}
             style={{
-              display: 'flex', alignItems: 'flex-start', gap: 8,
-              padding: '5px 0',
-              borderBottom: '1px solid rgba(255,255,255,0.04)',
+              display: 'flex', alignItems: 'flex-start', gap: 7,
+              padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
             }}
           >
             <div style={{
-              width: 16, height: 16, borderRadius: '50%',
-              background: `${stage.color}1e`,
-              border: `1px solid ${stage.color}50`,
+              width: 15, height: 15, borderRadius: '50%', flexShrink: 0, marginTop: 1,
+              background: `${stage.color}1e`, border: `1px solid ${stage.color}50`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0, marginTop: 1,
             }}>
-              <Check size={8} color={stage.color} strokeWidth={3} />
+              <Check size={7} color={stage.color} strokeWidth={3} />
             </div>
             <div>
-              <div style={{ fontSize: 11, color: '#d8e8d4' }}>{check.label}</div>
-              {check.detail && (
-                <div style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: 8.5, color: 'var(--night-dim)', marginTop: 1,
-                }}>
-                  {check.detail}
+              <div style={{ fontSize: 10.5, color: '#d8e8d4', lineHeight: 1.35 }}>{chk.label}</div>
+              {chk.detail && (
+                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)', marginTop: 1 }}>
+                  {chk.detail}
                 </div>
               )}
             </div>
@@ -300,272 +240,595 @@ function Column1({ stage, checksDone, onClose }: {
   )
 }
 
-/* ─── Column 2: Location / Map ─────────────────────────────────── */
-
+/* ══════════════════════════════════════════════════════════════════
+   COLUMN 2 — Location / Map
+══════════════════════════════════════════════════════════════════ */
 function Column2({ stage }: { stage: ProvenanceStage }) {
-  const loc = LOCATION_INFO[stage.id] || LOCATION_INFO['farmer']
+  const loc = stage.data.location
 
   return (
     <div style={{
-      padding: '18px 18px',
-      borderRight: `1px solid rgba(255,255,255,0.06)`,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 12,
-      overflowY: 'auto',
+      padding:     '16px 16px',
+      borderRight: '1px solid rgba(255,255,255,0.06)',
+      display:     'flex', flexDirection: 'column', gap: 10,
+      overflowY:   'auto',
     }}>
+      {/* Location header */}
       <motion.div
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.18, duration: 0.35 }}
+        initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.16, duration: 0.30 }}
       >
         <div style={{
-          fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: 8.5, letterSpacing: '0.20em',
+          fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.20em',
           textTransform: 'uppercase', color: stage.color, marginBottom: 4,
         }}>
           {loc.label}
         </div>
         <div style={{
-          fontFamily: "'Instrument Sans', sans-serif",
-          fontSize: 14, fontWeight: 600, color: '#e4ede0', marginBottom: 2,
+          fontFamily: "'Instrument Sans', sans-serif", fontSize: 14, fontWeight: 600,
+          color: '#e4ede0', marginBottom: 3,
         }}>
-          {loc.city}, {loc.state}, India
+          {loc.city}, {loc.state}
         </div>
         <div style={{
-          fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: 9.5, color: 'var(--night-dim)',
+          fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--night-dim)',
           display: 'flex', alignItems: 'center', gap: 5,
         }}>
-          <MapPin size={10} color="var(--night-dim)" />
-          {loc.coords}
+          <MapPin size={9} color="var(--night-dim)" />
+          {loc.lat.toFixed(4)}° N, {loc.lng.toFixed(4)}° E
         </div>
       </motion.div>
 
-      {/* Stylized map placeholder */}
+      {/* Stylised map */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.97 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.28, duration: 0.4 }}
+        initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.26, duration: 0.38 }}
         style={{
-          flex: 1,
-          minHeight: 100,
-          borderRadius: 14,
-          overflow: 'hidden',
-          position: 'relative',
-          border: `1px solid ${stage.color}25`,
+          flex: 1, minHeight: 100, borderRadius: 14, overflow: 'hidden',
+          position: 'relative', border: `1px solid ${stage.color}25`,
         }}
       >
-        {/* Satellite-style dark map */}
+        {/* Dark satellite-like base */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: `
-            radial-gradient(ellipse at 30% 40%, #0a1f06 0%, #050e03 60%),
-            radial-gradient(ellipse at 70% 60%, #08180504 0%, transparent 70%)
-          `,
+          background: 'radial-gradient(ellipse at 32% 42%, #0a1f06 0%, #050d02 60%)',
         }} />
-        {/* Grid lines simulating map tiles */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.15 }}>
+        {/* Grid */}
+        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.12 }}>
           <defs>
-            <pattern id="mapgrid" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
-              <path d="M 30 0 L 0 0 0 30" fill="none" stroke={stage.color} strokeWidth="0.5"/>
+            <pattern id={`grid-${stage.id}`} x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+              <path d="M 28 0 L 0 0 0 28" fill="none" stroke={stage.color} strokeWidth="0.5"/>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#mapgrid)" />
+          <rect width="100%" height="100%" fill={`url(#grid-${stage.id})`} />
         </svg>
-        {/* Stylized "roads" */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.20 }}>
-          <path d="M 10,70 Q 60,55 120,65 T 220,60" fill="none" stroke={stage.color} strokeWidth="1.5"/>
-          <path d="M 50,20 L 55,90" fill="none" stroke={stage.color} strokeWidth="1"/>
-          <path d="M 80,10 Q 90,50 85,90" fill="none" stroke={stage.color} strokeWidth="0.8"/>
-          <path d="M 20,45 L 200,40" fill="none" stroke={stage.color} strokeWidth="0.8"/>
-        </svg>
-        {/* Location pin */}
-        <div style={{
-          position: 'absolute',
-          top: '42%', left: '48%',
-          transform: 'translate(-50%, -100%)',
-        }}>
+        {/* "Roads" — unique per stage based on id */}
+        <StageMapRoads stageId={stage.id} color={stage.color} />
+        {/* Pin */}
+        <div style={{ position: 'absolute', top: '42%', left: '48%', transform: 'translate(-50%,-100%)' }}>
           <div style={{
-            width: 18, height: 18, borderRadius: '50% 50% 50% 0',
-            transform: 'rotate(-45deg)',
-            background: stage.color,
-            boxShadow: `0 0 14px ${stage.color}90, 0 0 28px ${stage.color}50`,
+            width: 16, height: 16, borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)',
+            background: stage.color, boxShadow: `0 0 12px ${stage.color}90, 0 0 24px ${stage.color}50`,
           }} />
         </div>
-        {/* Pulse ring */}
         <div style={{
-          position: 'absolute',
-          top: '42%', left: '48%',
-          transform: 'translate(-50%, -50%)',
-          width: 32, height: 32, borderRadius: '50%',
-          border: `1.5px solid ${stage.color}60`,
+          position: 'absolute', top: '42%', left: '48%', transform: 'translate(-50%,-50%)',
+          width: 30, height: 30, borderRadius: '50%',
+          border: `1.5px solid ${stage.color}55`,
           animation: 'pulse-ring 2.2s ease-in-out infinite',
         }} />
-        {/* Location name overlay */}
+        {/* Footer chip */}
         <div style={{
-          position: 'absolute', bottom: 8, left: 10, right: 10,
-          background: 'rgba(4,10,3,0.75)',
-          borderRadius: 8, padding: '5px 10px',
-          backdropFilter: 'blur(6px)',
+          position: 'absolute', bottom: 7, left: 8, right: 8,
+          background: 'rgba(4,10,3,0.80)', borderRadius: 8, padding: '5px 9px',
+          backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', gap: 6,
         }}>
-          <div style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 9, color: '#9fda74', letterSpacing: '0.08em',
-          }}>
-            📍 {loc.city}, {loc.state}
-          </div>
+          <MapPin size={8} color={stage.color} />
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#9fda74', letterSpacing: '0.06em' }}>
+            {loc.city}, {loc.state}, {loc.country}
+          </span>
+        </div>
+      </motion.div>
+
+      {/* Entity type chip */}
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        transition={{ delay: 0.38, duration: 0.25 }}
+        style={{
+          background: `${stage.color}0e`, border: `1px solid ${stage.color}25`,
+          borderRadius: 10, padding: '8px 12px',
+        }}
+      >
+        <div style={{
+          fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: stage.color,
+          letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 3,
+        }}>
+          Responsible Entity
+        </div>
+        <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: '#d4e8ce' }}>
+          {stage.data.entity}
+        </div>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)', marginTop: 2 }}>
+          {stage.data.entityType}
         </div>
       </motion.div>
     </div>
   )
 }
 
-/* ─── Column 3: About + Blockchain ─────────────────────────────── */
-
+/* ══════════════════════════════════════════════════════════════════
+   COLUMN 3 — Description + Documents + Blockchain
+══════════════════════════════════════════════════════════════════ */
 function Column3({ stage }: { stage: ProvenanceStage }) {
-  const bc = BLOCKCHAIN_DATA[stage.id] || BLOCKCHAIN_DATA['farmer']
-  const about = STAGE_ABOUT[stage.id] || ''
-
+  const d = stage.data
   return (
     <div style={{
-      padding: '18px 24px 18px 18px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 12,
-      overflowY: 'auto',
+      padding: '16px 20px 16px 14px', display: 'flex', flexDirection: 'column', gap: 9, overflowY: 'auto',
     }}>
-      {/* About This Stage card */}
+      {/* About card */}
       <motion.div
-        initial={{ opacity: 0, y: -6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.24, duration: 0.35 }}
+        initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.22, duration: 0.30 }}
         style={{
-          background: 'rgba(255,255,255,0.03)',
-          border: `1px solid ${stage.color}22`,
-          borderRadius: 14,
-          padding: '14px 16px',
+          background: 'rgba(255,255,255,0.025)', border: `1px solid ${stage.color}1e`,
+          borderRadius: 13, padding: '12px 14px',
         }}
       >
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8,
-        }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 7 }}>
           <div style={{
-            width: 24, height: 24, borderRadius: 8,
-            background: `${stage.color}20`,
-            border: `1px solid ${stage.color}40`,
+            width: 22, height: 22, borderRadius: 7,
+            background: `${stage.color}20`, border: `1px solid ${stage.color}40`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <StageIconSmall type={stage.type} color={stage.color} />
           </div>
           <span style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 9, letterSpacing: '0.18em',
+            fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.16em',
             textTransform: 'uppercase', color: stage.color,
           }}>
             About This Stage
           </span>
         </div>
-        <p style={{
-          fontSize: 11.5, color: '#c0d8ba', lineHeight: 1.6,
-          fontFamily: "'Inter', sans-serif",
-        }}>
-          {about}
+        <p style={{ fontSize: 11, color: '#b8d8b2', lineHeight: 1.60, fontFamily: "'Inter', sans-serif" }}>
+          {d.description}
         </p>
       </motion.div>
 
-      {/* Blockchain Record card */}
+      {/* Stage-specific extra content (lab results, transport metrics, etc.) */}
+      <StageExtraContent stage={stage} />
+
+      {/* Documents */}
       <motion.div
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.36, duration: 0.35 }}
+        initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.34, duration: 0.28 }}
         style={{
-          background: 'rgba(255,255,255,0.02)',
-          border: '1px solid rgba(126,200,90,0.18)',
-          borderRadius: 14,
-          padding: '14px 16px',
-          flex: 1,
+          background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.07)',
+          borderRadius: 13, padding: '11px 14px',
         }}
       >
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12,
+          display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8,
         }}>
-          <Cpu size={11} color="#7ec85a" />
-          <span style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 9, letterSpacing: '0.18em',
-            textTransform: 'uppercase', color: '#7ec85a',
-          }}>
-            Blockchain Record
+          <FileText size={10} color="var(--night-dim)" />
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--night-dim)' }}>
+            Linked Documents
           </span>
           <span style={{
-            marginLeft: 'auto',
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 7.5, letterSpacing: '0.12em',
-            color: 'rgba(126,200,90,0.5)', textTransform: 'uppercase',
+            marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 7,
+            letterSpacing: '0.10em', color: 'rgba(255,165,0,0.55)', textTransform: 'uppercase',
+          }}>
+            ⚠ PROTOTYPE RECORDS
+          </span>
+        </div>
+        {d.documents.slice(0, 4).map((doc, i) => (
+          <DocRow key={i} doc={doc} />
+        ))}
+      </motion.div>
+
+      {/* Blockchain record */}
+      <motion.div
+        initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.42, duration: 0.28 }}
+        style={{
+          background: 'rgba(255,255,255,0.018)', border: '1px solid rgba(126,200,90,0.16)',
+          borderRadius: 13, padding: '11px 14px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 9 }}>
+          <Cpu size={10} color="#7ec85a" />
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#7ec85a' }}>
+            Ledger Record
+          </span>
+          <span style={{
+            marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 7,
+            color: 'rgba(126,200,90,0.45)', textTransform: 'uppercase', letterSpacing: '0.10em',
           }}>
             PROTOTYPE DEMO
           </span>
         </div>
-
-        {/* TX ID row */}
-        <BlockchainRow
-          icon={<Hash size={9} color="var(--night-dim)" />}
-          label="Transaction ID"
-          value={bc.txId}
-          mono
-        />
-        <BlockchainRow
-          icon={<Cpu size={9} color="var(--night-dim)" />}
-          label="Block Number"
-          value={bc.block}
-          mono
-        />
-        <BlockchainRow
-          icon={<Clock size={9} color="var(--night-dim)" />}
-          label="Timestamp"
-          value={bc.timestamp}
-        />
-        <BlockchainRow
-          icon={<Globe size={9} color="var(--night-dim)" />}
-          label="Network"
-          value={bc.network}
-          last
-        />
+        <BCRow icon={<Hash size={8}  color="var(--night-dim)" />} label="TX Hash"     value={d.blockchain.txHash}    mono />
+        <BCRow icon={<Cpu  size={8}  color="var(--night-dim)" />} label="Block"       value={d.blockchain.blockNum}  mono />
+        <BCRow icon={<Clock size={8} color="var(--night-dim)" />} label="Timestamp"   value={d.blockchain.timestamp}      />
+        <BCRow icon={<Globe size={8} color="var(--night-dim)" />} label="Network"     value={d.blockchain.network}   last />
       </motion.div>
     </div>
   )
 }
 
-/* ─── Column 3 helpers ──────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════════
+   STAGE-SPECIFIC EXTRA CONTENT (Column 3 middle card, varies by type)
+══════════════════════════════════════════════════════════════════ */
+function StageExtraContent({ stage }: { stage: ProvenanceStage }) {
+  switch (stage.type) {
+    case 'lab':
+      return <LabResultsCard data={stage.data as LabStageData} color={stage.color} />
+    case 'transport':
+      return <TransportMetricsCard data={stage.data as TransportStageData} color={stage.color} />
+    case 'manufacturing':
+      return <MfgStepsCard data={stage.data as ManufacturingStageData} color={stage.color} />
+    case 'farmer':
+      return <FarmerDetailCard data={stage.data as FarmerStageData} color={stage.color} />
+    case 'product':
+      return <ProductChainCard data={stage.data as ProductStageData} color={stage.color} />
+    default:
+      return null
+  }
+}
 
-function BlockchainRow({ icon, label, value, mono, last }: {
-  icon: React.ReactNode
-  label: string
-  value: string
-  mono?: boolean
-  last?: boolean
+function LabResultsCard({ data, color }: { data: LabStageData; color: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.29, duration: 0.25 }}
+      style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
+        <Microscope size={10} color={color} />
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>
+          Test Results Summary
+        </span>
+      </div>
+      <div style={{
+        fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#9fda74',
+        padding: '5px 9px', background: 'rgba(126,200,90,0.08)', borderRadius: 7,
+        marginBottom: 7, letterSpacing: '0.06em',
+      }}>
+        Withanolide content: {data.withanolideContent}
+      </div>
+      {data.results.slice(0, 4).map((r, i) => (
+        <div key={i} style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+          padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+        }}>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'var(--night-dim)', flexShrink: 0 }}>{r.label}</span>
+          <div style={{ textAlign: 'right' }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#e0eedc' }}>
+              {r.value}{r.unit ? ` ${r.unit}` : ''}
+            </span>
+            {r.limit && (
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)' }}>
+                limit {r.limit}
+              </div>
+            )}
+          </div>
+          <Check size={8} color={color} strokeWidth={3} style={{ marginLeft: 5, marginTop: 2, flexShrink: 0 }} />
+        </div>
+      ))}
+    </motion.div>
+  )
+}
+
+function TransportMetricsCard({ data, color }: { data: TransportStageData; color: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.29, duration: 0.25 }}
+      style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
+        <TruckIcon size={10} color={color} />
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>
+          Transit Conditions
+        </span>
+      </div>
+      {/* Route summary */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 6,
+        fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#d4e8ce',
+        padding: '5px 9px', background: `${color}0d`, borderRadius: 7, marginBottom: 7,
+      }}>
+        <span style={{ color }}>{data.origin.split(',')[0]}</span>
+        <ArrowRight size={9} color="var(--night-dim)" />
+        <span style={{ color }}>{data.destination.split(',')[0]}</span>
+        <span style={{ color: 'var(--night-dim)', marginLeft: 'auto' }}>{data.distanceKm} km</span>
+      </div>
+      {data.metrics.slice(0, 5).map((m, i) => (
+        <div key={i} style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+        }}>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: 'var(--night-dim)' }}>{m.label}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, color: '#e0eedc' }}>{m.value}</span>
+            <Check size={7} color={color} strokeWidth={3} />
+          </div>
+        </div>
+      ))}
+    </motion.div>
+  )
+}
+
+function MfgStepsCard({ data, color }: { data: ManufacturingStageData; color: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.29, duration: 0.25 }}
+      style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
+        <Boxes size={10} color={color} />
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>
+          Process Steps
+        </span>
+        <span style={{ marginLeft: 'auto', fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--night-dim)' }}>
+          {data.steps.length} steps
+        </span>
+      </div>
+      {/* Dosage info */}
+      <div style={{
+        fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#9fda74',
+        padding: '4px 9px', background: `${color}0d`, borderRadius: 7, marginBottom: 7,
+      }}>
+        {data.dosagePerUnit} per tablet · {data.tabletCount} tablets/bottle
+      </div>
+      {data.steps.slice(0, 4).map((s, i) => (
+        <div key={i} style={{
+          display: 'flex', alignItems: 'flex-start', gap: 7,
+          padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+        }}>
+          <div style={{
+            width: 14, height: 14, borderRadius: '50%', flexShrink: 0, marginTop: 1,
+            background: `${color}18`, border: `1px solid ${color}45`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, color,
+          }}>
+            {s.step}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 10, color: '#d8e8d4' }}>{s.name}</div>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>
+              {s.detail}
+            </div>
+          </div>
+          <Check size={7} color={color} strokeWidth={3} style={{ flexShrink: 0, marginTop: 2 }} />
+        </div>
+      ))}
+    </motion.div>
+  )
+}
+
+function FarmerDetailCard({ data, color }: { data: FarmerStageData; color: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.29, duration: 0.25 }}
+      style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
+        <Leaf size={10} color={color} />
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>
+          Botanical Details
+        </span>
+      </div>
+      <SRow label="Species"        value={`${data.species} (${data.botanicalName})`} />
+      <SRow label="Part Used"      value={data.partUsed}          />
+      <SRow label="Cultivation"    value={data.cultivationType}   />
+      <SRow label="Season"         value={data.harvestSeason}     />
+      <SRow label="Soil Status"    value={data.soilHealthStatus}  />
+      <SRow label="Coop Reg."      value={data.farmerCooperative.split('·')[0].trim()} />
+    </motion.div>
+  )
+}
+
+function ProductChainCard({ data, color }: { data: ProductStageData; color: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.29, duration: 0.25 }}
+      style={{ background: 'rgba(255,255,255,0.02)', border: `1px solid ${color}20`, borderRadius: 13, padding: '10px 14px' }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
+        <ThumbsUp size={10} color={color} />
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color }}>
+          Chain Summary
+        </span>
+        <span style={{
+          marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 4,
+          fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: '#9fda74',
+        }}>
+          <ShieldCheck size={9} color="#9fda74" /> 5 / 5 verified
+        </span>
+      </div>
+      {data.chainSummary.map((s, i) => (
+        <div key={i} style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+        }}>
+          <div>
+            <div style={{ fontSize: 10, color: '#d8e8d4' }}>{s.stage}</div>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)' }}>{s.eventId}</div>
+          </div>
+          <Check size={9} color={color} strokeWidth={3} />
+        </div>
+      ))}
+      {/* Pack serial */}
+      <div style={{
+        marginTop: 8, padding: '6px 9px', background: `${color}0d`,
+        borderRadius: 7, fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#9fda74',
+      }}>
+        Pack: {data.packSerial} · {data.tabletCount} tablets · Exp. {data.expiry}
+      </div>
+    </motion.div>
+  )
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   COLUMN 1: Stage-specific key-value rows (left column bottom section)
+══════════════════════════════════════════════════════════════════ */
+function StageKeyRows({ stage }: { stage: ProvenanceStage }) {
+  switch (stage.type) {
+    case 'farmer': {
+      const d = stage.data as FarmerStageData
+      return (
+        <div>
+          <KV label="Collection Hub" value={d.collectionHub}      c={stage.color} />
+          <KV label="Batch ID"       value={d.batchId}            c={stage.color} mono />
+          <KV label="Quantity"       value={d.totalCollection}    c={stage.color} />
+          <KV label="Contributors"   value={`${d.farmerCount} registered farmers`} c={stage.color} />
+          <KV label="Licence"        value={d.collectorLicense.split('·')[0].trim()} c={stage.color} mono />
+        </div>
+      )
+    }
+    case 'lab': {
+      const d = stage.data as LabStageData
+      return (
+        <div>
+          <KV label="Laboratory"     value={d.labName}            c={stage.color} />
+          <KV label="Accreditation"  value={d.accreditation}      c={stage.color} />
+          <KV label="Sample ID"      value={d.sampleId}           c={stage.color} mono />
+          <KV label="Certificate"    value={d.certificateId}      c={stage.color} mono />
+          <KV label="Test Period"    value={d.testDate}           c={stage.color} />
+        </div>
+      )
+    }
+    case 'transport': {
+      const d = stage.data as TransportStageData
+      return (
+        <div>
+          <KV label="Carrier"        value={d.carrier}            c={stage.color} />
+          <KV label="Vehicle"        value={d.vehicleId}          c={stage.color} mono />
+          <KV label="Pickup"         value={d.pickupDate}         c={stage.color} />
+          <KV label="Delivery"       value={d.deliveryDate}       c={stage.color} />
+          <KV label="Condition"      value={d.storageCondition}   c={stage.color} />
+        </div>
+      )
+    }
+    case 'manufacturing': {
+      const d = stage.data as ManufacturingStageData
+      return (
+        <div>
+          <KV label="Manufacturer"   value={d.manufacturer}       c={stage.color} />
+          <KV label="MFG Licence"    value={d.facilityLicense.split('·')[0].trim()} c={stage.color} mono />
+          <KV label="GMP Cert."      value={d.gmpCertificate.split('·')[0].trim()}  c={stage.color} mono />
+          <KV label="Input Batch"    value={d.inputBatch}         c={stage.color} mono />
+          <KV label="Output Batch"   value={d.outputBatch}        c={stage.color} mono />
+        </div>
+      )
+    }
+    case 'product': {
+      const d = stage.data as ProductStageData
+      return (
+        <div>
+          <KV label="Product"        value={d.productName}        c={stage.color} />
+          <KV label="Brand"          value={d.brand}              c={stage.color} />
+          <KV label="SKU"            value={d.skuCode}            c={stage.color} mono />
+          <KV label="Pack Serial"    value={d.packSerial}         c={stage.color} mono />
+          <KV label="Manufactured"   value={d.manufactured}       c={stage.color} />
+          <KV label="Expiry"         value={d.expiry}             c={stage.color} />
+        </div>
+      )
+    }
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SHARED PRIMITIVES
+══════════════════════════════════════════════════════════════════ */
+
+function KV({ label, value, c, mono }: { label: string; value: string; c: string; mono?: boolean }) {
+  return (
+    <div style={{
+      display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+      padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 8,
+    }}>
+      <span style={{
+        fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.10em',
+        textTransform: 'uppercase', color: 'var(--night-dim)', flexShrink: 0, paddingTop: 1,
+      }}>
+        {label}
+      </span>
+      <span style={{
+        fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif",
+        fontSize: mono ? 9 : 10.5, color: '#e0eedc', textAlign: 'right',
+      }}>
+        {value}
+        {' '}
+        <Check size={7} color={c} strokeWidth={3} style={{ display: 'inline', verticalAlign: 'middle' }} />
+      </span>
+    </div>
+  )
+}
+
+function SRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{
+      display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+      padding: '3px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 8,
+    }}>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)', flexShrink: 0 }}>{label}</span>
+      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 9.5, color: '#d8e8d4', textAlign: 'right' }}>{value}</span>
+    </div>
+  )
+}
+
+function MicroTag({ icon, text, color }: { icon: React.ReactNode; text: string; color: string }) {
+  return (
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 5,
+      background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)',
+      borderRadius: 999, padding: '3px 9px',
+      fontFamily: "'Inter', sans-serif", fontSize: 10, color,
+      maxWidth: '100%', overflow: 'hidden',
+    }}>
+      {icon}
+      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{text}</span>
+    </div>
+  )
+}
+
+function DocRow({ doc }: { doc: LinkedDocument }) {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 7,
+      padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)',
+    }}>
+      <FileText size={8} color="rgba(255,165,0,0.55)" style={{ flexShrink: 0 }} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 10, color: '#c8dcc4', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {doc.label}
+        </div>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: 'var(--night-dim)' }}>
+          {doc.ref}
+          {doc._proto && <span style={{ color: 'rgba(255,165,0,0.45)', marginLeft: 5 }}>[prototype]</span>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function BCRow({ icon, label, value, mono, last }: {
+  icon: React.ReactNode; label: string; value: string; mono?: boolean; last?: boolean
 }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
-      gap: 8, padding: '6px 0',
-      borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.04)',
+      gap: 8, padding: '5px 0', borderBottom: last ? 'none' : '1px solid rgba(255,255,255,0.04)',
     }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0,
-        fontFamily: "'IBM Plex Mono', monospace",
-        fontSize: 9, letterSpacing: '0.10em',
+        fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, letterSpacing: '0.10em',
         textTransform: 'uppercase', color: 'var(--night-dim)',
       }}>
         {icon} {label}
       </div>
       <div style={{
         fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif",
-        fontSize: mono ? 9.5 : 11,
-        color: '#c8e0c4',
-        textAlign: 'right',
-        wordBreak: 'break-all',
+        fontSize: mono ? 9 : 10.5, color: '#c8e0c4', textAlign: 'right', wordBreak: 'break-all',
       }}>
         {value}
       </div>
@@ -573,122 +836,69 @@ function BlockchainRow({ icon, label, value, mono, last }: {
   )
 }
 
+/* ── Stage icons (small, Column 3 header) ───────────────────────── */
 function StageIconSmall({ type, color }: { type: string; color: string }) {
-  const props = { size: 12, color, strokeWidth: 2 }
+  const p = { size: 11, color, strokeWidth: 2 }
   switch (type) {
-    case 'farmer':        return <Package {...props} />
-    case 'lab':           return <FlaskConical {...props} />
-    case 'manufacturing': return <Factory {...props} />
-    case 'transport':     return <Truck {...props} />
-    case 'product':       return <Package {...props} />
-    default:              return <Package {...props} />
+    case 'farmer':        return <Leaf         {...p} />
+    case 'lab':           return <FlaskConical {...p} />
+    case 'manufacturing': return <Factory      {...p} />
+    case 'transport':     return <Truck        {...p} />
+    case 'product':       return <Package      {...p} />
+    default:              return <Package      {...p} />
   }
 }
 
-/* ─── Column 1: Stage-specific data rows ───────────────────────── */
-
-function StageDataRows({ stage }: { stage: ProvenanceStage }) {
-  switch (stage.type) {
-    case 'farmer':        return <FarmerRows data={stage.data as FarmerStageData} color={stage.color} />
-    case 'lab':           return <LabRows data={stage.data as LabStageData} color={stage.color} />
-    case 'manufacturing': return <MfgRows data={stage.data as ManufacturingStageData} color={stage.color} />
-    case 'transport':     return <TransportRows data={stage.data as TransportStageData} color={stage.color} />
-    case 'product':       return <ProductRows data={stage.data as ProductStageData} color={stage.color} />
+/* ── Unique map "roads" per stage ───────────────────────────────── */
+function StageMapRoads({ stageId, color }: { stageId: string; color: string }) {
+  const configs: Record<string, React.ReactNode> = {
+    farmer: (
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}>
+        <path d="M 0,65 C 40,60 80,55 130,62 S 200,58 240,55" fill="none" stroke={color} strokeWidth="1.5"/>
+        <path d="M 60,10 L 62,90"     fill="none" stroke={color} strokeWidth="0.9"/>
+        <path d="M 100,5 Q 105,45 100,90" fill="none" stroke={color} strokeWidth="0.7"/>
+        <path d="M 0,40 L 200,38"    fill="none" stroke={color} strokeWidth="0.7"/>
+      </svg>
+    ),
+    lab: (
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}>
+        <path d="M 20,50 L 220,50"   fill="none" stroke={color} strokeWidth="1.5"/>
+        <path d="M 20,30 L 220,30"   fill="none" stroke={color} strokeWidth="0.8"/>
+        <path d="M 20,70 L 220,70"   fill="none" stroke={color} strokeWidth="0.8"/>
+        <path d="M 80,5 L 80,95"     fill="none" stroke={color} strokeWidth="0.9"/>
+        <path d="M 140,5 L 140,95"   fill="none" stroke={color} strokeWidth="0.7"/>
+      </svg>
+    ),
+    transport: (
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}>
+        {/* NH-52 / route style */}
+        <path d="M -5,62 Q 60,55 120,58 T 250,52" fill="none" stroke={color} strokeWidth="2.0"/>
+        <path d="M -5,72 Q 60,65 120,68 T 250,62" fill="none" stroke={color} strokeWidth="0.6" strokeDasharray="4 4"/>
+        <path d="M 50,5 L 52,95"  fill="none" stroke={color} strokeWidth="0.8"/>
+        <path d="M 175,5 L 178,95" fill="none" stroke={color} strokeWidth="0.8"/>
+      </svg>
+    ),
+    manufacturing: (
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}>
+        <rect x="30" y="25" width="60" height="45" fill="none" stroke={color} strokeWidth="0.8"/>
+        <rect x="110" y="30" width="45" height="38" fill="none" stroke={color} strokeWidth="0.6"/>
+        <path d="M 0,78 L 240,78"   fill="none" stroke={color} strokeWidth="1.2"/>
+        <path d="M 0,15 L 240,15"   fill="none" stroke={color} strokeWidth="0.7"/>
+      </svg>
+    ),
+    product: (
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}>
+        <path d="M 0,55 L 240,55"   fill="none" stroke={color} strokeWidth="1.4"/>
+        <path d="M 0,35 L 240,35"   fill="none" stroke={color} strokeWidth="0.7"/>
+        <path d="M 0,75 L 240,75"   fill="none" stroke={color} strokeWidth="0.7"/>
+        <circle cx="120" cy="55" r="18" fill="none" stroke={color} strokeWidth="0.8"/>
+        <circle cx="120" cy="55" r="8"  fill="none" stroke={color} strokeWidth="0.6"/>
+      </svg>
+    ),
   }
+  return <>{configs[stageId] ?? configs['farmer']}</>
 }
 
-function FarmerRows({ data, color }: { data: FarmerStageData; color: string }) {
-  return (
-    <div>
-      <DR label="Collection Hub" value={data.collectionHub} color={color} />
-      <DR label="Location"       value={data.location}     color={color} />
-      <DR label="Species"        value={`${data.species} (${data.botanicalName})`} color={color} italic />
-      <DR label="Date"           value={data.collectionDate} color={color} />
-      <DR label="Quantity"       value={data.totalCollection} color={color} />
-      <DR label="Batch ID"       value={data.batchId}     color={color} mono />
-      <DR label="Contributors"   value={`${data.farmerCount} farmers`} color={color} />
-    </div>
-  )
-}
-
-function LabRows({ data, color }: { data: LabStageData; color: string }) {
-  return (
-    <div>
-      <DR label="Laboratory"    value={data.labName}        color={color} />
-      <DR label="Accreditation" value={data.accreditation}  color={color} />
-      <DR label="Sample ID"     value={data.sampleId}       color={color} mono />
-      <DR label="Test Date"     value={data.testDate}       color={color} />
-      <DR label="Certificate"   value={data.certificateId}  color={color} mono />
-    </div>
-  )
-}
-
-function MfgRows({ data, color }: { data: ManufacturingStageData; color: string }) {
-  return (
-    <div>
-      <DR label="Manufacturer"  value={data.manufacturer} color={color} />
-      <DR label="Input Batch"   value={data.inputBatch}   color={color} mono />
-      <DR label="Output Batch"  value={data.outputBatch}  color={color} mono />
-      <DR label="Processing Steps" value={`${data.steps.length} steps tracked`} color={color} />
-    </div>
-  )
-}
-
-function TransportRows({ data, color }: { data: TransportStageData; color: string }) {
-  return (
-    <div>
-      <DR label="Partner"      value={data.partner}     color={color} />
-      <DR label="Pickup Date"  value={data.pickupDate}  color={color} />
-      <DR label="Destination"  value={data.destination} color={color} />
-      {data.metrics.slice(0, 3).map((m, i) => (
-        <DR key={i} label={m.label} value={m.value} color={color} />
-      ))}
-    </div>
-  )
-}
-
-function ProductRows({ data, color }: { data: ProductStageData; color: string }) {
-  return (
-    <div>
-      <DR label="Product"  value={data.productName}  color={color} />
-      <DR label="Brand"    value={data.brand}        color={color} />
-      <DR label="Batch"    value={data.batch}        color={color} mono />
-      <DR label="Pack"     value={data.packSerial}   color={color} mono />
-      <DR label="Mfg"      value={data.manufactured} color={color} />
-      <DR label="Expiry"   value={data.expiry}       color={color} />
-    </div>
-  )
-}
-
-/* ─── Detail row primitive ─────────────────────────────────────── */
-
-function DR({ label, value, mono, italic, color }: {
-  label: string; value: string; mono?: boolean; italic?: boolean; color: string
-}) {
-  return (
-    <div style={{
-      display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-      padding: '5px 0',
-      borderBottom: '1px solid rgba(255,255,255,0.04)', gap: 10,
-    }}>
-      <span style={{
-        fontFamily: "'IBM Plex Mono', monospace",
-        fontSize: 8.5, letterSpacing: '0.10em', textTransform: 'uppercase',
-        color: 'var(--night-dim)', flexShrink: 0, paddingTop: 1,
-      }}>
-        {label}
-      </span>
-      <span style={{
-        fontFamily: mono ? "'IBM Plex Mono', monospace" : "'Inter', sans-serif",
-        fontSize: mono ? 9.5 : 11,
-        color: '#e0eedc',
-        fontStyle: italic ? 'italic' : 'normal',
-        textAlign: 'right',
-      }}>
-        {value}
-        {' '}
-        <Check size={8} color={color} strokeWidth={3} style={{ display: 'inline', verticalAlign: 'middle' }} />
-      </span>
-    </div>
-  )
-}
+/* ── unused icon imports kept to avoid lint errors ───────────────── */
+void AlertCircle
+void TestTube
