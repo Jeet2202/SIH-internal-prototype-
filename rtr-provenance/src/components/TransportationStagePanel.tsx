@@ -24,7 +24,7 @@ import 'leaflet/dist/leaflet.css'
 import {
   X, Check, ShieldCheck, Truck, Thermometer, Droplets,
   Hash, Clock, Globe, Cpu, Navigation, Shield, Zap,
-  Lock, User, MapPin, AlertCircle, ArrowDown,
+  Lock, User, MapPin, AlertCircle, ArrowDown, FileText,
 } from 'lucide-react'
 import { TRANSPORTATION_RECORD } from '../data/transportation'
 
@@ -74,6 +74,7 @@ interface Props {
 ══════════════════════════════════════════════════════════════════ */
 export default function TransportationStagePanel({ open, onClose, hidden = false }: Props) {
   const rec = TRANSPORTATION_RECORD
+  const [docModalOpen, setDocModalOpen] = useState(false)
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -82,6 +83,7 @@ export default function TransportationStagePanel({ open, onClose, hidden = false
   }, [onClose])
 
   return (
+    <>
     <AnimatePresence mode="wait">
       {open && (
         <motion.div
@@ -126,11 +128,17 @@ export default function TransportationStagePanel({ open, onClose, hidden = false
           }}>
             <LeftColumn  rec={rec} />
             <MiddleColumn rec={rec} />
-            <RightColumn  rec={rec} />
+            <RightColumn  rec={rec} onOpenDoc={() => setDocModalOpen(true)} />
           </div>
         </motion.div>
       )}
     </AnimatePresence>
+
+    <DocumentModal
+      open={docModalOpen}
+      onClose={() => setDocModalOpen(false)}
+    />
+    </>
   )
 }
 
@@ -710,7 +718,7 @@ function CustodyTimeline({ routeDone }: { routeDone: boolean }) {
    RIGHT COLUMN — WHY IT MATTERS
    About stage · Smart Insurance flow · Ledger record
 ══════════════════════════════════════════════════════════════════ */
-function RightColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
+function RightColumn({ rec, onOpenDoc }: { rec: typeof TRANSPORTATION_RECORD; onOpenDoc: () => void }) {
   return (
     <div style={{
       padding:  '10px 14px 10px 10px',
@@ -731,6 +739,35 @@ function RightColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
       {/* ── LEDGER RECORD ── */}
       <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.40, duration: 0.28 }}>
         <LedgerCard rec={rec} />
+      </motion.div>
+
+      {/* ── DOCUMENTS ── */}
+      <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.48, duration: 0.28 }}>
+        <button
+          onClick={onOpenDoc}
+          style={{
+            width: '100%',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '9px 12px',
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: 10,
+            cursor: 'pointer',
+            transition: 'background 0.2s',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.03)'}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <FileText size={14} color="#e0d8f8" />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: '#e0d8f8', letterSpacing: '0.06em' }}>
+              Transit Insurance & Risk Report
+            </span>
+          </div>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: ACCENT, letterSpacing: '0.1em' }}>
+            VIEW →
+          </span>
+        </button>
       </motion.div>
     </div>
   )
@@ -1015,6 +1052,63 @@ function LedgerRow({ icon, label, value, mono }: { icon: React.ReactNode; label:
 /* ── Helper ─────────────────────────────────────────────────────── */
 function shortDate(d: string): string {
   return d.replace(' August', ' Aug').replace(' 2026', '')
+}
+
+/* ─── Document Viewer Modal ─────────────────────────────────────── */
+function DocumentModal({
+  open, onClose
+}: {
+  open: boolean
+  onClose: () => void
+}) {
+  if (!open) return null
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', background: 'rgba(0,0,0,0.80)', backdropFilter: 'blur(12px)' }}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        style={{
+          pointerEvents: 'auto',
+          background: 'rgba(5,12,4,0.98)',
+          border: `1px solid ${ACCENT}50`,
+          borderRadius: 16,
+          width: 'min(800px, 96vw)',
+          height: '85vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          boxShadow: `0 28px 90px rgba(0,0,0,0.80), 0 0 60px ${ACCENT}20`,
+        }}
+      >
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '12px 16px', borderBottom: `1px solid ${ACCENT}30`,
+          background: `${ACCENT}0a`
+        }}>
+          <span style={{ fontFamily: "var(--font-display)", color: ACCENT2, fontSize: 14, fontWeight: 600 }}>Transit Insurance & Risk Report</span>
+          <button
+            onClick={onClose}
+            style={{
+              width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+              background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: 'rgba(255,255,255,0.6)',
+            }}
+          >
+            <X size={14} />
+          </button>
+        </div>
+        
+        <iframe
+          src="/documents/stage3.pdf#toolbar=0"
+          style={{ width: '100%', flex: 1, border: 'none' }}
+          title="Transportation Document"
+        />
+      </motion.div>
+    </div>
+  )
 }
 
 /* ── Suppress unused import ─────────────────────────────────────── */

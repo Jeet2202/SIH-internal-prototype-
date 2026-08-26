@@ -70,6 +70,7 @@ export default function ManufacturingStagePanel({ open, onClose, hidden = false 
   }
 
   return (
+    <>
     <AnimatePresence mode="wait">
       {open && (
         <motion.div
@@ -115,17 +116,18 @@ export default function ManufacturingStagePanel({ open, onClose, hidden = false 
             <MiddleColumn rec={rec} onOpenDoc={handleOpenDoc} />
             <RightColumn  rec={rec} onOpenDoc={handleOpenDoc} />
           </div>
-
-          {/* Document Viewer Modal */}
-          <DocumentModal
-            open={docModalOpen}
-            onClose={() => setDocModalOpen(false)}
-            doc={selectedDoc}
-            rec={rec}
-          />
         </motion.div>
       )}
     </AnimatePresence>
+
+    {/* Document Viewer Modal */}
+    <DocumentModal
+      open={docModalOpen}
+      onClose={() => setDocModalOpen(false)}
+      doc={selectedDoc}
+      rec={rec}
+    />
+    </>
   )
 }
 
