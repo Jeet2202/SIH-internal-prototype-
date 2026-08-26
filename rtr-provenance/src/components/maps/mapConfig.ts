@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Standard Leaflet Map Configuration
+ * PRAMANA — Standard Leaflet Map Configuration
  *
  * Production-ready geographic configuration.
  * Configures dark tile layers, attribution, stage color mappings,

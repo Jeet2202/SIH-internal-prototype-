@@ -286,9 +286,10 @@ function createLeafGeo(): THREE.BufferGeometry {
 interface BotanicalDNAProps {
   groupRef: React.RefObject<THREE.Group>
   liftY?: number
+  rotation?: [number, number, number]
 }
 
-export default function BotanicalDNA({ groupRef, liftY = 0 }: BotanicalDNAProps) {
+export default function BotanicalDNA({ groupRef, liftY = 0, rotation = [0, 0, 0] }: BotanicalDNAProps) {
   const targetLift = useRef(0)
 
   /* ── Build everything ONCE ── */
@@ -400,7 +401,7 @@ export default function BotanicalDNA({ groupRef, liftY = 0 }: BotanicalDNAProps)
   }
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} rotation={rotation}>
 
       {/* ── Strand 1 — organic variable-radius tube ── */}
       <mesh geometry={geo.tube1} castShadow receiveShadow material={mats.strandMat} />

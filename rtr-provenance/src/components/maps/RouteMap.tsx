@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Route Map Component
+ * PRAMANA — Route Map Component
  *
  * Reusable Leaflet map for transportation & multi-hop custody tracking:
  * - Real route polylines

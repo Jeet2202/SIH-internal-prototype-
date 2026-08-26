@@ -4,6 +4,8 @@ import {
   Globe, FileText, Check, AlertTriangle,
 } from 'lucide-react'
 
+import { useMobile } from '../hooks/useMobile'
+
 /* ---------------------------------------------------------------------------
    DocumentPreviewModal — Simulated "Botanical Source / Collection Record"
 
@@ -20,6 +22,7 @@ interface DocumentPreviewModalProps {
 }
 
 export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewModalProps) {
+  const isMobile = useMobile()
   return (
     <AnimatePresence>
       {open && (
@@ -44,18 +47,21 @@ export default function DocumentPreviewModal({ open, onClose }: DocumentPreviewM
           <div style={{ position: 'fixed', inset: 0, zIndex: 92, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
             <motion.div
               key="doc-modal"
-              initial={{ opacity: 0, scale: 0.93, y: 24 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.93, y: 24 }}
+              initial={isMobile ? { opacity: 0, y: '100%' } : { opacity: 0, scale: 0.93, y: 24 }}
+              animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1, y: 0 }}
+              exit={isMobile ? { opacity: 0, y: '100%' } : { opacity: 0, scale: 0.93, y: 24 }}
               transition={{ duration: 0.40, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 pointerEvents:  'auto',
-                width:          'min(800px, 96vw)',
-                height:         '85vh',
+                width:          isMobile ? '100vw' : 'min(800px, 96vw)',
+                height:         isMobile ? '100dvh' : '85vh',
+                position:       isMobile ? 'absolute' : 'static',
+                bottom:         isMobile ? 0 : 'auto',
                 background:     'rgba(5,12,4,0.98)',
                 backdropFilter: 'blur(30px)',
-                border:         '1px solid rgba(124, 255, 79,0.30)',
-                borderRadius:   16,
+                border:         isMobile ? 'none' : '1px solid rgba(124, 255, 79,0.30)',
+                borderTop:      isMobile ? '1px solid rgba(124, 255, 79,0.30)' : '1px solid rgba(124, 255, 79,0.30)',
+                borderRadius:   isMobile ? '16px 16px 0 0' : 16,
                 boxShadow:      '0 28px 90px rgba(0,0,0,0.80), 0 0 60px rgba(124, 255, 79,0.07)',
                 display:        'flex',
                 flexDirection:  'column',

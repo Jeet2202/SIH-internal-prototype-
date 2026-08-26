@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Provenance Calculation Service
+ * PRAMANA — Provenance Calculation Service
  *
  * Computes dynamic stage verification, traceability percentages,
  * and detects suspicious/broken chain states dynamically from ledger data.

@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Standard Leaflet Map Markers
+ * PRAMANA — Standard Leaflet Map Markers
  *
  * Custom SVG HTML icon generator matching botanical dark glass design.
  */

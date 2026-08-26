@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Production API Service Layer
+ * PRAMANA — Production API Service Layer
  *
  * Provides typed REST API endpoints with request validation,
  * error handling, health checks, and fallback mechanisms.

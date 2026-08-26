@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Standard Leaflet Map Container
+ * PRAMANA — Standard Leaflet Map Container
  *
  * Provides a dark-themed Leaflet Map with attribution and responsive sizing.
  */

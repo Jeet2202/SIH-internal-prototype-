@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Enterprise Production Domain Entities
+ * PRAMANA — Enterprise Production Domain Entities
  *
  * Full data model for commercial botanical provenance, multi-party custody,
  * laboratory assays, smart insurance, verifiable certificates, and ledger auditing.

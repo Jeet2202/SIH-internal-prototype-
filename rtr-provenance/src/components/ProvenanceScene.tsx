@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
@@ -18,10 +18,17 @@ const NODE_Y_DOWN  = -1.10
 
 export { HELIX_LENGTH, NODE_Y_UP, NODE_Y_DOWN }
 
-function getNodePos(stage: ProvenanceStage): THREE.Vector3 {
-  const x = stage.tPosition * HELIX_LENGTH - HELIX_LENGTH / 2
-  const y = stage.nodePosition === 'up' ? NODE_Y_UP : NODE_Y_DOWN
-  return new THREE.Vector3(x, y, 0)
+function getNodePos(stage: ProvenanceStage, isMobile: boolean): THREE.Vector3 {
+  const origX = stage.tPosition * HELIX_LENGTH - HELIX_LENGTH / 2
+  const origY = stage.nodePosition === 'up' ? NODE_Y_UP : NODE_Y_DOWN
+  
+  if (isMobile) {
+    // Rotate -90 degrees around Z axis: x' = y, y' = -x
+    // So the nodes align with the rotated DNA
+    return new THREE.Vector3(origY, -origX, 0)
+  }
+  
+  return new THREE.Vector3(origX, origY, 0)
 }
 
 /* ---------------------------------------------------------------------------
@@ -35,9 +42,10 @@ function getNodePos(stage: ProvenanceStage): THREE.Vector3 {
 
 interface CameraControllerProps {
   selectedStage: ProvenanceStage | null
+  isMobile: boolean
 }
 
-function CameraController({ selectedStage }: CameraControllerProps) {
+function CameraController({ selectedStage, isMobile }: CameraControllerProps) {
   const { camera } = useThree()
   const targetPos    = useRef(new THREE.Vector3(0, 1.4, 11.5))
   const targetLookAt = useRef(new THREE.Vector3(0, 0.1, 0))
@@ -46,14 +54,17 @@ function CameraController({ selectedStage }: CameraControllerProps) {
 
   useEffect(() => {
     if (!initialized.current) {
-      camera.position.set(0, 1.4, 11.5)
+      camera.position.set(0, isMobile ? 2.8 : 1.4, isMobile ? 11.5 : 11.5)
+      targetPos.current.set(0, isMobile ? 2.8 : 1.4, isMobile ? 11.5 : 11.5)
+      targetLookAt.current.set(0, isMobile ? 2.8 : 0.1, 0)
+      currentLookAt.current.set(0, isMobile ? 2.8 : 0.1, 0)
       initialized.current = true
     }
-  }, [camera])
+  }, [camera, isMobile])
 
   useEffect(() => {
     if (selectedStage) {
-      const np = getNodePos(selectedStage)
+      const np = getNodePos(selectedStage, isMobile)
       // Camera zooms in close and centers directly onto the selected node
       // np.x = node X, np.y = node Y
       targetPos.current.set(
@@ -64,17 +75,28 @@ function CameraController({ selectedStage }: CameraControllerProps) {
       // Look directly at the node center
       targetLookAt.current.set(np.x, np.y * 0.65, 0)
     } else {
-      targetPos.current.set(0, 1.4, 11.5)
-      targetLookAt.current.set(0, 0.1, 0)
+      targetPos.current.set(camera.position.x, camera.position.y, camera.position.z)
+      // don't force it back to center, let OrbitControls maintain it
     }
   }, [selectedStage])
 
   useFrame((_, delta) => {
-    // Cinematic smooth damping
-    const speed = Math.min(delta * 2.8, 0.08)
-    camera.position.lerp(targetPos.current, speed)
-    currentLookAt.current.lerp(targetLookAt.current, speed)
-    camera.lookAt(currentLookAt.current)
+    if (selectedStage) {
+      // Cinematic smooth damping to the selected node
+      const speed = Math.min(delta * 2.8, 0.08)
+      camera.position.lerp(targetPos.current, speed)
+      currentLookAt.current.lerp(targetLookAt.current, speed)
+      camera.lookAt(currentLookAt.current)
+    } else if (!isMobile) {
+      // On desktop, we still want it to return to center smoothly
+      const speed = Math.min(delta * 2.8, 0.08)
+      targetPos.current.set(0, 1.4, 11.5)
+      targetLookAt.current.set(0, 0.1, 0)
+      camera.position.lerp(targetPos.current, speed)
+      currentLookAt.current.lerp(targetLookAt.current, speed)
+      camera.lookAt(currentLookAt.current)
+    }
+    // On mobile when !selectedStage, we do nothing and let OrbitControls handle panning/rotating.
   })
 
   return null
@@ -222,19 +244,62 @@ function Scene({
   onSelectStage,
   autoRotate,
   dnaLiftY,
+  isMobile,
 }: {
   selectedStage: ProvenanceStage | null
   onSelectStage: (stage: ProvenanceStage | null) => void
   autoRotate: boolean
   dnaLiftY: number
+  isMobile: boolean
 }) {
   const dnaGroup = useRef<THREE.Group>(null!)
   const { scene } = useThree()
+  const controlsRef = useRef<any>(null)
+  
+  const [isIdle, setIsIdle] = useState(true)
+  const idleTimeout = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    const controls = controlsRef.current
+    if (!controls) return
+
+    const onStart = () => {
+      if (idleTimeout.current) clearTimeout(idleTimeout.current)
+      setIsIdle(false)
+    }
+    const onEnd = () => {
+      if (idleTimeout.current) clearTimeout(idleTimeout.current)
+      idleTimeout.current = setTimeout(() => setIsIdle(true), 2500)
+    }
+
+    controls.addEventListener('start', onStart)
+    controls.addEventListener('end', onEnd)
+    return () => {
+      controls.removeEventListener('start', onStart)
+      controls.removeEventListener('end', onEnd)
+      if (idleTimeout.current) clearTimeout(idleTimeout.current)
+    }
+  }, [])
 
   useEffect(() => {
     scene.fog = new THREE.FogExp2('#020701', 0.022)
     return () => { scene.fog = null }
   }, [scene])
+
+  useEffect(() => {
+    if (controlsRef.current && isMobile) {
+      controlsRef.current.target.set(0, 2.8, 0)
+      controlsRef.current.update()
+    }
+  }, [isMobile])
+
+  useFrame(() => {
+    if (controlsRef.current && isMobile) {
+      // Lock horizontal panning so user cannot scroll into left/right black space
+      controlsRef.current.target.x = 0
+      controlsRef.current.target.z = 0
+    }
+  })
 
   return (
     <>
@@ -287,7 +352,7 @@ function Scene({
       <StageLighting selectedStage={selectedStage} />
 
       {/* ── DNA ── */}
-      <BotanicalDNA groupRef={dnaGroup} liftY={dnaLiftY} />
+      <BotanicalDNA groupRef={dnaGroup} liftY={dnaLiftY} rotation={isMobile ? [0, 0, -Math.PI / 2] : [0, 0, 0]} />
 
       {/* ── Nodes ── */}
       {PRODUCT.stages.map((stage) => (
@@ -297,6 +362,8 @@ function Scene({
           isSelected={selectedStage?.id === stage.id}
           isAnySelected={selectedStage !== null}
           onSelect={(s) => onSelectStage(selectedStage?.id === s.id ? null : s)}
+          position={getNodePos(stage, isMobile)}
+          isMobile={isMobile}
         />
       ))}
 
@@ -305,16 +372,23 @@ function Scene({
       <BotanicalParticles />
 
       {/* ── Camera ── */}
-      <CameraController selectedStage={selectedStage} />
+      <CameraController selectedStage={selectedStage} isMobile={isMobile} />
       <OrbitControls
-        autoRotate={autoRotate && !selectedStage}
-        autoRotateSpeed={0.35}
+        ref={controlsRef}
+        autoRotate={autoRotate && !selectedStage && isIdle}
+        autoRotateSpeed={1.2}
         enableDamping
         dampingFactor={0.06}
+        enableZoom={true}
         minDistance={4.0}
-        maxDistance={16.0}
-        minPolarAngle={Math.PI * 0.22}
-        maxPolarAngle={Math.PI * 0.78}
+        maxDistance={isMobile ? 16.0 : 16.0}
+        minPolarAngle={0.01}
+        maxPolarAngle={Math.PI - 0.01}
+        minAzimuthAngle={-Infinity}
+        maxAzimuthAngle={Infinity}
+        enablePan={isMobile}
+        panSpeed={1.2}
+        touches={isMobile ? { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_ROTATE } : undefined}
       />
 
       {/* ── Post processing ── */}
@@ -346,6 +420,7 @@ interface ProvenanceSceneProps {
   onSelectStage: (stage: ProvenanceStage | null) => void
   autoRotate: boolean
   dnaLiftY?: number
+  isMobile?: boolean
 }
 
 export default function ProvenanceScene({
@@ -353,11 +428,12 @@ export default function ProvenanceScene({
   onSelectStage,
   autoRotate,
   dnaLiftY = 0,
+  isMobile = false,
 }: ProvenanceSceneProps) {
   return (
     <Canvas
       id="r3f-canvas"
-      camera={{ fov: 38, near: 0.1, far: 80, position: [0, 1.4, 11.5] }}
+      camera={{ fov: isMobile ? 55 : 38, near: 0.1, far: 80, position: [0, 1.4, isMobile ? 8.5 : 11.5] }}
       shadows={{ type: THREE.PCFShadowMap }}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       dpr={[1, 1.8]}
@@ -368,6 +444,7 @@ export default function ProvenanceScene({
         onSelectStage={onSelectStage}
         autoRotate={autoRotate}
         dnaLiftY={dnaLiftY}
+        isMobile={isMobile}
       />
     </Canvas>
   )

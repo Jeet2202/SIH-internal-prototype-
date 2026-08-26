@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Stage 4: MANUFACTURING
+ * PRAMANA — Stage 4: MANUFACTURING
  * Completed manufacturing record for input batch ASH-2026-004 → PRD-ASH-2026-0447
  *
  * PROTOTYPE DISCLAIMER

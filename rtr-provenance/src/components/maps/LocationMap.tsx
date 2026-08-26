@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Location Map Component
+ * PRAMANA — Location Map Component
  *
  * Reusable Leaflet map for single-point locations:
  * - Farmer / Collection Hub

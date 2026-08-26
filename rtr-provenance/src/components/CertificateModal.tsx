@@ -158,7 +158,7 @@ export default function CertificateModal({ onClose }: CertificateModalProps) {
                 VERIFICATION ANCHORED TO
               </div>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#7CFF4F', marginTop: 2 }}>
-                Root to Remedy Provenance Network
+                PRAMANA Provenance Network
               </div>
             </div>
             <div style={{

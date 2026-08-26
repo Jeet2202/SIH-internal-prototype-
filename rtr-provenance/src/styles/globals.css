@@ -1,4 +1,4 @@
-/* Root to Remedy — Customer Provenance Experience
+/* PRAMANA — Customer Provenance Experience
    Global CSS design system
    Import: Google Fonts (Inter + IBM Plex Mono + Instrument Sans)
 */
@@ -444,3 +444,10 @@ body {
   border-radius: 4px 0 0 0 !important;
 }
 
+
+/* Fix nested scrolling on mobile for detail panels */
+@media (max-width: 768px) {
+  .mobile-scroll-container > div {
+    overflow-y: visible !important;
+  }
+}

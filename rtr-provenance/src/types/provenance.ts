@@ -1,5 +1,5 @@
 /*
- * Root to Remedy — Provenance Type System
+ * PRAMANA — Provenance Type System
  *
  * Designed to match production data shape so a real backend can replace
  * static data without touching component logic.

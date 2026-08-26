@@ -65,6 +65,7 @@ interface Props {
   open:    boolean
   onClose: () => void
   hidden?: boolean
+  isMobile?: boolean
 }
 
 /* ── Suppress Leaflet CSS warning caused by missing image assets ── */
@@ -73,7 +74,7 @@ interface Props {
 /* ══════════════════════════════════════════════════════════════════
    ROOT PANEL
 ══════════════════════════════════════════════════════════════════ */
-export default function TransportationStagePanel({ open, onClose, hidden = false }: Props) {
+export default function TransportationStagePanel({ open, onClose, hidden = false, isMobile = false }: Props) {
   const rec = TRANSPORTATION_RECORD
   const [docModalOpen, setDocModalOpen] = useState(false)
 
@@ -89,21 +90,22 @@ export default function TransportationStagePanel({ open, onClose, hidden = false
       {open && (
         <motion.div
           key="transport-panel-v2"
-          initial={{ scale: 0.85, opacity: 0, y: 15 }}
-          animate={{ scale: 1, opacity: hidden ? 0 : 1, y: 0 }}
-          exit={{ scale: 0.85, opacity: 0, y: 15 }}
+          initial={isMobile ? { y: '100%', opacity: 1 } : { scale: 0.85, opacity: 0, y: 15 }}
+          animate={{ scale: 1, opacity: hidden ? 0 : 1, y: hidden && isMobile ? '100%' : 0 }}
+          exit={isMobile ? { y: '100%', opacity: 1 } : { scale: 0.85, opacity: 0, y: 15 }}
           transition={{ duration: 0.46, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position:       'fixed',
-            top:            '2vh',
-            bottom:         '2vh',
-            left:           '2.5vw',
-            right:          '2.5vw',
+            top:            isMobile ? 'auto' : '2vh',
+            bottom:         isMobile ? 0 : '2vh',
+            left:           isMobile ? 0 : '2.5vw',
+            right:          isMobile ? 0 : '2.5vw',
+            height:         isMobile ? '85vh' : 'auto',
             zIndex:         50,
             background:     'rgba(4,2,12,0.96)',
             backdropFilter: 'blur(36px)',
             border:         `1.5px solid ${ACCENT}50`,
-            borderRadius:   20,
+            borderRadius:   isMobile ? '24px 24px 0 0' : 20,
             boxShadow:      `0 25px 80px rgba(0,0,0,0.92), 0 0 45px ${ACCENT}25`,
             pointerEvents:  hidden ? 'none' : 'auto',
             display:        'flex',
@@ -128,11 +130,14 @@ export default function TransportationStagePanel({ open, onClose, hidden = false
           />
 
           {/* 3-column body */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '30% 1fr 30%',
+          <div className="mobile-scroll-container" style={{
+            display: isMobile ? 'flex' : 'grid',
+            flexDirection: 'column',
+            gridTemplateColumns: isMobile ? 'none' : '30% 1fr 30%',
+            gap: isMobile ? 24 : 0,
             flex: 1,
             minHeight: 0,
+            overflowY: 'auto'
           }}>
             <LeftColumn  rec={rec} />
             <MiddleColumn rec={rec} />

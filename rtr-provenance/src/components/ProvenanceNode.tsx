@@ -32,10 +32,12 @@ interface ProvenanceNodeProps {
   isSelected: boolean
   isAnySelected: boolean
   onSelect: (stage: ProvenanceStage) => void
+  position?: THREE.Vector3
+  isMobile?: boolean
 }
 
 export default function ProvenanceNode({
-  stage, isSelected, isAnySelected, onSelect,
+  stage, isSelected, isAnySelected, onSelect, position, isMobile = false
 }: ProvenanceNodeProps) {
   const coreRef   = useRef<THREE.Mesh>(null!)
   const ring1Ref  = useRef<THREE.Mesh>(null!)
@@ -45,15 +47,16 @@ export default function ProvenanceNode({
   const [hovered, setHovered] = useState(false)
 
   const pos: [number, number, number] = useMemo(() => {
+    if (position) return [position.x, position.y, position.z]
     const x = stage.tPosition * HELIX_LENGTH - HELIX_LENGTH / 2
     const y = stage.nodePosition === 'up' ? NODE_Y_UP : NODE_Y_DOWN
     return [x, y, 0]
-  }, [stage])
+  }, [stage, position])
 
-  const isUp = pos[1] > 0
-  // Stem goes from node down/up to the DNA axis (y=0)
-  const stemH = Math.abs(pos[1]) - 0.08
-  const stemMid: [number, number, number] = [pos[0], pos[1] / 2, pos[2]]
+  const isUp = stage.nodePosition === 'up' // Keep logical 'up' for determining which side it goes on
+  // Stem goes from node to the DNA axis
+  const stemH = isMobile ? (Math.abs(pos[0]) - 0.08) : (Math.abs(pos[1]) - 0.08)
+  const stemMid: [number, number, number] = isMobile ? [pos[0] / 2, pos[1], pos[2]] : [pos[0], pos[1] / 2, pos[2]]
 
   const color = new THREE.Color(stage.color)
   // dimmed = another stage is selected, this one is NOT
@@ -64,7 +67,11 @@ export default function ProvenanceNode({
     const t = state.clock.elapsedTime
     // Subtle float
     if (coreRef.current) {
-      coreRef.current.position.y = pos[1] + Math.sin(t * 0.8 + stage.number * 1.2) * 0.04
+      if (isMobile) {
+        coreRef.current.position.x = pos[0] + Math.sin(t * 0.8 + stage.number * 1.2) * 0.04
+      } else {
+        coreRef.current.position.y = pos[1] + Math.sin(t * 0.8 + stage.number * 1.2) * 0.04
+      }
     }
     // Ring rotations — each ring moves at different speed/direction
     if (ring1Ref.current) ring1Ref.current.rotation.z =  t * 0.55 + stage.number
@@ -94,7 +101,7 @@ export default function ProvenanceNode({
   return (
     <group>
       {/* ── Connector stem — organic vine ── */}
-      <mesh position={stemMid} castShadow>
+      <mesh position={stemMid} rotation={isMobile ? [0, 0, Math.PI / 2] : [0, 0, 0]} castShadow>
         <cylinderGeometry args={[0.006, 0.003, stemH, 5, 2]} />
         <meshStandardMaterial
           color={new THREE.Color(stage.color)}
@@ -191,19 +198,27 @@ export default function ProvenanceNode({
 
       {/* ── Label: number + title + VERIFIED ── */}
       <Html
-        position={[pos[0], pos[1] + labelOffset, pos[2]]}
+        position={isMobile ? [pos[0] + labelOffset * 1.2, pos[1], pos[2]] : [pos[0], pos[1] + labelOffset, pos[2]]}
         center
         distanceFactor={6}
         zIndexRange={[20, 30]}
         style={{ pointerEvents: 'none' }}
       >
-        <NodeLabel
-          stage={stage}
-          hovered={hovered}
-          isSelected={isSelected}
-          dimmed={dimmed}
-          isUp={isUp}
-        />
+        <div style={{
+          display: 'flex',
+          flexDirection: isMobile ? (isUp ? 'row' : 'row-reverse') : 'column',
+          alignItems: 'center',
+          gap: isMobile ? 8 : 0,
+        }}>
+          <NodeLabel
+            stage={stage}
+            hovered={hovered}
+            isSelected={isSelected}
+            dimmed={dimmed}
+            isUp={isUp}
+            isMobile={isMobile}
+          />
+        </div>
       </Html>
     </group>
   )
@@ -275,27 +290,21 @@ function StageIcon({ type, color, dim, size }: {
 
 /* ─── Node label — ALWAYS visible ────────────────────────────── */
 
-function NodeLabel({ stage, hovered, isSelected, dimmed, isUp }: {
-  stage: ProvenanceStage
-  hovered: boolean
-  isSelected: boolean
-  dimmed: boolean
-  isUp: boolean
+function NodeLabel({ stage, hovered, isSelected, dimmed, isUp, isMobile = false }: {
+  stage: ProvenanceStage; hovered: boolean; isSelected: boolean; dimmed: boolean; isUp: boolean; isMobile?: boolean
 }) {
-  // Never fully hide — dimmed nodes show label at reduced opacity
-  const textOpacity = dimmed ? 0.40 : 1.0
-
   return (
     <div style={{
-      textAlign: 'center',
-      userSelect: 'none',
-      opacity: textOpacity,
-      transition: 'opacity 0.3s',
-      // Flip label below vs above the node
-      display: 'flex',
-      flexDirection: isUp ? 'column' : 'column-reverse',
-      alignItems: 'center',
-      gap: 2,
+      display:       'flex',
+      flexDirection: 'column',
+      alignItems:    isMobile ? (isUp ? 'flex-start' : 'flex-end') : 'center',
+      gap:           4,
+      transition:    'all 0.3s ease',
+      transform:     isSelected ? 'scale(1.15)' : hovered ? 'scale(1.05)' : 'scale(1)',
+      opacity:       dimmed ? 0.35 : 1,
+      // On desktop, push up or down. On mobile, push left or right.
+      marginTop:     !isMobile ? (isUp ? -12 : 12) : 0,
+      marginLeft:    isMobile ? (isUp ? 12 : -12) : 0,
     }}>
       {/* Stage number */}
       <div style={{
@@ -328,11 +337,10 @@ function NodeLabel({ stage, hovered, isSelected, dimmed, isUp }: {
       <div style={{
         fontSize: 8,
         color: stage.color,
-        letterSpacing: '0.18em',
-        textTransform: 'uppercase',
-        textShadow: `0 0 8px ${stage.color}70`,
-        fontFamily: "var(--font-mono)",
-        opacity: isSelected || hovered ? 1.0 : 0.75,
+        display: 'inline-flex', alignItems: 'center', gap: 4,
+        background: `rgba(2, 5, 2, 0.75)`,
+        border:     `1px solid ${stage.color}40`,
+        borderRadius: 99, padding: '2px 8px',
       }}>
         {isSelected ? '● SELECTED' : 'Verified'}
       </div>

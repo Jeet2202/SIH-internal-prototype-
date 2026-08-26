@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Himalaya Ashwagandha Pure Herbs, 60 Tablets
+ * PRAMANA — Himalaya Ashwagandha Pure Herbs, 60 Tablets
  * Customer Provenance Record · Batch HIM-ASH-2026-0614
  *
  * PROTOTYPE DISCLAIMER

@@ -32,9 +32,10 @@ interface StageDetailPanelProps {
   stage:   ProvenanceStage | null
   onClose: () => void
   hidden?: boolean
+  isMobile?: boolean
 }
 
-export default function StageDetailPanel({ stage, onClose, hidden = false }: StageDetailPanelProps) {
+export default function StageDetailPanel({ stage, onClose, hidden = false, isMobile = false }: StageDetailPanelProps) {
   const [checksDone,    setChecksDone]   = useState(false)
   const [docModalOpen,  setDocModalOpen]  = useState(false)
   const [labModalOpen,  setLabModalOpen]  = useState(false)
@@ -73,23 +74,28 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
         {stage && (
           <motion.div
             key={stage.id}
-            initial={{ scale: 0.85, opacity: 0, y: 15 }}
-            animate={{ scale: 1, opacity: hidden ? 0 : 1, y: 0 }}
-            exit={{ scale: 0.85, opacity: 0, y: 15 }}
+            initial={isMobile ? { y: '100%', opacity: 1 } : { scale: 0.85, opacity: 0, y: 15 }}
+            animate={{ 
+              scale: isMobile ? 1 : 1, 
+              opacity: hidden ? 0 : 1, 
+              y: hidden && isMobile ? '100%' : 0 
+            }}
+            exit={isMobile ? { y: '100%', opacity: 1 } : { scale: 0.85, opacity: 0, y: 15 }}
             transition={{ duration: 0.46, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position:       'fixed',
-              top:            '2vh',
-              bottom:         '2vh',
-              left:           '2.5vw',
-              right:          '2.5vw',
+              top:            isMobile ? 'auto' : '2vh',
+              bottom:         isMobile ? 0 : '2vh',
+              left:           isMobile ? 0 : '2.5vw',
+              right:          isMobile ? 0 : '2.5vw',
+              height:         isMobile ? '85vh' : 'auto',
               zIndex:         50,
               display:        'flex',
               flexDirection:  'column',
               background:     'rgba(2, 8, 4, 0.96)',
               backdropFilter: 'blur(36px)',
               border:         `1.5px solid ${stage.color}50`,
-              borderRadius:   20,
+              borderRadius:   isMobile ? '24px 24px 0 0' : 20,
               boxShadow:      `0 25px 80px rgba(0,0,0,0.92), 0 0 45px ${stage.color}25`,
               overflow:       'hidden',
               pointerEvents:  hidden ? 'none' : 'auto',
@@ -184,6 +190,7 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
                   checksDone={checksDone}
                   onClose={onClose}
                   onOpenDoc={() => setDocModalOpen(true)}
+                  isMobile={isMobile}
                 />
               : stage.type === 'lab'
               ? <LabPanelLayout
@@ -191,6 +198,7 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
                   checksDone={checksDone}
                   onClose={onClose}
                   onOpenReport={() => setLabModalOpen(true)}
+                  isMobile={isMobile}
                 />
               : stage.type === 'product'
               ? <ProductPanelLayout
@@ -199,9 +207,17 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
                   onClose={onClose}
                   onOpenDocs={() => setProdDocsOpen(true)}
                   onOpenReview={() => setReviewOpen(true)}
+                  isMobile={isMobile}
                 />
               : (
-                <div style={{ display: 'grid', gridTemplateColumns: '30% 1fr 1fr', gap: 0, minHeight: 0 }}>
+                <div className="mobile-scroll-container" style={{ 
+                  display: isMobile ? 'flex' : 'grid', 
+                  flexDirection: isMobile ? 'column' : 'row',
+                  gridTemplateColumns: isMobile ? 'none' : '30% 1fr 1fr', 
+                  gap: isMobile ? 24 : 0, 
+                  minHeight: 0,
+                  overflowY: 'auto'
+                }}>
                   <Column1Generic stage={stage} checksDone={checksDone} />
                   <Column2Generic stage={stage} />
                   <Column3Generic stage={stage} />
@@ -245,17 +261,25 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
    Accent colour: #4ea8d2 (blue/cyan)
 ══════════════════════════════════════════════════════════════════ */
 
-function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: {
+function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport, isMobile = false }: {
   stage:        ProvenanceStage
   checksDone:   boolean
   onClose:      () => void
   onOpenReport: () => void
+  isMobile?:    boolean
 }) {
   const d    = stage.data as LabStageData
   const C    = stage.color   // #4ea8d2
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '32% 33% 35%', gap: 0, minHeight: 0 }}>
+    <div className="mobile-scroll-container" style={{ 
+      display: isMobile ? 'flex' : 'grid', 
+      flexDirection: isMobile ? 'column' : 'row',
+      gridTemplateColumns: isMobile ? 'none' : '32% 33% 35%', 
+      gap: isMobile ? 24 : 0, 
+      minHeight: 0,
+      overflowY: 'auto'
+    }}>
 
       {/* ═══ COL 1: Lab image + identity + test results ═══ */}
       <div style={{
@@ -563,19 +587,23 @@ function LabKV({ label, value, C, mono }: { label: string; value: string; C: str
    Full 3-column rich view for Stage 1 Farmer/Collection
 ══════════════════════════════════════════════════════════════════ */
 
-function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: {
+function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc, isMobile = false }: {
   stage:      ProvenanceStage
   checksDone: boolean
   onClose:    () => void
   onOpenDoc:  () => void
+  isMobile?:  boolean
 }) {
   const d = stage.data as FarmerStageData
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: '32% 34% 34%',
-      gap: 0, minHeight: 0,
+    <div className="mobile-scroll-container" style={{
+      display: isMobile ? 'flex' : 'grid',
+      flexDirection: isMobile ? 'column' : 'row',
+      gridTemplateColumns: isMobile ? 'none' : '30% 1fr 31%',
+      gap: isMobile ? 24 : 0,
+      minHeight: 0,
+      overflowY: 'auto'
     }}>
       {/* ═══ COL 1: Farmer identity + collection key data ═══ */}
       <div style={{
@@ -1376,7 +1404,7 @@ void User
 /* ══════════════════════════════════════════════════════════════════
    PRODUCT PANEL LAYOUT
    The CLIMAX stage — Stage 5 Final Product / Packaging
-   Accent colour: #7CFF4F (Root to Remedy green)
+   Accent colour: #7CFF4F (PRAMANA green)
 
    Col1: Product bottle image + QR identity + product identity card
    Col2: 5/5 Traceability arc + chain summary indicators
@@ -1391,18 +1419,26 @@ const STAGE_COLORS: Record<string, string> = {
   product:       '#7CFF4F',
 }
 
-function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, onOpenReview }: {
+function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, onOpenReview, isMobile = false }: {
   stage:         ProvenanceStage
   checksDone:    boolean
   onClose:       () => void
   onOpenDocs:    () => void
   onOpenReview:  () => void
+  isMobile?:     boolean
 }) {
   const d = stage.data as ProductStageData
   const C = '#7CFF4F'
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '34% 30% 36%', gap: 0, minHeight: 0 }}>
+    <div className="mobile-scroll-container" style={{
+      display: isMobile ? 'flex' : 'grid',
+      flexDirection: isMobile ? 'column' : 'row',
+      gridTemplateColumns: isMobile ? 'none' : '34% 30% 36%',
+      gap: isMobile ? 24 : 0,
+      minHeight: 0,
+      overflowY: 'auto'
+    }}>
 
       {/* ═══ COL 1: Bottle image + QR identity + product card ═══ */}
       <div style={{
@@ -1663,7 +1699,7 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.50, duration: 0.28 }}
           style={{ marginTop: 'auto', textAlign: 'center', padding: '6px 0' }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: 10.5, color: `${C}70`, fontWeight: 600, letterSpacing: '0.04em', lineHeight: 1.45 }}>
-            This product is 100% traceable<br/>from root to remedy
+            This product is 100% traceable<br/>from PRAMANA
           </div>
         </motion.div>
       </div>

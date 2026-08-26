@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Manufacturing Stage Types (Stage 4)
+ * PRAMANA — Manufacturing Stage Types (Stage 4)
  *
  * Typed record for the COMPLETED historical manufacturing event that
  * transformed botanical batch ASH-2026-004 into finished product

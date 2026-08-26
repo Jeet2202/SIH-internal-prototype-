@@ -4,6 +4,7 @@ import {
   X, Leaf, FlaskConical, Truck, Factory, Package,
   ShieldCheck, Hash, Globe, Check, AlertTriangle, FileText,
 } from 'lucide-react'
+import { useMobile } from '../hooks/useMobile'
 
 /* ---------------------------------------------------------------------------
    ProductDocumentsModal — tabbed document viewer for Stage 5
@@ -134,6 +135,7 @@ const DOCS = [
 
 export default function ProductDocumentsModal({ open, onClose }: ProductDocumentsModalProps) {
   const [activeTab, setActiveTab] = useState(0)
+  const isMobile = useMobile()
   const doc = DOCS[activeTab]
 
   return (
@@ -150,17 +152,22 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
           <div style={{ position: 'fixed', inset: 0, zIndex: 92, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
             <motion.div
               key="pdoc-modal"
-              initial={{ opacity: 0, scale: 0.93, y: 24 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.93, y: 24 }}
+              initial={isMobile ? { opacity: 0, y: '100%' } : { opacity: 0, scale: 0.93, y: 24 }}
+              animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1, y: 0 }}
+              exit={isMobile ? { opacity: 0, y: '100%' } : { opacity: 0, scale: 0.93, y: 24 }}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 pointerEvents: 'auto',
-                width: 'min(800px, 96vw)', height: '85vh',
+                width: isMobile ? '100vw' : 'min(800px, 96vw)', 
+                height: isMobile ? '100dvh' : '85vh',
+                position: isMobile ? 'absolute' : 'static',
+                bottom: isMobile ? 0 : 'auto',
                 display: 'flex', flexDirection: 'column', overflow: 'hidden',
                 background: 'rgba(5, 12, 4, 0.98)', backdropFilter: 'blur(30px)',
-                border: `1px solid ${doc.color}28`, borderTop: `2px solid ${doc.color}70`,
-                borderRadius: 22, boxShadow: '0 28px 90px rgba(0,0,0,0.85)',
+                border: isMobile ? 'none' : `1px solid ${doc.color}28`, 
+                borderTop: `2px solid ${doc.color}70`,
+                borderRadius: isMobile ? '16px 16px 0 0' : 22, 
+                boxShadow: '0 28px 90px rgba(0,0,0,0.85)',
               }}
             >
             {/* Header */}
@@ -170,7 +177,7 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: '0.28em', textTransform: 'uppercase', color: doc.color, marginBottom: 3 }}>
-                  Prototype Record · Root to Remedy Verification Network
+                  Prototype Record · PRAMANA Verification Network
                 </div>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, color: '#e4ede0' }}>{doc.title}</div>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: `${doc.color}70`, marginTop: 2 }}>Ref: {doc.ref}</div>
@@ -205,7 +212,7 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
             <div style={{ margin: '14px 22px 0', padding: '9px 14px', background: 'rgba(255,165,0,0.07)', border: '1px solid rgba(255,165,0,0.24)', borderRadius: 9, display: 'flex', alignItems: 'flex-start', gap: 9 }}>
               <AlertTriangle size={12} color="rgba(255,165,0,0.80)" style={{ flexShrink: 0, marginTop: 1 }} />
               <p style={{ fontFamily: "var(--font-mono)", fontSize: 9.5, color: 'rgba(255,165,0,0.68)', lineHeight: 1.5, margin: 0 }}>
-                <strong style={{ color: 'rgba(255,165,0,0.88)' }}>DEMONSTRATION / PROTOTYPE RECORD</strong> — This document is a simulated record for the Root to Remedy provenance prototype. It is not an official certificate, test report, or legal document. All IDs and values are fictional.
+                <strong style={{ color: 'rgba(255,165,0,0.88)' }}>DEMONSTRATION / PROTOTYPE RECORD</strong> — This document is a simulated record for the PRAMANA provenance prototype. It is not an official certificate, test report, or legal document. All IDs and values are fictional.
               </p>
             </div>
 
@@ -228,7 +235,7 @@ export default function ProductDocumentsModal({ open, onClose }: ProductDocument
             {/* Footer */}
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '12px 22px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: 'rgba(255,255,255,0.22)', lineHeight: 1.5 }}>
-                Root to Remedy · Prototype · Not an official document<br />
+                PRAMANA · Prototype · Not an official document<br />
                 <Hash size={8} color="rgba(124, 255, 79,0.35)" style={{ display: 'inline', marginRight: 4 }} />
                 <span style={{ color: 'rgba(124, 255, 79,0.35)' }}>0xf821…44bc</span>
               </div>

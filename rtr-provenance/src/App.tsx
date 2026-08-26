@@ -7,6 +7,7 @@ import StageDetailPanel from './components/StageDetailPanel'
 import TransportationStagePanel from './components/TransportationStagePanel'
 import ManufacturingStagePanel from './components/ManufacturingStagePanel'
 import NavArrows from './components/NavArrows'
+import { useMobile } from './hooks/useMobile'
 import type { ProvenanceStage } from './types/provenance'
 
 /* ---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ export default function App() {
   const [autoRotate,    setAutoRotate]    = useState(true)
   const [showHint,      setShowHint]      = useState(true)
   const [interacted,    setInteracted]    = useState(false)
+  const isMobile = useMobile()
 
   const detailOpen = selectedStage !== null
 
@@ -71,6 +73,7 @@ export default function App() {
         onSelectStage={handleSelectStage}
         autoRotate={autoRotate}
         dnaLiftY={dnaLiftY}
+        isMobile={isMobile}
       />
 
       {/* ── UI overlay ── */}
@@ -78,12 +81,12 @@ export default function App() {
 
         {/* ── Top header (fade out when full-screen stage portal is open) ── */}
         <div style={{ opacity: detailOpen ? 0 : 1, pointerEvents: detailOpen ? 'none' : 'auto', transition: 'opacity 0.35s ease' }}>
-          <VerificationHeader />
+          <VerificationHeader isMobile={isMobile} />
         </div>
 
         {/* ── "Click any stage" instruction hint ── */}
         <AnimatePresence>
-          {showHint && !detailOpen && (
+          {showHint && !detailOpen && !isMobile && (
             <motion.div
               key="stage-hint"
               initial={{ opacity: 0 }}
@@ -118,7 +121,44 @@ export default function App() {
           )}
         </AnimatePresence>
 
+        {/* ── Mobile "Explore Provenance" bottom hint ── */}
+        <AnimatePresence>
+          {isMobile && !detailOpen && (
+            <motion.div
+              key="mobile-hint"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              style={{
+                position: 'fixed',
+                bottom: 40,
+                left: '20px',
+                right: '20px',
+                background: 'rgba(6,14,4,0.85)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(124, 255, 79,0.3)',
+                borderRadius: 16,
+                padding: '14px 20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 10,
+                zIndex: 40,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+                pointerEvents: 'none', // just a visual hint
+              }}
+            >
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#7CFF4F', boxShadow: '0 0 8px #7CFF4F' }} />
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: '#7CFF4F', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                Tap nodes to explore provenance
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* ── Auto-rotate toggle (bottom right) ── */}
+        {!isMobile && (
         <div style={{ opacity: detailOpen ? 0 : 1, pointerEvents: detailOpen ? 'none' : 'auto', transition: 'opacity 0.35s ease' }}>
           <button
             className="rotate-toggle"
@@ -141,9 +181,10 @@ export default function App() {
             </span>
           </button>
         </div>
+        )}
 
         {/* ── Left/Right navigation arrows (active when in overview) ── */}
-        {!detailOpen && (
+        {!detailOpen && !isMobile && (
           <NavArrows
             selectedStage={selectedStage}
             onSelectStage={handleSelectStage}
@@ -151,22 +192,24 @@ export default function App() {
           />
         )}
 
-        {/* ── Stage detail panel (bottom-docked, 3-column) ── */}
-        {/* Use dedicated Transportation panel for Stage 3, Manufacturing panel for Stage 4; generic panel for others */}
+        {/* ── Stage detail panel (bottom-docked, 3-column on desktop, bottom sheet on mobile) ── */}
         <TransportationStagePanel
           open={selectedStage?.type === 'transport'}
           onClose={handleClearStage}
           hidden={false}
+          isMobile={isMobile}
         />
         <ManufacturingStagePanel
           open={selectedStage?.type === 'manufacturing'}
           onClose={handleClearStage}
           hidden={false}
+          isMobile={isMobile}
         />
         <StageDetailPanel
           stage={selectedStage?.type !== 'transport' && selectedStage?.type !== 'manufacturing' ? selectedStage : null}
           onClose={handleClearStage}
           hidden={false}
+          isMobile={isMobile}
         />
       </div>
     </div>

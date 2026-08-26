@@ -1,5 +1,5 @@
 /**
- * Root to Remedy — Production Environment Configuration
+ * PRAMANA — Production Environment Configuration
  *
  * Centralized configuration schema supporting development, staging,
  * and production environments without hardcoded secrets.

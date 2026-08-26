@@ -5,20 +5,26 @@ import { PRODUCT } from '../data/provenance'
 /* ---------------------------------------------------------------------------
    VerificationHeader — matches Image 2 composition:
    
-   [Leaf] Batch ID              ROOT TO REMEDY            [5/5 STAGES]
+   [Leaf] Batch ID              PRAMANA            [5/5 STAGES]
           PRD-ASH-2026-0447   PRODUCT VERIFIED ✓          100% TRACEABLE
                               Every step verified.
 --------------------------------------------------------------------------- */
 
-export default function VerificationHeader() {
+export default function VerificationHeader({ isMobile = false }: { isMobile?: boolean }) {
   return (
-    <div className="header-bar" style={{ alignItems: 'center' }}>
+    <div className="header-bar" style={{ 
+      alignItems: 'center', 
+      flexDirection: isMobile ? 'column' : 'row',
+      gap: isMobile ? 12 : 0,
+      padding: isMobile ? '12px 16px' : undefined
+    }}>
 
       {/* Left: Batch ID card */}
-      <motion.div
-        initial={{ opacity: 0, x: -16 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.3, duration: 0.7 }}
+      {!isMobile && (
+        <motion.div
+          initial={{ opacity: 0, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3, duration: 0.7 }}
         style={{
           flex: '0 0 auto',
           background: 'rgba(6,14,4,0.82)',
@@ -44,6 +50,7 @@ export default function VerificationHeader() {
           <MiniPill label="Provenance Matched ✓" />
         </div>
       </motion.div>
+      )}
 
       {/* Center: Brand + Verified status — matches Image 2 top center */}
       <motion.div
@@ -56,6 +63,7 @@ export default function VerificationHeader() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          order: isMobile ? -1 : 0, // Move to top on mobile
         }}
       >
         {/* Brand name */}
@@ -67,7 +75,7 @@ export default function VerificationHeader() {
           color: '#7CFF4F',
           marginBottom: 5,
         }}>
-          Root to Remedy
+          PRAMANA
         </div>
 
         {/* Large PRODUCT VERIFIED */}
@@ -110,10 +118,11 @@ export default function VerificationHeader() {
       </motion.div>
 
       {/* Right: Traceability card */}
-      <motion.div
-        initial={{ opacity: 0, x: 16 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.3, duration: 0.7 }}
+      {!isMobile && (
+        <motion.div
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3, duration: 0.7 }}
         style={{
           flex: '0 0 auto',
           background: 'rgba(6,14,4,0.82)',
@@ -147,6 +156,7 @@ export default function VerificationHeader() {
           ))}
         </div>
       </motion.div>
+      )}
     </div>
   )
 }
