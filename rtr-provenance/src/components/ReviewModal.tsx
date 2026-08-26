@@ -13,7 +13,7 @@ import { PRODUCT } from '../data/provenance'
    - Smooth open/close via Framer Motion
 --------------------------------------------------------------------------- */
 
-const VALID_CODE  = PRODUCT.scratchCode    // RTR-8472
+const VALID_CODE  = 'R2R-60-2026'   // Hardcoded demo scratch code (replaces PRODUCT.scratchCode)
 const REVIEW_TAGS = ['Sleep', 'Stress', 'Energy', 'Immunity', 'Digestion']
 
 interface ReviewEntry {
@@ -40,8 +40,10 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
   })
 
   const formatCode = (raw: string) => {
-    const clean = raw.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 7)
-    return clean.length > 3 ? `${clean.slice(0, 3)}-${clean.slice(3)}` : clean
+    // Allow R2R-XX-XXXX style (up to 12 chars including hyphens)
+    const upper = raw.toUpperCase()
+    // Keep alphanumeric and hyphens, max 12 chars
+    return upper.replace(/[^A-Z0-9-]/g, '').slice(0, 12)
   }
 
   const verify = () => {
@@ -51,7 +53,7 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
       setPhase('verified')
       setTimeout(() => setPhase('form'), 1000)
     } else {
-      setError('Code not verified. Try RTR-8472 for this demo.')
+      setError('Code not recognised. Use the demo code: R2R-60-2026')
     }
   }
 
@@ -70,8 +72,9 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
   }
 
   const handleClose = () => {
+    // Call onClose FIRST so parent removes the modal from the DOM via AnimatePresence
+    // Then reset internal state after exit animation (~400ms)
     onClose()
-    // Reset form state after animation finishes
     setTimeout(() => {
       setPhase('code')
       setCode('')
@@ -79,7 +82,7 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
       setRating(0)
       setText('')
       setTags([])
-    }, 400)
+    }, 450)
   }
 
   return (
@@ -189,7 +192,7 @@ export default function ReviewModal({ open, onClose }: ReviewModalProps) {
                   </div>
                 )}
                 <div style={{ marginTop: 14, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--night-dim)' }}>
-                  Demo code: <span style={{ color: '#7ec85a' }}>{VALID_CODE}</span>
+                  Demo code: <span style={{ color: '#7ec85a' }}>R2R-60-2026</span>
                 </div>
               </div>
             )}

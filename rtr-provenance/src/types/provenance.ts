@@ -85,22 +85,44 @@ export interface FarmerStageData extends BaseStageData {
   batchId:           string;
   soilHealthStatus:  string;
   collectorLicense:  string;
+  /* Extended farmer identity fields */
+  farmerName:        string;
+  farmerRole:        string;
+  farmerDistrict:    string;
+  farmerState:       string;
+  collectionId:      string;
+  collectionTime:    string;
+  collectionMethod:  string;
+  gpsAccuracyM:      number;
+  farmerImageUrl:    string;
 }
 
 /* ─── Stage 2: Laboratory Testing ──────────────────────────────── */
 export interface LabStageData extends BaseStageData {
-  type:            'lab';
-  labName:         string;
-  accreditation:   string;
-  sampleId:        string;
-  testDate:        string;
-  certificateId:   string;
-  withanolideContent: string;    // key active compound for Ashwagandha
+  type:               'lab';
+  labName:            string;
+  accreditation:      string;
+  sampleId:           string;
+  testDate:           string;
+  certificateId:      string;
+  withanolideContent: string;
+  /* Extended lab fields */
+  testId:             string;
+  laboratoryId:       string;
+  batchId:            string;
+  sampleReceivedDate: string;
+  sampleReceivedTime: string;
+  sampleQuantity:     string;
+  reportId:           string;
+  reportIssueDate:    string;
+  labCity:            string;
+  labImageUrl:        string;
   results: {
     label:   string;
     value:   string;
     unit?:   string;
     limit?:  string;
+    method?: string;
     status:  'pass' | 'warning' | 'fail';
     detail?: string;
   }[];
@@ -145,23 +167,32 @@ export interface ManufacturingStageData extends BaseStageData {
   }[];
 }
 
-/* ─── Stage 5: Final Product / Packaging ───────────────────────── */
+/* ─── Stage 5: Final Product / Packaging ──────────────────── */
 export interface ProductStageData extends BaseStageData {
-  type:         'product';
-  productName:  string;
-  brand:        string;
-  skuCode:      string;
-  batchCode:    string;
-  packSerial:   string;
-  tabletCount:  number;
-  netWeight:    string;
-  manufactured: string;
-  expiry:       string;
-  qrLinkedTo:   string;
+  type:                'product';
+  productName:         string;
+  brand:               string;
+  skuCode:             string;
+  batchCode:           string;
+  packSerial:          string;
+  tabletCount:         number;
+  netWeight:           string;
+  manufactured:        string;
+  expiry:              string;
+  qrLinkedTo:          string;
+  /* Extended product fields */
+  productId:           string;
+  qrIdentifier:        string;
+  scratchCodeEnabled:  boolean;
+  stagesVerified:      number;
+  traceabilityPct:     number;
+  productImageUrl:     string;
   chainSummary: {
     stage:   string;
     eventId: string;
     status:  'pass' | 'fail';
+    color:   string;
+    icon:    string;
   }[];
 }
 

@@ -46,9 +46,14 @@ export const PRODUCT: ProvenanceProduct = {
 
     /* ══════════════════════════════════════════════════════════════════════
        STAGE 1 — FARMER / COLLECTION
-       Who:  Prakruthi Agro Cooperative Society
-       What: Collection of Ashwagandha roots from registered tribal farmers
-       Where: Mandsaur District, Madhya Pradesh
+       Who:  Mahesh Patil — Nashik Herbal Growers Cooperative
+       What: Collection of Ashwagandha roots, cultivated crop
+       Where: Nashik, Maharashtra
+
+       PROTOTYPE DISCLAIMER: All names, IDs, coordinates, and documents
+       below are simulated demonstration records. They are not actual
+       records from a real supplier, government authority, or certification
+       body. Marked _proto: true throughout.
     ══════════════════════════════════════════════════════════════════════ */
     {
       id:           'farmer',
@@ -65,61 +70,94 @@ export const PRODUCT: ProvenanceProduct = {
       data: {
         type:              'farmer',
         stageId:           'STG-01-FARM',
-        eventId:           'EVT-KOOP-2026-0614-F',
-        date:              '12 August 2026',
-        entity:            'Prakruthi Agro Cooperative Society',
-        entityType:        'Registered Farmer Cooperative',
-        description:       'Ashwagandha roots are harvested by 34 registered tribal farmers affiliated with Prakruthi Agro Cooperative Society in Mandsaur, Madhya Pradesh — one of India\'s primary ashwagandha belts. Roots are collected in the post-monsoon dry season (Oct–Feb) when withanolide content peaks. Each farmer\'s parcel is individually weighed and GPS-tagged before aggregation at the cooperative hub. Only roots meeting size, moisture, and visual quality standards are accepted.',
-        collectionHub:     'Prakruthi Agro Cooperative Hub, Mandsaur',
+        eventId:           'EVT-COL-2026-001',
+        date:              '14 August 2026',
+        entity:            'Mahesh Patil',
+        entityType:        'Registered Botanical Collector',
+        description:       'This stage records the origin of the botanical raw material used in your product. Mahesh Patil, a registered collector with the Nashik Herbal Growers Cooperative, harvested 250 kg of fresh Ashwagandha roots from his cultivated plot in Nashik, Maharashtra on 14 August 2026. The collection event was GPS-tagged at source, the quantity independently weighed, and the species visually and botanically confirmed before the batch was accepted into the supply chain.',
+
+        /* Collector identity */
+        collectionHub:     'Nashik Herbal Growers Cooperative — Collection Point 4',
         species:           'Ashwagandha',
-        botanicalName:     'Withania somnifera (L.) Dunal',
-        partUsed:          'Root (dried)',
-        cultivationType:   'Semi-wild / Traditional rainfed cultivation',
-        harvestSeason:     'Post-monsoon · Oct 2025 – Feb 2026',
-        totalCollection:   '820 kg (dry root)',
-        farmerCount:       34,
-        farmerCooperative: 'Prakruthi Agro Cooperative Society · Reg. No. MP/COOP/2019/1187',
-        batchId:           'MAND-ASH-2026-0614',
-        soilHealthStatus:  'pH 7.2 · Loamy black soil · No synthetic pesticide history',
-        collectorLicense:  'MP-AYUSH-COL/2026/4472 · Valid through 31 Mar 2027',
+        botanicalName:     'Withania somnifera',
+        partUsed:          'Root (fresh, uncured)',
+        cultivationType:   'Cultivated botanical crop',
+        harvestSeason:     'Kharif 2026',
+        totalCollection:   '250 kg',
+        farmerCount:       1,
+        farmerCooperative: 'Nashik Herbal Growers Cooperative',
+        batchId:           'ASH-2026-001',
+        soilHealthStatus:  'Red laterite loam · pH 6.8 · No synthetic pesticide declaration signed',
+        collectorLicense:  'COL-ELIG-2026-001 · Nashik Herbal Growers Cooperative',
+
+        /* Farmer-specific fields consumed by FarmerDetailPanel */
+        farmerName:        'Mahesh Patil',
+        farmerRole:        'Registered Botanical Collector',
+        farmerDistrict:    'Nashik',
+        farmerState:       'Maharashtra',
+        collectionId:      'COL-ASH-2026-001',
+        collectionTime:    '08:45 AM IST',
+        collectionMethod:  'Cultivated botanical crop',
+        gpsAccuracyM:      8,
+        farmerImageUrl:    '/farmer-mahesh-patil.jpg',
+
         location: {
-          lat:     24.0765,
-          lng:     75.0696,
-          label:   'Collection Hub',
-          city:    'Mandsaur',
-          state:   'Madhya Pradesh',
+          lat:     19.9975,
+          lng:     73.7898,
+          label:   'Collection Location',
+          city:    'Nashik',
+          state:   'Maharashtra',
           country: 'India',
         },
         documents: [
-          { label: 'Cooperative Registration Certificate',    ref: 'MP/COOP/2019/1187',          _proto: true },
-          { label: 'Collector Licence',                       ref: 'MP-AYUSH-COL/2026/4472',      _proto: true },
-          { label: 'Farmer Eligibility Register (34 names)', ref: 'PACS-FARM-REG-2026.pdf',       _proto: true },
-          { label: 'GPS Zone Approval — Mandsaur District',  ref: 'MP-GPS-ZONE/2026/MAN-04',     _proto: true },
-          { label: 'Collection Batch Receipt',                ref: 'MAND-ASH-2026-0614-REC.pdf',  _proto: true },
+          {
+            label:  'Botanical Source / Collection Record',
+            ref:    'BOT-COL-ASH-2026-001',
+            _proto: true,
+          },
+          {
+            label:  'Collector Eligibility Record',
+            ref:    'COL-ELIG-2026-001',
+            _proto: true,
+          },
+          {
+            label:  'GPS Collection Log',
+            ref:    'GPS-LOG-COL-2026-001',
+            _proto: true,
+          },
+          {
+            label:  'Quantity Verification Receipt',
+            ref:    'QTY-VER-ASH-2026-001',
+            _proto: true,
+          },
         ],
         blockchain: {
-          txHash:    '0x3a8f…d71b04',
-          blockNum:  '6241088',
-          timestamp: '12 Aug 2026, 06:42 PM IST',
-          network:   'Hyperledger Fabric (Permissioned)',
+          txHash:    '0x7d3f…a9b21c',
+          blockNum:  '4587123',
+          timestamp: '14 Aug 2026, 08:45 AM IST',
+          network:   'Permissioned Ledger',
           _proto:    true,
         },
         checks: [
-          { label: 'Cooperative registration active',           detail: 'MP/COOP/2019/1187 · valid',                  status: 'pass' },
-          { label: 'GPS zone approved (Mandsaur District)',     detail: 'MP-GPS-ZONE/2026/MAN-04 · Zone 4B',          status: 'pass' },
-          { label: 'Harvest season compliant',                  detail: 'Oct 2025 – Feb 2026 window',                  status: 'pass' },
-          { label: 'Species identity pre-confirmed at hub',     detail: 'Withania somnifera · visual + olfactory ID',  status: 'pass' },
-          { label: 'All 34 farmers registered & eligible',      detail: '34 / 34 verified',                            status: 'pass' },
-          { label: 'Batch receipt issued',                      detail: '820 kg · MAND-ASH-2026-0614',                 status: 'pass' },
+          { label: 'Species recorded',                   detail: 'Withania somnifera confirmed',        status: 'pass' },
+          { label: 'Collection location captured',       detail: '19.9975° N, 73.7898° E · ±8 m',     status: 'pass' },
+          { label: 'Quantity recorded',                  detail: '250 kg · independently weighed',      status: 'pass' },
+          { label: 'Collector eligibility verified',     detail: 'COL-ELIG-2026-001 · active',          status: 'pass' },
+          { label: 'Collection event recorded',          detail: 'EVT-COL-2026-001 anchored to ledger', status: 'pass' },
+          { label: 'GPS source verified',                detail: 'Accuracy ±8 m · timestamp matched',   status: 'pass' },
         ],
       },
     },
 
     /* ══════════════════════════════════════════════════════════════════════
        STAGE 2 — LABORATORY TESTING
-       Who:  Agilus Diagnostics & Research Ltd. (NABL Accredited)
-       What: Multi-parameter quality & identity testing on raw material
-       Where: Pune, Maharashtra
+       Who:  Certified Botanical Testing Laboratory, Mumbai
+       What: Multi-parameter quality testing on raw material batch ASH-2026-001
+
+       PROTOTYPE DISCLAIMER: All test results, IDs, and report references
+       are simulated demonstration data. They do not represent genuine
+       laboratory results from any real accreditation body or test house.
+       Marked _proto: true throughout.
     ══════════════════════════════════════════════════════════════════════ */
     {
       id:           'lab',
@@ -136,59 +174,111 @@ export const PRODUCT: ProvenanceProduct = {
       data: {
         type:               'lab',
         stageId:            'STG-02-LAB',
-        eventId:            'EVT-LAB-2026-0614-Q',
+        eventId:            'EVT-LAB-2026-014',
         date:               '18 August 2026',
-        entity:             'Agilus Diagnostics & Research Ltd.',
+        entity:             'Certified Botanical Testing Laboratory',
         entityType:         'Third-Party Analytical Laboratory',
-        description:        'A representative sample from batch MAND-ASH-2026-0614 was dispatched under chain-of-custody seal to Agilus Diagnostics & Research Ltd., a NABL-accredited laboratory in Pune. Testing covered species authentication via ITS2 DNA barcoding, quantification of the primary active marker (withanolide glycosides), and a full safety screen including heavy metals, pesticide residue, and microbial limits — as required by WHO guidelines for herbal medicines and Ayurveda pharmacopoeia standards.',
-        labName:            'Agilus Diagnostics & Research Ltd.',
-        accreditation:      'NABL Accredited · Cert. No. TC-7741 · Valid 2027',
-        sampleId:           'AGI-ASH-2026-0614',
-        testDate:           '18–20 August 2026',
-        certificateId:      'NABL/2026/AY/01143',
-        withanolideContent: '≥ 2.5% (w/w) — Meets Himalaya internal specification',
+        description:        'The batch ASH-2026-001 (250 kg Ashwagandha root, collected by Mahesh Patil, Nashik) was sampled and dispatched under chain-of-custody seal to the Certified Botanical Testing Laboratory in Mumbai for independent quality testing. The testing panel covered identity confirmation, moisture content, foreign matter, ash value, microbial load, and heavy metals screening — defined quality parameters that every batch must meet before being accepted into the supply chain. A formal report was issued on 18 August 2026 upon the batch achieving PASS status across all critical parameters.',
+
+        labName:            'Certified Botanical Testing Laboratory',
+        accreditation:      'Registered Analytical Laboratory · ID: LAB-MH-0241',
+        sampleId:           'SMP-ASH-001',
+        testDate:           '16–18 August 2026',
+        certificateId:      'LAB-RPT-ASH-2026-014',
+        withanolideContent: '2.72% (w/w) — Meets specification (≥ 2.5%)',
+
+        /* Extended lab fields */
+        testId:             'LAB-ASH-2026-014',
+        laboratoryId:       'LAB-MH-0241',
+        batchId:            'ASH-2026-001',
+        sampleReceivedDate: '16 August 2026',
+        sampleReceivedTime: '11:20 AM IST',
+        sampleQuantity:     '500 g',
+        reportId:           'LAB-RPT-ASH-2026-014',
+        reportIssueDate:    '18 August 2026',
+        labCity:            'Mumbai',
+        labImageUrl:        '/lab-testing-scene.jpg',
+
         location: {
-          lat:     18.5204,
-          lng:     73.8567,
+          lat:     19.0760,
+          lng:     72.8777,
           label:   'Testing Laboratory',
-          city:    'Pune',
+          city:    'Mumbai',
           state:   'Maharashtra',
           country: 'India',
         },
+
         results: [
-          { label: 'Species Identification',       value: 'Withania somnifera',  status: 'pass', detail: 'DNA Barcoding ITS2 · 99.1% sequence match · NCBI KC172458' },
-          { label: 'Withanolide Glycosides',       value: '2.72%',  unit: '% w/w',   limit: '≥ 2.5%',   status: 'pass', detail: 'HPLC analysis · Himalaya spec: ≥ 2.5%' },
-          { label: 'Moisture Content',             value: '7.8%',   unit: '%',        limit: '≤ 10%',    status: 'pass', detail: 'Loss on drying method' },
-          { label: 'Total Ash',                    value: '4.3%',   unit: '%',        limit: '≤ 7%',     status: 'pass', detail: 'IP standard' },
-          { label: 'Pesticide Residue (total)',    value: '< 0.01', unit: 'ppm',      limit: '≤ 0.05',   status: 'pass', detail: 'GC-MS/MS multiclass screen' },
-          { label: 'Lead (Pb)',                    value: '0.31',   unit: 'ppm',      limit: '≤ 10 ppm', status: 'pass', detail: 'ICP-OES · WHO GACP limit' },
-          { label: 'Arsenic (As)',                 value: '0.09',   unit: 'ppm',      limit: '≤ 3 ppm',  status: 'pass', detail: 'ICP-OES · WHO GACP limit' },
-          { label: 'Microbial Load (TPC)',         value: '< 1 × 10³', unit: 'CFU/g', limit: '≤ 10⁵',   status: 'pass', detail: 'Pour plate method' },
-          { label: 'Aflatoxins (B1+B2+G1+G2)',    value: '< 1.0',  unit: 'μg/kg',   limit: '≤ 10',     status: 'pass', detail: 'HPLC-FLD method' },
+          {
+            label:  'Identity',
+            value:  'Conforming',
+            method: 'Botanical identification',
+            status: 'pass',
+            detail: 'Withania somnifera confirmed by organoleptic + TLC',
+          },
+          {
+            label:  'Moisture Content',
+            value:  '8.2',
+            unit:   '%',
+            limit:  '< 10 %',
+            method: 'Loss on drying (100–105°C)',
+            status: 'pass',
+            detail: 'Result: 8.2% · Spec: < 10%',
+          },
+          {
+            label:  'Foreign Matter',
+            value:  '0.4',
+            unit:   '%',
+            limit:  '< 2 %',
+            method: 'Visual examination',
+            status: 'pass',
+            detail: 'Stem pieces and soil · Well within limit',
+          },
+          {
+            label:  'Ash Value',
+            value:  '6.1',
+            unit:   '%',
+            limit:  'Within specification',
+            method: 'Total ash by ignition',
+            status: 'pass',
+            detail: 'Total ash by ignition · Compliant',
+          },
+          {
+            label:  'Microbial Load',
+            value:  'Within specification',
+            method: 'Pour plate (TPC, yeast, mould)',
+            status: 'pass',
+            detail: 'TPC, yeast/mould, coliforms · All within limits',
+          },
+          {
+            label:  'Heavy Metals',
+            value:  'Within permissible limits',
+            method: 'ICP-OES (Pb, As, Cd, Hg)',
+            status: 'pass',
+            detail: 'Lead, Arsenic, Cadmium, Mercury · All below WHO/FAO limits',
+          },
         ],
+
         documents: [
-          { label: 'NABL Certificate of Accreditation',   ref: 'TC-7741',                    _proto: true },
-          { label: 'Certificate of Analysis',             ref: 'NABL/2026/AY/01143',         _proto: true },
-          { label: 'DNA Barcoding Report',                ref: 'AGI-DNA-2026-0614.pdf',       _proto: true },
-          { label: 'Heavy Metals ICP-OES Report',         ref: 'AGI-HM-2026-0614.pdf',       _proto: true },
-          { label: 'Pesticide GC-MS Screen Report',       ref: 'AGI-PES-2026-0614.pdf',      _proto: true },
-          { label: 'Chain-of-Custody Transfer Record',    ref: 'AGI-COC-2026-0614.pdf',      _proto: true },
+          { label: 'Prototype Laboratory Report',       ref: 'LAB-RPT-ASH-2026-014',   _proto: true },
+          { label: 'Sample Receipt / Chain-of-Custody', ref: 'COC-LAB-ASH-2026-014',   _proto: true },
+          { label: 'Heavy Metals Screen (ICP-OES)',     ref: 'HM-LAB-ASH-2026-014',    _proto: true },
+          { label: 'Microbial Limits Test Record',      ref: 'MICRO-LAB-ASH-2026-014', _proto: true },
         ],
+
         blockchain: {
-          txHash:    '0x9c2d…a41f77',
-          blockNum:  '6241529',
-          timestamp: '20 Aug 2026, 04:18 PM IST',
-          network:   'Hyperledger Fabric (Permissioned)',
+          txHash:    '0x91ac…72ef',
+          blockNum:  '4587198',
+          timestamp: '18 Aug 2026, 04:15 PM IST',
+          network:   'Permissioned Ledger',
           _proto:    true,
         },
+
         checks: [
-          { label: 'NABL accreditation active',               detail: 'TC-7741 · valid through 2027',          status: 'pass' },
-          { label: 'Species confirmed by ITS2 DNA barcoding', detail: '99.1% · NCBI KC172458',                 status: 'pass' },
-          { label: 'Withanolide content meets specification',  detail: '2.72% ≥ 2.5% spec',                    status: 'pass' },
-          { label: 'All heavy metals within WHO/GACP limits', detail: 'Pb 0.31 · As 0.09 (ppm)',              status: 'pass' },
-          { label: 'Pesticide residue below detection limit',  detail: '< 0.01 ppm (all analytes)',             status: 'pass' },
-          { label: 'Microbial limits compliant',               detail: 'TPC < 1×10³ CFU/g',                    status: 'pass' },
-          { label: 'Certificate anchored to batch',            detail: 'NABL/2026/AY/01143 → MAND-ASH-2026-0614', status: 'pass' },
+          { label: 'Sample linked to collection batch', detail: 'SMP-ASH-001 → ASH-2026-001',              status: 'pass' },
+          { label: 'Test results recorded',             detail: '6 / 6 parameters tested',                  status: 'pass' },
+          { label: 'All critical tests passed',         detail: 'Identity, moisture, ash, microbial, metals', status: 'pass' },
+          { label: 'Lab report verified',               detail: 'LAB-RPT-ASH-2026-014 · 18 Aug 2026',      status: 'pass' },
         ],
       },
     },
@@ -318,40 +408,42 @@ export const PRODUCT: ProvenanceProduct = {
           { step: 4, name: 'Granulation & Blending',           detail: 'Wet granulation · FBD drying · Blend uniformity: CV < 2%', input: '791 kg', output: '788 kg', status: 'pass' },
           { step: 5, name: 'Tablet Compression',               detail: '300 mg target weight · Hardness 6–9 kP · Disintegration < 15 min', input: '788 kg', output: '2.627 M tablets', status: 'pass' },
           { step: 6, name: 'Film Coating',                     detail: 'HPMC aqueous coat · Weight gain 2–3% · Appearance uniform', status: 'pass' },
-          { step: 7, name: 'QC Release & Packaging',           detail: '60-tab HDPE bottles · Lot-coded · HIM-ASH-2026-0614 released', output: '43,783 bottles', status: 'pass' },
+          { step: 7, name: 'QC Release & Packaging',           detail: '60-tab HDPE bottles · Lot-coded · PRD-ASH-2026-0447 released', output: '43,783 bottles', status: 'pass' },
         ],
         documents: [
-          { label: 'Manufacturing Licence',              ref: 'AY/MFG/HP/2026/0321',              _proto: true },
-          { label: 'WHO-GMP Certificate',                ref: 'HP-WHO-GMP/2025/047',              _proto: true },
-          { label: 'Batch Manufacturing Record',         ref: 'BMR-HIM-ASH-2026-0614.pdf',        _proto: true },
-          { label: 'In-Process Test Records',            ref: 'IPT-HIM-ASH-2026-0614.pdf',        _proto: true },
-          { label: 'QC Release Order',                   ref: 'QCR-HIM-ASH-2026-0614.pdf',        _proto: true },
-          { label: 'Finished Product CoA',               ref: 'FPCOA-HIM-ASH-2026-0614.pdf',     _proto: true },
+          { label: 'Manufacturing Licence',      ref: 'AY/MFG/HP/2026/0321',          _proto: true },
+          { label: 'WHO-GMP Certificate',        ref: 'HP-WHO-GMP/2025/047',          _proto: true },
+          { label: 'Batch Manufacturing Record', ref: 'BMR-ASH-2026-0447',            _proto: true },
+          { label: 'In-Process Test Records',    ref: 'IPT-ASH-2026-0447',            _proto: true },
+          { label: 'QC Release Order',           ref: 'QCR-ASH-2026-0447',            _proto: true },
+          { label: 'Finished Product CoA',       ref: 'FPCOA-ASH-2026-0447',          _proto: true },
         ],
         blockchain: {
           txHash:    '0xf3a9…82b61c',
-          blockNum:  '6242771',
+          blockNum:  '4587450',
           timestamp: '26 Aug 2026, 05:44 PM IST',
-          network:   'Hyperledger Fabric (Permissioned)',
+          network:   'Permissioned Ledger',
           _proto:    true,
         },
         checks: [
-          { label: 'Manufacturing licence active',         detail: 'AY/MFG/HP/2026/0321',              status: 'pass' },
-          { label: 'WHO-GMP certification current',        detail: 'HP-WHO-GMP/2025/047',              status: 'pass' },
-          { label: 'Input traced from raw material batch', detail: 'MAND-ASH-2026-0614 → HIM-ASH-2026-0614', status: 'pass' },
-          { label: 'All 7 manufacturing steps recorded',   detail: '7 / 7 steps · BMR signed',          status: 'pass' },
-          { label: 'In-process tests passed',              detail: 'Weight · hardness · disintegration', status: 'pass' },
-          { label: 'QC release order issued',              detail: 'QCR-HIM-ASH-2026-0614',              status: 'pass' },
-          { label: 'Yield within validated range',         detail: '43,783 bottles · 96.1% yield',       status: 'pass' },
+          { label: 'Manufacturing licence active',         detail: 'AY/MFG/HP/2026/0321',                     status: 'pass' },
+          { label: 'WHO-GMP certification current',        detail: 'HP-WHO-GMP/2025/047',                     status: 'pass' },
+          { label: 'Input traced from raw material batch', detail: 'ASH-2026-001 → PRD-ASH-2026-0447',        status: 'pass' },
+          { label: 'All 7 manufacturing steps recorded',   detail: '7 / 7 steps · BMR signed',                 status: 'pass' },
+          { label: 'In-process tests passed',              detail: 'Weight · hardness · disintegration',       status: 'pass' },
+          { label: 'QC release order issued',              detail: 'QCR-ASH-2026-0447',                        status: 'pass' },
+          { label: 'Yield within validated range',         detail: '43,783 bottles · 96.1% yield',             status: 'pass' },
         ],
       },
     },
 
     /* ══════════════════════════════════════════════════════════════════════
        STAGE 5 — FINAL PRODUCT / PACKAGING
-       Who:  Himalaya Drug Company (QC verified pack)
-       What: This specific bottle — authenticated by QR scan
-       Where: Your hands (consumer)
+       This is the bottle the customer physically holds.
+       QR scan resolves to this exact record.
+
+       PROTOTYPE DISCLAIMER: All IDs, serial numbers, and ledger records
+       are simulated demonstration data. Marked _proto: true throughout.
     ══════════════════════════════════════════════════════════════════════ */
     {
       id:           'product',
@@ -366,20 +458,77 @@ export const PRODUCT: ProvenanceProduct = {
       nodePosition: 'up',
       tPosition:    0.88,
       data: {
-        type:         'product',
-        stageId:      'STG-05-PROD',
-        eventId:      'EVT-PROD-2026-0614-A',
-        date:         '26 August 2026',
-        entity:       'Himalaya Drug Company Pvt. Ltd.',
-        entityType:   'Brand Owner / Manufacturer',
-        description:  'This bottle of Himalaya Ashwagandha Pure Herbs (60 tablets, Batch HIM-ASH-2026-0614) has been uniquely serialised and linked to its complete provenance chain. The QR code printed on this bottle resolves exclusively to this record. The pack serial number is immutably recorded — it cannot be reused, duplicated, or forged. All 5 provenance stages have been individually verified and anchored to a permissioned ledger. This product is 100% traceable from root to tablet.',
-        productName:  'Himalaya Ashwagandha Pure Herbs',
-        brand:        'Himalaya',
-        skuCode:      'HIM-ASH-PH-60T',
-        batchCode:    'HIM-ASH-2026-0614',
-        packSerial:   'HIM-8F42-0614-A3',
-        tabletCount:  60,
-        netWeight:    '30 g',
+        type:               'product',
+        stageId:            'STG-05-PROD',
+        eventId:            'EVT-PROD-2026-0447',
+        date:               '29 August 2026',
+        entity:             'Himalaya Drug Company Pvt. Ltd.',
+        entityType:         'Brand Owner / Manufacturer',
+        description:        'This bottle of Himalaya Ashwagandha Pure Herbs (60 tablets, Batch PRD-ASH-2026-0447) has been uniquely serialised and linked to its complete provenance chain. The QR code printed on this bottle resolves exclusively to this record. The pack serial is immutably recorded — it cannot be reused, duplicated, or forged. All 5 provenance stages have been individually verified and anchored to a permissioned ledger. This product is 100% traceable from root to tablet.',
+
+        /* Product identity */
+        productName:        'Himalaya Ashwagandha',
+        brand:              'Himalaya',
+        skuCode:            'HIM-ASH-PH-60T',
+        batchCode:          'PRD-ASH-2026-0447',
+        packSerial:         'PRD-ASH-2026-0447',
+        tabletCount:        60,
+        netWeight:          '30 g',
+        manufactured:       'August 2026',
+        expiry:             'July 2028',
+        qrLinkedTo:         'R2R-PRD-ASH-2026-0447',
+
+        /* Extended product fields */
+        productId:          'PRD-ASH-2026-0447',
+        qrIdentifier:       'R2R-PRD-ASH-2026-0447',
+        scratchCodeEnabled: true,
+        stagesVerified:     5,
+        traceabilityPct:    100,
+        productImageUrl:    '/himalaya-ashwagandha-bottle.jpg',
+
+        location: {
+          lat:     30.9526,
+          lng:     76.7909,
+          label:   'Packaged — Baddi Plant',
+          city:    'Baddi',
+          state:   'Himachal Pradesh',
+          country: 'India',
+        },
+
+        chainSummary: [
+          { stage: 'Farmer / Collection', eventId: 'EVT-COL-2026-001',  status: 'pass', color: '#7ec85a', icon: 'leaf'    },
+          { stage: 'Laboratory Testing',  eventId: 'EVT-LAB-2026-014',  status: 'pass', color: '#4ea8d2', icon: 'flask'   },
+          { stage: 'Transportation',      eventId: 'EVT-TRN-2026-014',  status: 'pass', color: '#8b6cd4', icon: 'truck'   },
+          { stage: 'Manufacturing',       eventId: 'EVT-MFG-2026-0447', status: 'pass', color: '#e8a84a', icon: 'factory' },
+          { stage: 'Final Product',       eventId: 'EVT-PROD-2026-0447',status: 'pass', color: '#7ec85a', icon: 'package' },
+        ],
+
+        documents: [
+          { label: 'Botanical Source / Collection Record', ref: 'BOT-COL-ASH-2026-001',   _proto: true },
+          { label: 'Prototype Laboratory Report',         ref: 'LAB-RPT-ASH-2026-014',   _proto: true },
+          { label: 'Transportation Chain Record',         ref: 'TRANS-REC-ASH-2026-014',  _proto: true },
+          { label: 'Batch Manufacturing Record',          ref: 'BMR-ASH-2026-0447',       _proto: true },
+          { label: 'Product Verification Record',         ref: 'PROD-VER-ASH-2026-0447',  _proto: true },
+        ],
+
+        blockchain: {
+          txHash:    '0xf821…44bc',
+          blockNum:  '4587521',
+          timestamp: '29 Aug 2026, 10:00 AM IST',
+          network:   'Permissioned Ledger',
+          _proto:    true,
+        },
+
+        checks: [
+          { label: 'Pack serial uniquely registered',          detail: 'PRD-ASH-2026-0447 · 1-of-1',             status: 'pass' },
+          { label: 'QR code resolves to this provenance record', detail: 'R2R-PRD-ASH-2026-0447 · verified',     status: 'pass' },
+          { label: 'Batch fully traceable to raw material',    detail: 'ASH-2026-001 → PRD-ASH-2026-0447',       status: 'pass' },
+          { label: '5 of 5 stages verified',                   detail: 'All events anchored to ledger',             status: 'pass' },
+          { label: 'Product within expiry window',             detail: 'Manufactured Aug 2026 · Expires Jul 2028', status: 'pass' },
+        ],
+      },
+    },
+'30 g',
         manufactured: 'August 2026',
         expiry:       'July 2028',
         qrLinkedTo:   'HIM-8F42-0614-A3',
