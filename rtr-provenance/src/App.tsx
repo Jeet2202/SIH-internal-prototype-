@@ -4,6 +4,8 @@ import { RefreshCw, ChevronDown } from 'lucide-react'
 import ProvenanceScene from './components/ProvenanceScene'
 import VerificationHeader from './components/VerificationHeader'
 import StageDetailPanel from './components/StageDetailPanel'
+import TransportationStagePanel from './components/TransportationStagePanel'
+import ManufacturingStagePanel from './components/ManufacturingStagePanel'
 import NavArrows from './components/NavArrows'
 import BottomActionBar from './components/BottomActionBar'
 import ReviewModal from './components/ReviewModal'
@@ -158,8 +160,19 @@ export default function App() {
         />
 
         {/* ── Stage detail panel (bottom-docked, 3-column) ── */}
+        {/* Use dedicated Transportation panel for Stage 3, Manufacturing panel for Stage 4; generic panel for others */}
+        <TransportationStagePanel
+          open={selectedStage?.type === 'transport'}
+          onClose={handleClearStage}
+          hidden={reviewOpen}
+        />
+        <ManufacturingStagePanel
+          open={selectedStage?.type === 'manufacturing'}
+          onClose={handleClearStage}
+          hidden={reviewOpen}
+        />
         <StageDetailPanel
-          stage={selectedStage}
+          stage={selectedStage?.type !== 'transport' && selectedStage?.type !== 'manufacturing' ? selectedStage : null}
           onClose={handleClearStage}
           hidden={reviewOpen}
         />
