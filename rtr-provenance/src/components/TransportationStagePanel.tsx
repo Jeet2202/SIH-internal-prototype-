@@ -86,28 +86,32 @@ export default function TransportationStagePanel({ open, onClose, hidden = false
       {open && (
         <motion.div
           key="transport-panel-v2"
-          initial={{ y: '100%', opacity: 0 }}
-          animate={{ y: 0, opacity: hidden ? 0 : 1 }}
-          exit={{ y: '100%', opacity: 0 }}
-          transition={{ duration: 0.50, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ scale: 0.85, opacity: 0, y: 15 }}
+          animate={{ scale: 1, opacity: hidden ? 0 : 1, y: 0 }}
+          exit={{ scale: 0.85, opacity: 0, y: 15 }}
+          transition={{ duration: 0.46, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position:       'fixed',
-            bottom:         0, left: 0, right: 0,
-            zIndex:         40,
-            height:         '44vh',
-            background:     'rgba(4,2,12,0.97)',
-            backdropFilter: 'blur(32px)',
-            borderTop:      `1.5px solid ${ACCENT}55`,
-            boxShadow:      `0 -8px 60px rgba(0,0,0,0.80), 0 -2px 0 ${ACCENT}22`,
+            top:            '2vh',
+            bottom:         '2vh',
+            left:           '2.5vw',
+            right:          '2.5vw',
+            zIndex:         50,
+            background:     'rgba(4,2,12,0.96)',
+            backdropFilter: 'blur(36px)',
+            border:         `1.5px solid ${ACCENT}50`,
+            borderRadius:   20,
+            boxShadow:      `0 25px 80px rgba(0,0,0,0.92), 0 0 45px ${ACCENT}25`,
             pointerEvents:  hidden ? 'none' : 'auto',
             display:        'flex',
             flexDirection:  'column',
+            overflow:       'hidden',
           }}
         >
           {/* Top accent bar */}
           <div style={{
             height:     2, flexShrink: 0,
-            background: `linear-gradient(90deg, transparent, ${ACCENT}70, ${ACCENT}, ${ACCENT}70, transparent)`,
+            background: `linear-gradient(90deg, transparent, ${ACCENT}80, ${ACCENT}, ${ACCENT}80, transparent)`,
           }} />
 
           {/* Panel header strip */}
@@ -135,9 +139,10 @@ function PanelHeader({ onClose }: { onClose: () => void }) {
   return (
     <div style={{
       flexShrink: 0,
-      padding:    '8px 18px 6px 18px',
-      display:    'flex', alignItems: 'center', gap: 10,
-      borderBottom: `1px solid ${ACCENT}18`,
+      padding:    '9px 18px 8px 18px',
+      display:    'flex', alignItems: 'center', justifyContent: 'space-between',
+      borderBottom: `1px solid ${ACCENT}20`,
+      background: 'rgba(255,255,255,0.015)',
     }}>
       {/* Stage badge */}
       <div style={{
@@ -149,7 +154,7 @@ function PanelHeader({ onClose }: { onClose: () => void }) {
         <span style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 700, color: ACCENT }}>3</span>
       </div>
 
-      <div>
+      <div style={{ marginLeft: 12 }}>
         <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.26em', textTransform: 'uppercase', color: ACCENT, lineHeight: 1 }}>
           PROOF OF CUSTODY
         </div>
@@ -158,34 +163,87 @@ function PanelHeader({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      {/* VERIFIED pill */}
-      <Pill color={GREEN} text="VERIFIED" icon={<Check size={7} color={GREEN} strokeWidth={3} />} />
+      <div style={{ marginLeft: 16 }}>
+        <Pill color={GREEN} text="VERIFIED" icon={<Check size={7} color={GREEN} strokeWidth={3} />} />
+      </div>
 
-      {/* DELIVERED pill */}
-      <Pill color={ACCENT2} text="DELIVERED ✓" icon={<Truck size={7} color={ACCENT2} />} />
+      <div style={{ marginLeft: 8 }}>
+        <Pill color={ACCENT2} text="DELIVERED ✓" icon={<Truck size={7} color={ACCENT2} />} />
+      </div>
 
       {/* Spacer */}
       <div style={{ flex: 1 }} />
 
       {/* Shipment ID */}
-      <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: `${ACCENT}bb`, letterSpacing: '0.06em' }}>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: `${ACCENT}bb`, letterSpacing: '0.06em', marginRight: 16 }}>
         {TRANSPORTATION_RECORD.shipmentId}
       </div>
 
-      {/* Close */}
+      {/* Back button */}
       <button
         onClick={onClose}
-        aria-label="Close transportation panel"
         style={{
-          width: 24, height: 24, borderRadius: '50%',
-          background: 'rgba(255,255,255,0.06)',
-          border:     '1px solid rgba(255,255,255,0.12)',
-          display:    'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', color: 'rgba(255,255,255,0.4)',
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          background: 'rgba(255,255,255,0.05)',
+          border: `1px solid rgba(255,255,255,0.12)`,
+          borderRadius: 8, padding: '5px 12px',
+          fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
+          letterSpacing: '0.12em', textTransform: 'uppercase',
+          color: '#e0d8f8', cursor: 'pointer',
+          transition: 'all 0.2s',
         }}
       >
-        <X size={12} />
+        ← BACK TO PROVENANCE
       </button>
+
+      {/* Center node emblem */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{
+          width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+          background: `${ACCENT}1a`, border: `1.5px solid ${ACCENT}55`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: `0 0 14px ${GLOW}`,
+        }}>
+          <span style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 13, fontWeight: 700, color: ACCENT }}>3</span>
+        </div>
+
+        <div>
+          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.22em', textTransform: 'uppercase', color: ACCENT, lineHeight: 1 }}>
+            PROVENANCE NODE · STAGE 03
+          </div>
+          <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 12, fontWeight: 700, color: '#f0ecf8' }}>
+            TRANSPORTATION
+          </div>
+        </div>
+
+        {/* VERIFIED pill */}
+        <Pill color={GREEN} text="VERIFIED" icon={<Check size={7} color={GREEN} strokeWidth={3} />} />
+
+        {/* DELIVERED pill */}
+        <Pill color={ACCENT2} text="DELIVERED ✓" icon={<Truck size={7} color={ACCENT2} />} />
+      </div>
+
+      {/* Right side: shipment ID & close button */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8.5, color: `${ACCENT}bb`, letterSpacing: '0.06em' }}>
+          {TRANSPORTATION_RECORD.shipmentId}
+        </div>
+
+        <button
+          onClick={onClose}
+          aria-label="Close transportation panel"
+          style={{
+            width: 28, height: 28, borderRadius: '50%',
+            background: 'rgba(255,255,255,0.06)',
+            border:     '1px solid rgba(255,255,255,0.12)',
+            display:    'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', color: 'rgba(255,255,255,0.6)',
+            transition: 'all 0.2s',
+          }}
+        >
+          <X size={14} />
+        </button>
+      </div>
     </div>
   )
 }

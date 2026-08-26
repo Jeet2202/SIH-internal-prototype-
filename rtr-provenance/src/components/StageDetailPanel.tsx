@@ -72,44 +72,109 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
         {stage && (
           <motion.div
             key={stage.id}
-            initial={{ y: '100%', opacity: 0 }}
-            animate={{ y: 0, opacity: hidden ? 0 : 1 }}
-            exit={{ y: '100%', opacity: 0 }}
-            transition={{ duration: 0.50, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ scale: 0.85, opacity: 0, y: 15 }}
+            animate={{ scale: 1, opacity: hidden ? 0 : 1, y: 0 }}
+            exit={{ scale: 0.85, opacity: 0, y: 15 }}
+            transition={{ duration: 0.46, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position:       'fixed',
-              bottom: 0, left: 0, right: 0,
-              zIndex:         40,
-              maxHeight:      '46vh',
-              overflowY:      'auto',
-              background:     'rgba(2, 8, 4,0.96)',
-              backdropFilter: 'blur(28px)',
-              borderTop:      `1.5px solid ${stage.color}55`,
-              boxShadow:      `0 -8px 60px rgba(0,0,0,0.75), 0 -1px 0 ${stage.color}22`,
+              top:            '2vh',
+              bottom:         '2vh',
+              left:           '2.5vw',
+              right:          '2.5vw',
+              zIndex:         50,
+              display:        'flex',
+              flexDirection:  'column',
+              background:     'rgba(2, 8, 4, 0.96)',
+              backdropFilter: 'blur(36px)',
+              border:         `1.5px solid ${stage.color}50`,
+              borderRadius:   20,
+              boxShadow:      `0 25px 80px rgba(0,0,0,0.92), 0 0 45px ${stage.color}25`,
+              overflow:       'hidden',
               pointerEvents:  hidden ? 'none' : 'auto',
             }}
           >
-            {/* Coloured top bar */}
+            {/* Top accent glow line */}
             <div style={{
-              height:     2,
-              background: `linear-gradient(90deg, transparent, ${stage.color}70, ${stage.color}, ${stage.color}70, transparent)`,
+              height:     2, flexShrink: 0,
+              background: `linear-gradient(90deg, transparent, ${stage.color}80, ${stage.color}, ${stage.color}80, transparent)`,
             }} />
 
-            {/* Close button */}
-            <button
-              onClick={onClose}
-              aria-label="Close stage panel"
-              style={{
-                position:   'absolute', top: 10, right: 14, zIndex: 50,
-                width: 26, height: 26, borderRadius: '50%',
-                background: 'rgba(255,255,255,0.06)',
-                border:     '1px solid rgba(255,255,255,0.12)',
-                display:    'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', color: 'rgba(255,255,255,0.4)',
-              }}
-            >
-              <X size={13} />
-            </button>
+            {/* Top Portal Anchor Bar */}
+            <div style={{
+              flexShrink: 0,
+              padding:    '9px 18px 8px 18px',
+              display:    'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderBottom: `1px solid ${stage.color}20`,
+              background: 'rgba(255,255,255,0.015)',
+            }}>
+              {/* Back to helix button */}
+              <button
+                onClick={onClose}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6,
+                  background: 'rgba(255,255,255,0.05)',
+                  border: `1px solid rgba(255,255,255,0.12)`,
+                  borderRadius: 8, padding: '5px 12px',
+                  fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
+                  letterSpacing: '0.12em', textTransform: 'uppercase',
+                  color: '#d0ecd0', cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              >
+                ← BACK TO PROVENANCE
+              </button>
+
+              {/* Node Portal Emblem (Center Anchor) */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{
+                  width: 28, height: 28, borderRadius: '50%',
+                  background: `${stage.color}1c`, border: `1.5px solid ${stage.color}60`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: `0 0 14px ${stage.color}70`,
+                }}>
+                  <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 13, fontWeight: 700, color: stage.color }}>
+                    {stage.number}
+                  </span>
+                </div>
+                <div>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, color: stage.color, letterSpacing: '0.22em', textTransform: 'uppercase', lineHeight: 1 }}>
+                    PROVENANCE NODE · STAGE 0{stage.number}
+                  </div>
+                  <div style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 12, fontWeight: 700, color: '#f0f8f0' }}>
+                    {stage.title}
+                  </div>
+                </div>
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 4,
+                  background: `${stage.color}15`, border: `1px solid ${stage.color}40`,
+                  borderRadius: 999, padding: '2px 9px',
+                }}>
+                  <Check size={7} color={stage.color} strokeWidth={3} />
+                  <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7.5, color: stage.color, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                    VERIFIED
+                  </span>
+                </div>
+              </div>
+
+              {/* Close button */}
+              <button
+                onClick={onClose}
+                aria-label="Close stage panel"
+                style={{
+                  width: 28, height: 28, borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.06)',
+                  border:     '1px solid rgba(255,255,255,0.12)',
+                  display:    'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', color: 'rgba(255,255,255,0.6)',
+                  transition: 'all 0.2s',
+                }}
+              >
+                <X size={14} />
+              </button>
+            </div>
 
             {/* Stage-specific layout */}
             {stage.type === 'farmer'
