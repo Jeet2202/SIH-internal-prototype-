@@ -141,6 +141,13 @@ export default function TransportationStagePanel({ open, onClose, hidden = false
         </motion.div>
       )}
     </AnimatePresence>
+
+    {/* Document Viewer Modal */}
+    <DocumentModal
+      open={docModalOpen}
+      onClose={() => setDocModalOpen(false)}
+    />
+    </>
   )
 }
 
@@ -305,19 +312,67 @@ function RightColumn({ rec, onOpenDoc }: { rec: typeof TRANSPORTATION_RECORD; on
       overflowY:'auto',
     }}>
 
-      {/* ── ABOUT ── */}
+      {/* ── COMBINED INFO ── */}
       <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12, duration: 0.28 }}>
-        <AboutCard />
-      </motion.div>
+        <div style={{
+          background: `${ACCENT}08`, border: `1px solid ${ACCENT}1e`,
+          borderRadius: 11, padding: '9px 11px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
+            <div style={{
+              width: 18, height: 18, borderRadius: 5,
+              background: `${ACCENT}20`, border: `1px solid ${ACCENT}40`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Truck size={9} color={ACCENT} />
+            </div>
+            {[
+              { label: 'Temperature', value: rec.conditions.temperature },
+              { label: 'Humidity',    value: rec.conditions.humidity },
+            ].map((item, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: 10, paddingTop: 4 }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>{item.label}</span>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: 14, color: '#f0f8f0' }}>{item.value}</span>
+              </div>
+            ))}
+          </div>
 
-      {/* ── SMART INSURANCE ── */}
-      <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24, duration: 0.30 }}>
-        <SmartInsuranceCard rec={rec} />
-      </motion.div>
+          <div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
+              Smart Insurance
+            </div>
+            <div style={{ background: 'rgba(232,196,74,0.1)', border: '1px solid rgba(232,196,74,0.3)', borderRadius: 12, padding: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#e8c44a', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Policy ID</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#f5e8a8' }}>{rec.insurance.policyId}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#e8c44a', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Coverage</span>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: 12, color: '#f5e8a8' }}>{rec.insurance.coverage}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid rgba(232,196,74,0.2)', paddingTop: 10, marginTop: 10 }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: GREEN, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Status</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: GREEN }}>{rec.insurance.transitStatus}</span>
+              </div>
+            </div>
+          </div>
 
-      {/* ── LEDGER RECORD ── */}
-      <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.40, duration: 0.28 }}>
-        <LedgerCard rec={rec} />
+          <div style={{ marginTop: 'auto', paddingTop: 12 }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
+              Ledger Record
+            </div>
+            <div style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: 12 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'var(--night-dim)' }}>Block</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: '#f0f8f0' }}>{rec.ledger.blockNumber}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'var(--night-dim)' }}>Tx Hash</span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: ACCENT }}>{rec.ledger.transactionId.substring(0, 16)}...</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </motion.div>
 
       {/* ── DOCUMENTS ── */}
@@ -352,70 +407,6 @@ function RightColumn({ rec, onOpenDoc }: { rec: typeof TRANSPORTATION_RECORD; on
   )
 }
 
-/* ─── About card ─────────────────────────────────────────────────── */
-function AboutCard() {
-  return (
-    <div style={{
-      background: `${ACCENT}08`, border: `1px solid ${ACCENT}1e`,
-      borderRadius: 11, padding: '9px 11px',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5 }}>
-        <div style={{
-          width: 18, height: 18, borderRadius: 5,
-          background: `${ACCENT}20`, border: `1px solid ${ACCENT}40`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Truck size={9} color={ACCENT} />
-        </div>
-        {[
-          { label: 'Temperature', value: rec.conditions.temperature },
-          { label: 'Humidity',    value: rec.conditions.humidity },
-        ].map((item, i) => (
-          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: 10, paddingTop: 4 }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>{item.label}</span>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 14, color: '#f0f8f0' }}>{item.value}</span>
-          </div>
-        ))}
-      </div>
-
-      <div>
-        <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-          Smart Insurance
-        </div>
-        <div style={{ background: 'rgba(232,196,74,0.1)', border: '1px solid rgba(232,196,74,0.3)', borderRadius: 12, padding: 16 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#e8c44a', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Policy ID</span>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#f5e8a8' }}>{rec.insurance.policyId}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: '#e8c44a', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Coverage</span>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 12, color: '#f5e8a8' }}>{rec.insurance.coverage}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid rgba(232,196,74,0.2)', paddingTop: 10, marginTop: 10 }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: GREEN, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Status</span>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: GREEN }}>{rec.insurance.transitStatus}</span>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ marginTop: 'auto' }}>
-        <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
-          Ledger Record
-        </div>
-        <div style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8, padding: 12 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'var(--night-dim)' }}>Block</span>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: '#f0f8f0' }}>{rec.ledger.blockNumber}</span>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: 'var(--night-dim)' }}>Tx Hash</span>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: ACCENT }}>{rec.ledger.transactionId.substring(0, 16)}...</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 /* ══════════════════════════════════════════════════════════════════
    SHARED PRIMITIVES

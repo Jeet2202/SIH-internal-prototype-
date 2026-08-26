@@ -135,9 +135,7 @@ export default function ManufacturingStagePanel({ open, onClose, hidden = false 
             doc={selectedDoc}
             rec={rec}
           />
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </>
   )
 }
 
