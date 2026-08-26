@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   X, FlaskConical, Hash, Clock, Globe, Check,
@@ -75,6 +76,8 @@ const TEST_ROWS = [
 ]
 
 export default function LabReportModal({ open, onClose }: LabReportModalProps) {
+  const [activeTab, setActiveTab] = useState<0 | 1>(0)
+
   return (
     <AnimatePresence>
       {open && (
@@ -116,13 +119,41 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
                 overflow:       'hidden',
               }}
             >
-            {/* Header with Close Button */}
+            {/* Header with Close Button and Tabs */}
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '12px 16px', borderBottom: '1px solid rgba(124,255,79,0.2)',
               background: 'rgba(124,255,79,0.05)'
             }}>
-              <span style={{ fontFamily: "var(--font-display)", color: '#7CFF4F', fontSize: 14, fontWeight: 600 }}>Analytical Test Report</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <span style={{ fontFamily: "var(--font-display)", color: '#7CFF4F', fontSize: 14, fontWeight: 600 }}>Laboratory Reports</span>
+                
+                <div style={{ display: 'flex', background: 'rgba(0,0,0,0.3)', borderRadius: 6, padding: 3, border: '1px solid rgba(124,255,79,0.1)' }}>
+                  <button
+                    onClick={() => setActiveTab(0)}
+                    style={{
+                      padding: '4px 12px', borderRadius: 4, border: 'none', cursor: 'pointer',
+                      background: activeTab === 0 ? 'rgba(124,255,79,0.15)' : 'transparent',
+                      color: activeTab === 0 ? '#7CFF4F' : 'rgba(255,255,255,0.5)',
+                      fontFamily: "var(--font-mono)", fontSize: 10, transition: 'all 0.2s',
+                    }}
+                  >
+                    Analytical Test
+                  </button>
+                  <button
+                    onClick={() => setActiveTab(1)}
+                    style={{
+                      padding: '4px 12px', borderRadius: 4, border: 'none', cursor: 'pointer',
+                      background: activeTab === 1 ? 'rgba(124,255,79,0.15)' : 'transparent',
+                      color: activeTab === 1 ? '#7CFF4F' : 'rgba(255,255,255,0.5)',
+                      fontFamily: "var(--font-mono)", fontSize: 10, transition: 'all 0.2s',
+                    }}
+                  >
+                    Lab Attestation
+                  </button>
+                </div>
+              </div>
+
               <button
                 onClick={onClose}
                 style={{
@@ -138,12 +169,13 @@ export default function LabReportModal({ open, onClose }: LabReportModalProps) {
             
             {/* PDF Viewer */}
             <iframe
-              src="/documents/stage2.pdf#toolbar=0"
+              src={activeTab === 0 ? "/documents/stage2.pdf#toolbar=0" : "/documents/stage5.pdf#toolbar=0"}
               style={{ width: '100%', flex: 1, border: 'none' }}
-              title="Analytical Test Report"
+              title={activeTab === 0 ? "Analytical Test Report" : "Laboratory Test Report Attestation"}
             />
             </motion.div>
           </div>
+
         </>
       )}
     </AnimatePresence>
