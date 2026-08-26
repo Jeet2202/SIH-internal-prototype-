@@ -7,8 +7,6 @@ import StageDetailPanel from './components/StageDetailPanel'
 import TransportationStagePanel from './components/TransportationStagePanel'
 import ManufacturingStagePanel from './components/ManufacturingStagePanel'
 import NavArrows from './components/NavArrows'
-import BottomActionBar from './components/BottomActionBar'
-import ReviewModal from './components/ReviewModal'
 import type { ProvenanceStage } from './types/provenance'
 
 /* ---------------------------------------------------------------------------
@@ -28,7 +26,6 @@ import type { ProvenanceStage } from './types/provenance'
 export default function App() {
   const [selectedStage, setSelectedStage] = useState<ProvenanceStage | null>(null)
   const [autoRotate,    setAutoRotate]    = useState(true)
-  const [reviewOpen,    setReviewOpen]    = useState(false)
   const [showHint,      setShowHint]      = useState(true)
   const [interacted,    setInteracted]    = useState(false)
 
@@ -154,40 +151,22 @@ export default function App() {
           />
         )}
 
-
-        {/* ── Bottom action bar (overview only) ── */}
-        {!detailOpen && (
-          <BottomActionBar
-            selectedStage={selectedStage}
-            onClearStage={handleClearStage}
-            onOpenReview={() => setReviewOpen(true)}
-            onVerify={() => setReviewOpen(true)}
-            detailOpen={detailOpen}
-          />
-        )}
-
         {/* ── Stage detail panel (bottom-docked, 3-column) ── */}
         {/* Use dedicated Transportation panel for Stage 3, Manufacturing panel for Stage 4; generic panel for others */}
         <TransportationStagePanel
           open={selectedStage?.type === 'transport'}
           onClose={handleClearStage}
-          hidden={reviewOpen}
+          hidden={false}
         />
         <ManufacturingStagePanel
           open={selectedStage?.type === 'manufacturing'}
           onClose={handleClearStage}
-          hidden={reviewOpen}
+          hidden={false}
         />
         <StageDetailPanel
           stage={selectedStage?.type !== 'transport' && selectedStage?.type !== 'manufacturing' ? selectedStage : null}
           onClose={handleClearStage}
-          hidden={reviewOpen}
-        />
-
-        {/* ── Review modal ── */}
-        <ReviewModal
-          open={reviewOpen}
-          onClose={() => setReviewOpen(false)}
+          hidden={false}
         />
       </div>
     </div>

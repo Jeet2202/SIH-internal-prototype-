@@ -1,109 +1,26 @@
-/**
- * ManufacturingStagePanel — Stage 4
- *
- * Dedicated bottom-docked panel for Stage 4 — MANUFACTURING / PROCESSING
- * Represents the COMPLETED historical manufacturing record that produced
- * the exact product the customer is holding.
- *
- * Lineage: ASH-2026-004 → MFG-ASH-2026-004 → PRD-ASH-2026-0447
- *
- * Layout: 3 columns
- *   LEFT   (28%): WHO + WHAT — Facility, Input batch, Verification checks, Provenance Lineage
- *   MIDDLE (44%): HOW — Animated processing pipeline (7 steps), Formulation flow & composition
- *   RIGHT  (28%): WHY + RECORD — About, Packaging/Product, QR Linkage, Documents, Ledger
- *
- * Accent: #c8922e (amber/gold manufacturing)
- * This is a READ-ONLY customer provenance view. No operational controls.
- */
+import re
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import {
-  X, Check, Factory, Leaf, FlaskConical, Package, QrCode,
-  Hash, Clock, Globe, Cpu, ChevronDown, ChevronRight, AlertCircle,
-  Shield, FileText, Layers, Thermometer, Droplets, ArrowDown,
-  ExternalLink, Info, CheckCircle2,
-} from 'lucide-react'
-import { MANUFACTURING_RECORD } from '../data/manufacturing'
-import type { ProcessingStep } from '../types/manufacturing'
-import StageDetailHeader from '../components/StageDetailHeader'
-import { LocationMap } from './maps'
+with open('src/components/ManufacturingStagePanel.tsx', 'r', encoding='utf-8') as f:
+    content = f.read()
 
-/* ─── Theme ─────────────────────────────────────────────────────── */
-const AMBER   = '#c8922e'
-const AMBER2  = '#e0aa4e'
-const AMBER_G = 'rgba(200,146,46,0.50)'
-const GREEN   = '#7CFF4F'
-const GREEN_G = 'rgba(124, 255, 79,0.35)'
-const DIM     = 'rgba(200,190,160,0.45)'
-const SURFACE = 'rgba(255,255,255,0.02)'
-const BORDER  = 'rgba(255,255,255,0.07)'
+start_marker = '/* ─── Panel Header ───────────────────────────────────────────────── */'
+end_marker = '/* ══════════════════════════════════════════════════════════════════\n   SHARED PRIMITIVES'
 
-/* ─── Props ─────────────────────────────────────────────────────── */
-interface Props {
-  open:    boolean
-  onClose: () => void
-  hidden?: boolean
-}
+start_idx = content.find(start_marker)
+end_idx = content.find(end_marker)
 
-/* ══════════════════════════════════════════════════════════════════
-   ROOT PANEL
-══════════════════════════════════════════════════════════════════ */
-export default function ManufacturingStagePanel({ open, onClose, hidden = false }: Props) {
-  const rec = MANUFACTURING_RECORD
-  const [docModalOpen, setDocModalOpen] = useState(false)
-  const [selectedDoc, setSelectedDoc] = useState<{ label: string; ref: string } | null>(null)
+if start_idx == -1 or end_idx == -1:
+    print("Could not find markers")
+    exit(1)
 
-  useEffect(() => {
-    const h = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        if (docModalOpen) setDocModalOpen(false)
-        else onClose()
-      }
-    }
-    document.addEventListener('keydown', h)
-    return () => document.removeEventListener('keydown', h)
-  }, [onClose, docModalOpen])
+# Add import for StageDetailHeader if not present
+if "import StageDetailHeader" not in content:
+    import_idx = content.find("import { LocationMap } from './maps'")
+    content = content[:import_idx] + "import StageDetailHeader from '../components/StageDetailHeader'\n" + content[import_idx:]
+    start_idx = content.find(start_marker)
+    end_idx = content.find(end_marker)
 
-  const handleOpenDoc = (label: string, ref: string) => {
-    setSelectedDoc({ label, ref })
-    setDocModalOpen(true)
-  }
-
-  return (
-    <AnimatePresence mode="wait">
-      {open && (
-        <motion.div
-          key="mfg-panel"
-          initial={{ scale: 0.85, opacity: 0, y: 15 }}
-          animate={{ scale: 1, opacity: hidden ? 0 : 1, y: 0 }}
-          exit={{ scale: 0.85, opacity: 0, y: 15 }}
-          transition={{ duration: 0.46, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            position:       'fixed',
-            top:            '2vh',
-            bottom:         '2vh',
-            left:           '2.5vw',
-            right:          '2.5vw',
-            zIndex:         50,
-            background:     'rgba(6,3,1,0.96)',
-            backdropFilter: 'blur(36px)',
-            border:         `1.5px solid ${AMBER}50`,
-            borderRadius:   20,
-            boxShadow:      `0 25px 80px rgba(0,0,0,0.92), 0 0 45px ${AMBER}25`,
-            pointerEvents:  hidden ? 'none' : 'auto',
-            display:        'flex',
-            flexDirection:  'column',
-            overflow:       'hidden',
-          }}
-        >
-          {/* Top accent bar */}
-          <div style={{
-            height: 2, flexShrink: 0,
-            background: `linear-gradient(90deg, transparent, ${AMBER}80, ${AMBER}, ${AMBER}80, transparent)`,
-          }} />
-
-                    {/* Global Stage Header */}
+header_replace = """          {/* Global Stage Header */}
           <StageDetailHeader
             stageNumber={4}
             title="MANUFACTURING"
@@ -111,33 +28,19 @@ export default function ManufacturingStagePanel({ open, onClose, hidden = false 
             description="Verified manufacturing record for the finished product."
             accentColor={AMBER}
             onClose={onClose}
-          />
+          />"""
 
-          {/* 3-column body */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '28% 1fr 28%',
-            flex: 1, minHeight: 0,
-          }}>
-            <LeftColumn  rec={rec} />
-            <MiddleColumn rec={rec} onOpenDoc={handleOpenDoc} />
-            <RightColumn  rec={rec} onOpenDoc={handleOpenDoc} />
-          </div>
+# we need to replace the PanelHeader invocation in the main component
+inv_start = content.find('{/* Header strip */}')
+inv_end = content.find('{/* 3-column body */}')
+if inv_start != -1 and inv_end != -1:
+    content = content[:inv_start] + header_replace + "\n\n          " + content[inv_end:]
 
-          {/* Document Viewer Modal */}
-          <DocumentModal
-            open={docModalOpen}
-            onClose={() => setDocModalOpen(false)}
-            doc={selectedDoc}
-            rec={rec}
-          />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  )
-}
+# Now replace the PanelHeader definition and columns
+start_idx = content.find(start_marker)
+end_idx = content.find(end_marker)
 
-/* ══════════════════════════════════════════════════════════════════
+new_columns = """/* ══════════════════════════════════════════════════════════════════
    LEFT COLUMN — MANUFACTURER
 ══════════════════════════════════════════════════════════════════ */
 function LeftColumn({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
@@ -168,11 +71,11 @@ function LeftColumn({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
       </div>
       <div style={{ flex: 1, minHeight: 200, borderRadius: 16, overflow: 'hidden', border: `1px solid rgba(255,255,255,0.12)` }}>
         <LocationMap
-          location={{ lat: 19.0760, lng: 72.8777, label: rec.manufacturer.name }}
-          type="manufacturing"
+          location={{ lat: 19.9975, lng: 73.7898 }}
+          type="facility"
           label={rec.manufacturer.name}
           sublabel={rec.manufacturer.id}
-          privacy="internal"
+          privacy="public"
           accuracyM={5}
           statusBadge="GMP CERTIFIED"
           height={200}
@@ -360,87 +263,9 @@ function DocumentModal({ open, onClose, doc, rec }: { open: boolean; onClose: ()
   )
 }
 
-/* ══════════════════════════════════════════════════════════════════
-   SHARED PRIMITIVES
-══════════════════════════════════════════════════════════════════ */
-function ColLabel({ text, icon }: { text: string; icon: React.ReactNode }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-      {icon}
-      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: AMBER }}>
-        {text}
-      </span>
-    </div>
-  )
-}
+"""
 
-function Pill({ color, text, icon }: { color: string; text: string; icon: React.ReactNode }) {
-  return (
-    <div style={{
-      display: 'inline-flex', alignItems: 'center', gap: 4,
-      background: `${color}12`, border: `1px solid ${color}30`,
-      borderRadius: 999, padding: '2px 8px',
-    }}>
-      {icon}
-      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, letterSpacing: '0.10em', color, textTransform: 'uppercase' }}>{text}</span>
-    </div>
-  )
-}
+content = content[:start_idx] + new_columns + content[end_idx:]
 
-function MetaRow({ label, value, mono, verified, italic, accent, last }: {
-  label: string; value: string; mono?: boolean; verified?: boolean; italic?: boolean; accent?: string; last?: boolean
-}) {
-  return (
-    <div style={{
-      display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8,
-      padding: '3px 0', borderBottom: last ? 'none' : `1px solid ${BORDER}`,
-    }}>
-      <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.06em', textTransform: 'uppercase', color: DIM, flexShrink: 0 }}>
-        {label}
-      </span>
-      <span style={{
-        fontFamily: mono ? "var(--font-mono)" : italic ? "var(--font-body)" : "var(--font-body)",
-        fontStyle:  italic ? 'italic' : 'normal',
-        fontSize:   mono ? 8 : 9.5,
-        color: verified ? GREEN : (accent ?? '#d8cec0'),
-        textAlign: 'right',
-        display: 'flex', alignItems: 'center', gap: 4,
-      }}>
-        {value}
-        {verified && <Check size={7} color={GREEN} strokeWidth={3} />}
-      </span>
-    </div>
-  )
-}
-
-function MiniStat({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
-  return (
-    <div style={{
-      background: `${AMBER}0a`, border: `1px solid ${AMBER}18`,
-      borderRadius: 6, padding: '3px 6px',
-      display: 'flex', flexDirection: 'column', gap: 1,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-        {icon}
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: 6.5, color: DIM, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</span>
-      </div>
-      <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: AMBER2 }}>{value}</span>
-    </div>
-  )
-}
-
-function LedgerRow({ icon, label, value, mono }: { icon: React.ReactNode; label: string; value: string; mono?: boolean }) {
-  return (
-    <div style={{
-      display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-      gap: 8, padding: '3.5px 0', borderBottom: `1px solid ${BORDER}`,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0, fontFamily: "var(--font-mono)", fontSize: 7.5, letterSpacing: '0.06em', textTransform: 'uppercase', color: DIM }}>
-        {icon} {label}
-      </div>
-      <div style={{ fontFamily: mono ? "var(--font-mono)" : "var(--font-body)", fontSize: mono ? 8 : 9.5, color: '#c8c0b0', textAlign: 'right', wordBreak: 'break-all' }}>
-        {value}
-      </div>
-    </div>
-  )
-}
+with open('src/components/ManufacturingStagePanel.tsx', 'w', encoding='utf-8') as f:
+    f.write(content)
