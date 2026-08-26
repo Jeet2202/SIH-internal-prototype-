@@ -141,17 +141,11 @@ export default function TransportationStagePanel({ open, onClose, hidden = false
           }}>
             <LeftColumn  rec={rec} />
             <MiddleColumn rec={rec} />
-            <RightColumn  rec={rec} onOpenDoc={() => setDocModalOpen(true)} />
+            <RightColumn  rec={rec} />
           </div>
         </motion.div>
       )}
     </AnimatePresence>
-
-    {/* Document Viewer Modal */}
-    <DocumentModal
-      open={docModalOpen}
-      onClose={() => setDocModalOpen(false)}
-    />
     </>
   )
 }
@@ -309,7 +303,7 @@ function MiddleColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
 /* ══════════════════════════════════════════════════════════════════
    RIGHT COLUMN — CONDITIONS & PROTECTION
 ══════════════════════════════════════════════════════════════════ */
-function RightColumn({ rec, onOpenDoc }: { rec: typeof TRANSPORTATION_RECORD; onOpenDoc: () => void }) {
+function RightColumn({ rec }: { rec: typeof TRANSPORTATION_RECORD }) {
   return (
     <div style={{
       padding:  '10px 14px 10px 10px',
@@ -382,31 +376,11 @@ function RightColumn({ rec, onOpenDoc }: { rec: typeof TRANSPORTATION_RECORD; on
 
       {/* ── DOCUMENTS ── */}
       <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.48, duration: 0.28 }}>
-        <button
-          onClick={onOpenDoc}
-          style={{
-            width: '100%',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            padding: '9px 12px',
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: 10,
-            cursor: 'pointer',
-            transition: 'background 0.2s',
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
-          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.03)'}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <FileText size={14} color="#e0d8f8" />
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: '#e0d8f8', letterSpacing: '0.06em' }}>
-              Transit Insurance & Risk Report
-            </span>
-          </div>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: ACCENT, letterSpacing: '0.1em' }}>
-            VIEW →
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 7, padding: '4px 8px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 6 }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: 'var(--night-dim)' }}>
+            DOCUMENT AVAILABLE IN FINAL PRODUCT RECORD
           </span>
-        </button>
+        </div>
       </motion.div>
     </div>
   )

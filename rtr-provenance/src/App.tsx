@@ -6,7 +6,6 @@ import VerificationHeader from './components/VerificationHeader'
 import StageDetailPanel from './components/StageDetailPanel'
 import TransportationStagePanel from './components/TransportationStagePanel'
 import ManufacturingStagePanel from './components/ManufacturingStagePanel'
-import NavArrows from './components/NavArrows'
 import { useMobile } from './hooks/useMobile'
 import type { ProvenanceStage } from './types/provenance'
 
@@ -16,7 +15,6 @@ import type { ProvenanceStage } from './types/provenance'
    Layout:
    - ProvenanceScene: full-screen 3D canvas (z-index 0)
    - VerificationHeader: top bar (z-index 30)
-   - NavArrows: left/right edge buttons (z-index 28)
    - StageHint: center below DNA (z-index 22)
    - BottomActionBar: just above/below detail panel (z-index 38)
    - StageDetailPanel: bottom-docked 3-column panel (z-index 40)
@@ -183,14 +181,7 @@ export default function App() {
         </div>
         )}
 
-        {/* ── Left/Right navigation arrows (active when in overview) ── */}
-        {!detailOpen && !isMobile && (
-          <NavArrows
-            selectedStage={selectedStage}
-            onSelectStage={handleSelectStage}
-            detailOpen={detailOpen}
-          />
-        )}
+
 
         {/* ── Stage detail panel (bottom-docked, 3-column on desktop, bottom sheet on mobile) ── */}
         <TransportationStagePanel
