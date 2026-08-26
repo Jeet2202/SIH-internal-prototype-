@@ -63,7 +63,7 @@ export default function ManufacturingStagePanel({ open, onClose, hidden = false 
     }
     document.addEventListener('keydown', h)
     return () => document.removeEventListener('keydown', h)
-  }, [onClose, docModalOpen])
+  }, [onClose])
 
   const handleOpenDoc = (label: string, ref: string) => {
     setSelectedDoc({ label, ref })
@@ -121,20 +121,14 @@ export default function ManufacturingStagePanel({ open, onClose, hidden = false 
             flex: 1, minHeight: 0,
           }}>
             <LeftColumn  rec={rec} />
-            <MiddleColumn rec={rec} onOpenDoc={handleOpenDoc} />
-            <RightColumn  rec={rec} onOpenDoc={handleOpenDoc} />
+            <MiddleColumn rec={rec} />
+            <RightColumn  rec={rec} />
           </div>
         </motion.div>
       )}
     </AnimatePresence>
 
-          {/* Document Viewer Modal */}
-          <DocumentModal
-            open={docModalOpen}
-            onClose={() => setDocModalOpen(false)}
-            doc={selectedDoc}
-            rec={rec}
-          />
+
     </>
   )
 }
@@ -187,7 +181,7 @@ function LeftColumn({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
 /* ══════════════════════════════════════════════════════════════════
    MIDDLE COLUMN — INPUTS
 ══════════════════════════════════════════════════════════════════ */
-function MiddleColumn({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD; onOpenDoc: (l: string, r: string) => void }) {
+function MiddleColumn({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
   return (
     <div style={{ padding: '24px 32px', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
       <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: 'var(--night-dim)', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 12 }}>
@@ -237,7 +231,7 @@ function MiddleColumn({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD; on
 /* ══════════════════════════════════════════════════════════════════
    RIGHT COLUMN — OUTPUTS
 ══════════════════════════════════════════════════════════════════ */
-function RightColumn({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD; onOpenDoc: (l: string, r: string) => void }) {
+function RightColumn({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
   return (
     <div style={{ padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: 24, overflowY: 'auto' }}>
       <div>
@@ -267,9 +261,7 @@ function RightColumn({ rec, onOpenDoc }: { rec: typeof MANUFACTURING_RECORD; onO
               <div style={{ fontSize: 13, color: '#f0f8f0' }}>{doc.label}</div>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: AMBER, marginTop: 4 }}>{doc.ref}</div>
             </div>
-            <button onClick={() => onOpenDoc(doc.label, doc.ref)} style={{ padding: '6px 12px', borderRadius: 6, background: `${AMBER}15`, border: `1px solid ${AMBER}40`, color: AMBER, fontSize: 10, fontFamily: "var(--font-mono)", textTransform: 'uppercase', cursor: 'pointer' }}>
-              View
-            </button>
+
           </div>
         ))}
       </div>

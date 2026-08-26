@@ -6,9 +6,7 @@ import {
   Microscope, Boxes, TruckIcon, ThumbsUp, ArrowRight,
   X, User, Scale, Navigation, AlertTriangle, ExternalLink,
 } from 'lucide-react'
-import DocumentPreviewModal from './DocumentPreviewModal'
-import LabReportModal from './LabReportModal'
-import ProductDocumentsModal from './ProductDocumentsModal'
+
 import { LocationMap } from './maps'
 import type {
   ProvenanceStage,
@@ -17,7 +15,7 @@ import type {
   ManufacturingStageData,
   TransportStageData,
   ProductStageData,
-  LinkedDocument,
+  ProvenanceDocument,
 } from '../types/provenance'
 
 /* ---------------------------------------------------------------------------
@@ -36,16 +34,12 @@ interface StageDetailPanelProps {
 
 export default function StageDetailPanel({ stage, onClose, hidden = false }: StageDetailPanelProps) {
   const [checksDone,    setChecksDone]   = useState(false)
-  const [docModalOpen,  setDocModalOpen]  = useState(false)
-  const [labModalOpen,  setLabModalOpen]  = useState(false)
-  const [prodDocsOpen,  setProdDocsOpen]  = useState(false)
+  const [selectedDoc,   setSelectedDoc]  = useState<ProvenanceDocument | null>(null)
   const [reviewOpen,    setReviewOpen]    = useState(false)
 
   useEffect(() => {
     setChecksDone(false)
-    setDocModalOpen(false)
-    setLabModalOpen(false)
-    setProdDocsOpen(false)
+    setSelectedDoc(null)
     setReviewOpen(false)
     if (stage) {
       const t = setTimeout(() => setChecksDone(true), 700)
@@ -56,16 +50,14 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (docModalOpen)  { setDocModalOpen(false);  return }
-        if (labModalOpen)  { setLabModalOpen(false);  return }
-        if (prodDocsOpen)  { setProdDocsOpen(false);  return }
+        if (selectedDoc)   { setSelectedDoc(null);  return }
         if (reviewOpen)    { setReviewOpen(false);    return }
         onClose()
       }
     }
     document.addEventListener('keydown', handler)
     return () => document.removeEventListener('keydown', handler)
-  }, [onClose, docModalOpen, labModalOpen, prodDocsOpen, reviewOpen])
+  }, [onClose, selectedDoc, reviewOpen])
 
   return (
     <>
@@ -183,21 +175,21 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
                   stage={stage}
                   checksDone={checksDone}
                   onClose={onClose}
-                  onOpenDoc={() => setDocModalOpen(true)}
+                  
                 />
               : stage.type === 'lab'
               ? <LabPanelLayout
                   stage={stage}
                   checksDone={checksDone}
                   onClose={onClose}
-                  onOpenReport={() => setLabModalOpen(true)}
+                  
                 />
               : stage.type === 'product'
               ? <ProductPanelLayout
                   stage={stage}
                   checksDone={checksDone}
                   onClose={onClose}
-                  onOpenDocs={() => setProdDocsOpen(true)}
+                  onOpenDocs={(doc) => setSelectedDoc(doc)}
                   onOpenReview={() => setReviewOpen(true)}
                 />
               : (
@@ -212,22 +204,10 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
         )}
       </AnimatePresence>
 
-      {/* Document preview modal */}
-      <DocumentPreviewModal
-        open={docModalOpen}
-        onClose={() => setDocModalOpen(false)}
-      />
-
-      {/* Lab report modal */}
-      <LabReportModal
-        open={labModalOpen}
-        onClose={() => setLabModalOpen(false)}
-      />
-
-      {/* Product provenance documents modal */}
-      <ProductDocumentsModal
-        open={prodDocsOpen}
-        onClose={() => setProdDocsOpen(false)}
+      {/* Unified Document viewer modal */}
+      <UnifiedDocumentModal
+        doc={selectedDoc}
+        onClose={() => setSelectedDoc(null)}
       />
 
       {/* Stage 5 in-panel review modal (inline ReviewModal) */}
@@ -245,11 +225,10 @@ export default function StageDetailPanel({ stage, onClose, hidden = false }: Sta
    Accent colour: #4ea8d2 (blue/cyan)
 ══════════════════════════════════════════════════════════════════ */
 
-function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: {
+function LabPanelLayout({ stage, checksDone, onClose: _onClose }: {
   stage:        ProvenanceStage
   checksDone:   boolean
   onClose:      () => void
-  onOpenReport: () => void
 }) {
   const d    = stage.data as LabStageData
   const C    = stage.color   // #4ea8d2
@@ -476,23 +455,11 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
               <Check size={9} color={C} strokeWidth={3} />
               <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, color: '#7dcfee' }}>VERIFIED</span>
             </div>
-            <button
-              onClick={onOpenReport}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer',
-                padding: '5px 12px', borderRadius: 8,
-                background: `${C}16`, border: `1px solid ${C}35`,
-                color: '#7dcfee', fontFamily: "var(--font-mono)",
-                fontSize: 8.5, letterSpacing: '0.10em', textTransform: 'uppercase',
-              }}
-            >
-              <ExternalLink size={9} /> View Lab Report
-            </button>
+            
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 7, padding: '4px 8px', background: 'rgba(255,165,0,0.07)', border: '1px solid rgba(255,165,0,0.22)', borderRadius: 6 }}>
-            <AlertTriangle size={7} color="rgba(255,165,0,0.65)" />
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'rgba(255,165,0,0.60)' }}>
-              Demonstration Record — not a real laboratory report
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 7, padding: '4px 8px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 6 }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: 'var(--night-dim)' }}>
+              DOCUMENT AVAILABLE IN FINAL PRODUCT RECORD
             </span>
           </div>
         </motion.div>
@@ -563,11 +530,10 @@ function LabKV({ label, value, C, mono }: { label: string; value: string; C: str
    Full 3-column rich view for Stage 1 Farmer/Collection
 ══════════════════════════════════════════════════════════════════ */
 
-function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: {
+function FarmerPanelLayout({ stage, checksDone, onClose: _onClose }: {
   stage:      ProvenanceStage
   checksDone: boolean
   onClose:    () => void
-  onOpenDoc:  () => void
 }) {
   const d = stage.data as FarmerStageData
 
@@ -764,14 +730,11 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
           }}>
             Botanical Source Record
           </div>
-          <div style={{ fontSize: 11, color: '#d4e8ce', marginBottom: 2 }}>
-            Botanical Source / Collection Record
-          </div>
-          <div style={{
+                    <div style={{
             fontFamily: "var(--font-mono)", fontSize: 8.5,
             color: 'var(--night-dim)', marginBottom: 8,
           }}>
-            {d.documents[0].ref}
+            {d.eventId}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
             {/* Status */}
@@ -781,20 +744,7 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
                 VERIFIED
               </span>
             </div>
-            {/* View Document button */}
-            <button
-              onClick={onOpenDoc}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer',
-                padding: '5px 12px', borderRadius: 8,
-                background: 'rgba(124, 255, 79,0.14)', border: '1px solid rgba(124, 255, 79,0.32)',
-                color: '#7CFF4F', fontFamily: "var(--font-mono)",
-                fontSize: 8.5, letterSpacing: '0.10em', textTransform: 'uppercase',
-                transition: 'all 0.2s',
-              }}
-            >
-              <ExternalLink size={9} /> View Document
-            </button>
+            
           </div>
           {/* Prototype label */}
           <div style={{
@@ -1101,15 +1051,7 @@ function Column3Generic({ stage }: { stage: ProvenanceStage }) {
 
       <StageExtraContent stage={stage} />
 
-      <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.34, duration: 0.28 }}
-        style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 13, padding: '11px 14px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-          <FileText size={10} color="var(--night-dim)" />
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--night-dim)' }}>Linked Documents</span>
-          <span style={{ marginLeft: 'auto', fontFamily: "var(--font-mono)", fontSize: 7, color: 'rgba(255,165,0,0.55)', textTransform: 'uppercase', letterSpacing: '0.10em' }}>⚠ PROTOTYPE</span>
-        </div>
-        {d.documents.slice(0, 4).map((doc, i) => <DocRow key={i} doc={doc} />)}
-      </motion.div>
+      
 
       <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.28 }}
         style={{ background: 'rgba(255,255,255,0.018)', border: '1px solid rgba(124, 255, 79,0.16)', borderRadius: 13, padding: '11px 14px' }}>
@@ -1327,20 +1269,6 @@ function MicroTag({ icon, text, color }: { icon: React.ReactNode; text: string; 
   )
 }
 
-function DocRow({ doc }: { doc: LinkedDocument }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '4px 0', borderBottom: '1px solid rgba(124, 255, 79, 0.04)' }}>
-      <FileText size={8} color="rgba(255,165,0,0.55)" style={{ flexShrink: 0 }} />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 10, color: '#c8dcc4', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.label}</div>
-        <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)' }}>
-          {doc.ref}{doc._proto && <span style={{ color: 'rgba(255,165,0,0.45)', marginLeft: 5 }}>[prototype]</span>}
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function BCRow({ icon, label, value, mono, last }: { icon: React.ReactNode; label: string; value: string; mono?: boolean; last?: boolean }) {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, padding: '5px 0', borderBottom: last ? 'none' : '1px solid rgba(124, 255, 79, 0.04)' }}>
@@ -1395,7 +1323,7 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
   stage:         ProvenanceStage
   checksDone:    boolean
   onClose:       () => void
-  onOpenDocs:    () => void
+  onOpenDocs:    (doc: ProvenanceDocument) => void
   onOpenReview:  () => void
 }) {
   const d = stage.data as ProductStageData
@@ -1580,32 +1508,27 @@ function ProductPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDocs, 
                 Provenance Documents
               </span>
             </div>
-            <button
-              onClick={onOpenDocs}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer',
-                padding: '4px 10px', borderRadius: 7,
-                background: `${C}14`, border: `1px solid ${C}30`,
-                color: '#7CFF4F', fontFamily: "var(--font-mono)",
-                fontSize: 8, letterSpacing: '0.10em', textTransform: 'uppercase',
-              }}
-            >
-              <ExternalLink size={8} /> View All
-            </button>
           </div>
-          {d.documents.map((doc, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0', borderBottom: i < d.documents.length - 1 ? '1px solid rgba(124, 255, 79, 0.04)' : 'none' }}>
-              <Check size={8} color={C} strokeWidth={3} style={{ flexShrink: 0 }} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 10, color: '#dff0f8', lineHeight: 1.25 }}>{doc.label}</div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)', marginTop: 1 }}>{doc.ref}</div>
+          {d.provenanceDocuments.map((doc, i) => (
+            <div key={i} style={{ 
+              background: 'rgba(255,255,255,0.02)', 
+              border: '1px solid rgba(255,255,255,0.06)', 
+              borderRadius: 8, 
+              padding: '8px 10px',
+              marginBottom: 6,
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+            }}>
+              <div>
+                <div style={{ fontSize: 10, color: '#dff0f8', marginBottom: 2 }}>{doc.title}</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 7.5, color: 'var(--night-dim)' }}>{doc.description}</div>
               </div>
               <button
-                onClick={onOpenDocs}
+                onClick={() => onOpenDocs(doc)}
                 style={{
-                  flexShrink: 0, padding: '2px 8px', borderRadius: 6, cursor: 'pointer',
+                  flexShrink: 0, padding: '4px 10px', borderRadius: 6, cursor: 'pointer',
                   background: `${C}10`, border: `1px solid ${C}25`,
                   fontFamily: "var(--font-mono)", fontSize: 7.5, color: `${C}90`,
+                  letterSpacing: '0.08em', textTransform: 'uppercase'
                 }}
               >View</button>
             </div>
@@ -1904,3 +1827,54 @@ void TruckIcon
 void ThumbsUp
 void ArrowRight
 void Microscope
+
+
+function UnifiedDocumentModal({ doc, onClose }: { doc: ProvenanceDocument | null, onClose: () => void }) {
+  if (!doc) return null;
+  const ACCENT = '#7CFF4F';
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.80)', backdropFilter: 'blur(12px)' }}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        style={{
+          background: 'rgba(5,12,4,0.98)',
+          border: `1px solid ${ACCENT}50`,
+          borderRadius: 16,
+          width: 'min(800px, 96vw)',
+          height: '85vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          boxShadow: `0 28px 90px rgba(0,0,0,0.80), 0 0 60px ${ACCENT}20`,
+        }}
+      >
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '12px 16px', borderBottom: `1px solid ${ACCENT}30`,
+          background: `${ACCENT}0a`
+        }}>
+          <span style={{ fontFamily: 'var(--font-display)', color: '#dff0f8', fontSize: 14, fontWeight: 600 }}>{doc.title}</span>
+          <button
+            onClick={onClose}
+            style={{
+              width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+              background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: 'rgba(255,255,255,0.6)',
+            }}
+          >
+            <X size={14} />
+          </button>
+        </div>
+        
+        <iframe
+          src={`${doc.fileUrl}#toolbar=0`}
+          style={{ width: '100%', flex: 1, border: 'none' }}
+          title={doc.title}
+        />
+      </motion.div>
+    </div>
+  )
+}

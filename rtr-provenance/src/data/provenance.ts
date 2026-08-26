@@ -109,28 +109,6 @@ export const PRODUCT: ProvenanceProduct = {
           state:   'Maharashtra',
           country: 'India',
         },
-        documents: [
-          {
-            label:  'Botanical Source / Collection Record',
-            ref:    'BOT-COL-ASH-2026-001',
-            _proto: true,
-          },
-          {
-            label:  'Collector Eligibility Record',
-            ref:    'COL-ELIG-2026-001',
-            _proto: true,
-          },
-          {
-            label:  'GPS Collection Log',
-            ref:    'GPS-LOG-COL-2026-001',
-            _proto: true,
-          },
-          {
-            label:  'Quantity Verification Receipt',
-            ref:    'QTY-VER-ASH-2026-001',
-            _proto: true,
-          },
-        ],
         blockchain: {
           txHash:    '0x7d3f…a9b21c',
           blockNum:  '4587123',
@@ -259,12 +237,6 @@ export const PRODUCT: ProvenanceProduct = {
           },
         ],
 
-        documents: [
-          { label: 'Prototype Laboratory Report',       ref: 'LAB-RPT-ASH-2026-014',   _proto: true },
-          { label: 'Sample Receipt / Chain-of-Custody', ref: 'COC-LAB-ASH-2026-014',   _proto: true },
-          { label: 'Heavy Metals Screen (ICP-OES)',     ref: 'HM-LAB-ASH-2026-014',    _proto: true },
-          { label: 'Microbial Limits Test Record',      ref: 'MICRO-LAB-ASH-2026-014', _proto: true },
-        ],
 
         blockchain: {
           txHash:    '0x91ac…72ef',
@@ -333,13 +305,6 @@ export const PRODUCT: ProvenanceProduct = {
           { label: 'Tamper-Evident Seal',  value: 'TES-0614-448 · Intact',        status: 'pass' },
           { label: 'Transit Duration',     value: '30 h 45 min · As planned',     status: 'pass' },
           { label: 'Delivery Receipt',     value: '23 Aug 2026 · Signed ✓',       status: 'pass' },
-        ],
-        documents: [
-          { label: 'Chain-of-Custody Transfer Document', ref: 'COC-TRN-2026-0614.pdf',       _proto: true },
-          { label: 'IoT Temperature Log (15-min)',       ref: 'IOTLOG-TRN-0614-FULL.csv',    _proto: true },
-          { label: 'GPS Route Report',                   ref: 'GPS-TRN-0614-ROUTE.pdf',      _proto: true },
-          { label: 'Tamper-Seal Verification Photo',    ref: 'SEAL-TRN-0614-TES448.jpg',    _proto: true },
-          { label: 'Delivery Receipt — Baddi Plant',    ref: 'DELREC-0614-BADDI.pdf',        _proto: true },
         ],
         blockchain: {
           txHash:    '0xb7e1…3c90a2',
@@ -410,14 +375,6 @@ export const PRODUCT: ProvenanceProduct = {
           { step: 6, name: 'Film Coating',                     detail: 'HPMC aqueous coat · Weight gain 2–3% · Appearance uniform', status: 'pass' },
           { step: 7, name: 'QC Release & Packaging',           detail: '60-tab HDPE bottles · Lot-coded · PRD-ASH-2026-0447 released', output: '43,783 bottles', status: 'pass' },
         ],
-        documents: [
-          { label: 'Manufacturing Licence',      ref: 'AY/MFG/HP/2026/0321',          _proto: true },
-          { label: 'WHO-GMP Certificate',        ref: 'HP-WHO-GMP/2025/047',          _proto: true },
-          { label: 'Batch Manufacturing Record', ref: 'BMR-ASH-2026-0447',            _proto: true },
-          { label: 'In-Process Test Records',    ref: 'IPT-ASH-2026-0447',            _proto: true },
-          { label: 'QC Release Order',           ref: 'QCR-ASH-2026-0447',            _proto: true },
-          { label: 'Finished Product CoA',       ref: 'FPCOA-ASH-2026-0447',          _proto: true },
-        ],
         blockchain: {
           txHash:    '0xf3a9…82b61c',
           blockNum:  '4587450',
@@ -485,7 +442,74 @@ export const PRODUCT: ProvenanceProduct = {
         stagesVerified:     5,
         traceabilityPct:    100,
         productImageUrl:    '/himalaya-ashwagandha-bottle.jpg',
-
+        
+        provenanceDocuments: [
+          {
+            id: 'DOC-SRC-ASH-2026-004',
+            type: 'botanical-certificate',
+            title: 'Botanical / Source Certificate',
+            description: 'Source verification and collection authorization',
+            fileName: 'stage1.pdf',
+            fileUrl: '/documents/stage1.pdf',
+            mimeType: 'application/pdf',
+            relatedBatchId: 'ASH-2026-004',
+            relatedProductBatchId: 'PRD-ASH-2026-0447',
+            issuer: 'NMPB Authorized Verifier',
+            status: 'verified'
+          },
+          {
+            id: 'DOC-LAB-ASH-2026-004',
+            type: 'laboratory-report',
+            title: 'Laboratory Report',
+            description: 'Quality testing and Withanolide assay results',
+            fileName: 'stage2.pdf',
+            fileUrl: '/documents/stage2.pdf',
+            mimeType: 'application/pdf',
+            relatedBatchId: 'ASH-2026-004',
+            relatedProductBatchId: 'PRD-ASH-2026-0447',
+            issuer: 'Eurofins Analytical Services',
+            status: 'verified'
+          },
+          {
+            id: 'DOC-TRANS-ASH-2026-004',
+            type: 'transport-record',
+            title: 'Transport / Insurance Record',
+            description: 'Transit protection and route verification',
+            fileName: 'stage3.pdf',
+            fileUrl: '/documents/stage3.pdf',
+            mimeType: 'application/pdf',
+            relatedBatchId: 'ASH-2026-004',
+            relatedProductBatchId: 'PRD-ASH-2026-0447',
+            issuer: 'Safexpress Logistics',
+            status: 'verified'
+          },
+          {
+            id: 'DOC-MFG-ASH-2026-004',
+            type: 'manufacturing-report',
+            title: 'Manufacturing Report',
+            description: 'Manufacturing and processing record',
+            fileName: 'stage4.pdf',
+            fileUrl: '/documents/stage4.pdf',
+            mimeType: 'application/pdf',
+            relatedBatchId: 'ASH-2026-004',
+            relatedProductBatchId: 'PRD-ASH-2026-0447',
+            issuer: 'Himalaya Drug Company Pvt. Ltd.',
+            status: 'demonstration'
+          },
+          {
+            id: 'DOC-REL-ASH-2026-004',
+            type: 'quality-release',
+            title: 'Quality Release Record',
+            description: 'Finished product release and compliance certification',
+            fileName: 'stage5.pdf',
+            fileUrl: '/documents/stage5.pdf',
+            mimeType: 'application/pdf',
+            relatedBatchId: 'ASH-2026-004',
+            relatedProductBatchId: 'PRD-ASH-2026-0447',
+            issuer: 'Himalaya Quality Assurance',
+            status: 'verified'
+          }
+        ],
         location: {
           lat:     30.9526,
           lng:     76.7909,
@@ -503,13 +527,6 @@ export const PRODUCT: ProvenanceProduct = {
           { stage: 'Final Product',       eventId: 'EVT-PROD-2026-0447',status: 'pass', color: '#7CFF4F', icon: 'package' },
         ],
 
-        documents: [
-          { label: 'Botanical Source / Collection Record', ref: 'BOT-COL-ASH-2026-001',   _proto: true },
-          { label: 'Prototype Laboratory Report',         ref: 'LAB-RPT-ASH-2026-014',   _proto: true },
-          { label: 'Transportation Chain Record',         ref: 'TRANS-REC-ASH-2026-014',  _proto: true },
-          { label: 'Batch Manufacturing Record',          ref: 'BMR-ASH-2026-0447',       _proto: true },
-          { label: 'Product Verification Record',         ref: 'PROD-VER-ASH-2026-0447',  _proto: true },
-        ],
 
         blockchain: {
           txHash:    '0xf821…44bc',

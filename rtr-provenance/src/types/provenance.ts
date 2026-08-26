@@ -23,12 +23,26 @@ export interface VerificationCheck {
   _proto?: boolean;   // true = simulated in prototype
 }
 
-/** A linked document (test report, permit, certificate, etc.) */
-export interface LinkedDocument {
-  label:    string;     // "NABL Test Report"
-  ref:      string;     // human-readable ID / filename
-  url?:     string;     // future: real URL
-  _proto:   boolean;    // always true in prototype
+/** A canonical provenance document tied to a specific stage or batch */
+export interface ProvenanceDocument {
+  id: string;
+  type:
+    | "laboratory-report"
+    | "botanical-certificate"
+    | "manufacturing-report"
+    | "quality-release"
+    | "insurance-document"
+    | "transport-record";
+  title: string;
+  description: string;
+  fileName: string;
+  fileUrl: string;
+  mimeType: "application/pdf";
+  relatedBatchId: string;
+  relatedProductBatchId?: string;
+  issuer?: string;
+  issuedDate?: string;
+  status: "verified" | "demonstration";
 }
 
 /** Blockchain / ledger record — stub shape matching production intent */
@@ -65,7 +79,7 @@ interface BaseStageData {
   entityType:  string;           // "Farm Cooperative" | "Laboratory" | ...
   description: string;           // full paragraph for "About this stage"
   location:    GeoPoint;
-  documents:   LinkedDocument[];
+
   blockchain:  BlockchainRecord;
   checks:      VerificationCheck[];
 }
@@ -176,6 +190,7 @@ export interface ProductStageData extends BaseStageData {
   batchCode:           string;
   packSerial:          string;
   tabletCount:         number;
+  provenanceDocuments: ProvenanceDocument[];
   netWeight:           string;
   manufactured:        string;
   expiry:              string;
