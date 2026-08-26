@@ -73,21 +73,26 @@ export default function ManufacturingStagePanel({ open, onClose, hidden = false 
       {open && (
         <motion.div
           key="mfg-panel"
-          initial={{ y: '100%', opacity: 0 }}
-          animate={{ y: 0, opacity: hidden ? 0 : 1 }}
-          exit={{ y: '100%', opacity: 0 }}
-          transition={{ duration: 0.50, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ scale: 0.85, opacity: 0, y: 15 }}
+          animate={{ scale: 1, opacity: hidden ? 0 : 1, y: 0 }}
+          exit={{ scale: 0.85, opacity: 0, y: 15 }}
+          transition={{ duration: 0.46, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position:       'fixed',
-            bottom:         0, left: 0, right: 0,
-            zIndex:         40,
-            height:         '44vh',
-            background:     'rgba(6,3,1,0.97)',
-            backdropFilter: 'blur(32px)',
-            borderTop:      `1.5px solid ${AMBER}55`,
-            boxShadow:      `0 -8px 60px rgba(0,0,0,0.85), 0 -2px 0 ${AMBER}22`,
+            top:            '2vh',
+            bottom:         '2vh',
+            left:           '2.5vw',
+            right:          '2.5vw',
+            zIndex:         50,
+            background:     'rgba(6,3,1,0.96)',
+            backdropFilter: 'blur(36px)',
+            border:         `1.5px solid ${AMBER}50`,
+            borderRadius:   20,
+            boxShadow:      `0 25px 80px rgba(0,0,0,0.92), 0 0 45px ${AMBER}25`,
             pointerEvents:  hidden ? 'none' : 'auto',
-            display:        'flex', flexDirection: 'column',
+            display:        'flex',
+            flexDirection:  'column',
+            overflow:       'hidden',
           }}
         >
           {/* Top accent bar */}
@@ -128,62 +133,83 @@ function PanelHeader({ onClose, rec }: { onClose: () => void; rec: typeof MANUFA
   return (
     <div style={{
       flexShrink: 0,
-      padding:    '7px 18px 6px 18px',
-      display:    'flex', alignItems: 'center', gap: 10,
-      borderBottom: `1px solid ${AMBER}1a`,
+      padding:    '9px 18px 8px 18px',
+      display:    'flex', alignItems: 'center', justifyContent: 'space-between',
+      borderBottom: `1px solid ${AMBER}20`,
+      background: 'rgba(255,255,255,0.015)',
     }}>
-      {/* Stage badge */}
-      <div style={{
-        width: 28, height: 28, borderRadius: 8, flexShrink: 0,
-        background: `${AMBER}1a`, border: `1.5px solid ${AMBER}45`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: `0 0 10px ${AMBER_G}`,
-      }}>
-        <span style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 13, fontWeight: 700, color: AMBER }}>4</span>
-      </div>
-
-      <div>
-        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.26em', textTransform: 'uppercase', color: AMBER, lineHeight: 1 }}>
-          PROOF OF PROCESSING
-        </div>
-        <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 11, fontWeight: 700, color: '#f0e8d8' }}>
-          MANUFACTURING
-        </div>
-      </div>
-
-      <Pill color={GREEN}  text="VERIFIED"              icon={<Check   size={7} color={GREEN}  strokeWidth={3} />} />
-      <Pill color={AMBER2} text="MANUFACTURING COMPLETED" icon={<Factory size={7} color={AMBER2} />} />
-      <Pill color={GREEN}  text={`PRODUCT BATCH ${rec.packaging.productBatchId}`} icon={<Package size={7} color={GREEN} />} />
-
-      <div style={{ flex: 1 }} />
-
-      {/* Demo badge */}
-      <div style={{
-        fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.12em',
-        textTransform: 'uppercase', color: `${AMBER}70`,
-        background: `${AMBER}0a`, border: `1px solid ${AMBER}22`,
-        borderRadius: 5, padding: '2px 7px',
-      }}>
-        DEMONSTRATION RECORD
-      </div>
-
-      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8.5, color: `${AMBER}bb`, letterSpacing: '0.06em' }}>
-        {rec.manufacturing.manufacturingId}
-      </div>
-
+      {/* Back button */}
       <button
         onClick={onClose}
-        aria-label="Close manufacturing panel"
         style={{
-          width: 24, height: 24, borderRadius: '50%',
-          background: 'rgba(255,255,255,0.06)',
-          border:     '1px solid rgba(255,255,255,0.12)',
-          display:    'flex', alignItems: 'center', justifyContent: 'center',
-          cursor: 'pointer', color: 'rgba(255,255,255,0.4)',
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          background: 'rgba(255,255,255,0.05)',
+          border: `1px solid rgba(255,255,255,0.12)`,
+          borderRadius: 8, padding: '5px 12px',
+          fontFamily: "'IBM Plex Mono', monospace", fontSize: 8,
+          letterSpacing: '0.12em', textTransform: 'uppercase',
+          color: '#f0e8d0', cursor: 'pointer',
+          transition: 'all 0.2s',
         }}
       >
-        <X size={12} />
+        ← BACK TO PROVENANCE
       </button>
+
+      {/* Center node emblem */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{
+          width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+          background: `${AMBER}1a`, border: `1.5px solid ${AMBER}55`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: `0 0 14px ${AMBER_G}`,
+        }}>
+          <span style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 13, fontWeight: 700, color: AMBER }}>4</span>
+        </div>
+
+        <div>
+          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.22em', textTransform: 'uppercase', color: AMBER, lineHeight: 1 }}>
+            PROVENANCE NODE · STAGE 04
+          </div>
+          <div style={{ fontFamily: "'Instrument Sans',sans-serif", fontSize: 12, fontWeight: 700, color: '#f0e8d8' }}>
+            MANUFACTURING
+          </div>
+        </div>
+
+        <Pill color={GREEN}  text="VERIFIED"              icon={<Check   size={7} color={GREEN}  strokeWidth={3} />} />
+        <Pill color={AMBER2} text="MANUFACTURING COMPLETED" icon={<Factory size={7} color={AMBER2} />} />
+        <Pill color={GREEN}  text={`PRODUCT BATCH ${rec.packaging.productBatchId}`} icon={<Package size={7} color={GREEN} />} />
+      </div>
+
+      {/* Right side: Demo badge, ID & close button */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{
+          fontFamily: "'IBM Plex Mono',monospace", fontSize: 7, letterSpacing: '0.12em',
+          textTransform: 'uppercase', color: `${AMBER}70`,
+          background: `${AMBER}0a`, border: `1px solid ${AMBER}22`,
+          borderRadius: 5, padding: '2px 7px',
+        }}>
+          DEMONSTRATION RECORD
+        </div>
+
+        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 8.5, color: `${AMBER}bb`, letterSpacing: '0.06em' }}>
+          {rec.manufacturing.manufacturingId}
+        </div>
+
+        <button
+          onClick={onClose}
+          aria-label="Close manufacturing panel"
+          style={{
+            width: 28, height: 28, borderRadius: '50%',
+            background: 'rgba(255,255,255,0.06)',
+            border:     '1px solid rgba(255,255,255,0.12)',
+            display:    'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', color: 'rgba(255,255,255,0.6)',
+            transition: 'all 0.2s',
+          }}
+        >
+          <X size={14} />
+        </button>
+      </div>
     </div>
   )
 }

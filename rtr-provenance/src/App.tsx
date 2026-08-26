@@ -34,9 +34,9 @@ export default function App() {
 
   const detailOpen = selectedStage !== null
 
-  // DNA lifts when detail panel is open
-  // liftY = 0 → normal, 1 → lifted ~0.5 world units
-  const dnaLiftY = detailOpen ? 0.55 : 0
+  // In the cinematic node-zoom experience, the camera zooms directly into the node at y=0,
+  // so no artificial DNA lift jump is needed.
+  const dnaLiftY = 0
 
   useEffect(() => {
     if (selectedStage) {
@@ -79,12 +79,14 @@ export default function App() {
       {/* ── UI overlay ── */}
       <div id="ui-layer">
 
-        {/* ── Top header ── */}
-        <VerificationHeader />
+        {/* ── Top header (fade out when full-screen stage portal is open) ── */}
+        <div style={{ opacity: detailOpen ? 0 : 1, pointerEvents: detailOpen ? 'none' : 'auto', transition: 'opacity 0.35s ease' }}>
+          <VerificationHeader />
+        </div>
 
         {/* ── "Click any stage" instruction hint ── */}
         <AnimatePresence>
-          {showHint && (
+          {showHint && !detailOpen && (
             <motion.div
               key="stage-hint"
               initial={{ opacity: 0 }}
@@ -93,8 +95,7 @@ export default function App() {
               transition={{ delay: 2.4, duration: 0.8 }}
               style={{
                 position: 'fixed',
-                // Vertically position hint between DNA and bottom bar
-                bottom: detailOpen ? 'calc(42vh + 58px)' : '78px',
+                bottom: '78px',
                 left: '50%',
                 transform: 'translateX(-50%)',
                 zIndex: 22,
@@ -103,7 +104,6 @@ export default function App() {
                 gap: 10,
                 pointerEvents: 'none',
                 whiteSpace: 'nowrap',
-                transition: 'bottom 0.5s ease',
               }}
             >
               <ChevronDown size={12} color="rgba(143,168,136,0.40)" />
@@ -122,42 +122,48 @@ export default function App() {
         </AnimatePresence>
 
         {/* ── Auto-rotate toggle (bottom right) ── */}
-        <button
-          className="rotate-toggle"
-          onClick={() => setAutoRotate((v) => !v)}
-        >
-          <RefreshCw
-            size={11}
-            color={autoRotate ? '#7ec85a' : 'rgba(255,255,255,0.2)'}
-            style={{
-              transition: 'transform 0.3s',
-              animation: autoRotate ? 'spin-slow 2.4s linear infinite' : 'none',
-            }}
+        <div style={{ opacity: detailOpen ? 0 : 1, pointerEvents: detailOpen ? 'none' : 'auto', transition: 'opacity 0.35s ease' }}>
+          <button
+            className="rotate-toggle"
+            onClick={() => setAutoRotate((v) => !v)}
+          >
+            <RefreshCw
+              size={11}
+              color={autoRotate ? '#7ec85a' : 'rgba(255,255,255,0.2)'}
+              style={{
+                transition: 'transform 0.3s',
+                animation: autoRotate ? 'spin-slow 2.4s linear infinite' : 'none',
+              }}
+            />
+            Auto Rotate
+            <span style={{
+              color: autoRotate ? '#7ec85a' : 'rgba(255,255,255,0.2)',
+              marginLeft: 3, fontWeight: 600,
+            }}>
+              {autoRotate ? 'ON' : 'OFF'}
+            </span>
+          </button>
+        </div>
+
+        {/* ── Left/Right navigation arrows (active when in overview) ── */}
+        {!detailOpen && (
+          <NavArrows
+            selectedStage={selectedStage}
+            onSelectStage={handleSelectStage}
+            detailOpen={detailOpen}
           />
-          Auto Rotate
-          <span style={{
-            color: autoRotate ? '#7ec85a' : 'rgba(255,255,255,0.2)',
-            marginLeft: 3, fontWeight: 600,
-          }}>
-            {autoRotate ? 'ON' : 'OFF'}
-          </span>
-        </button>
+        )}
 
-        {/* ── Left/Right navigation arrows ── */}
-        <NavArrows
-          selectedStage={selectedStage}
-          onSelectStage={handleSelectStage}
-          detailOpen={detailOpen}
-        />
-
-        {/* ── Bottom action bar ── */}
-        <BottomActionBar
-          selectedStage={selectedStage}
-          onClearStage={handleClearStage}
-          onOpenReview={() => setReviewOpen(true)}
-          onVerify={() => setReviewOpen(true)}
-          detailOpen={detailOpen}
-        />
+        {/* ── Bottom action bar (overview only) ── */}
+        {!detailOpen && (
+          <BottomActionBar
+            selectedStage={selectedStage}
+            onClearStage={handleClearStage}
+            onOpenReview={() => setReviewOpen(true)}
+            onVerify={() => setReviewOpen(true)}
+            detailOpen={detailOpen}
+          />
+        )}
 
         {/* ── Stage detail panel (bottom-docked, 3-column) ── */}
         {/* Use dedicated Transportation panel for Stage 3, Manufacturing panel for Stage 4; generic panel for others */}

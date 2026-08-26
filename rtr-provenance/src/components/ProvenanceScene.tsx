@@ -25,11 +25,12 @@ function getNodePos(stage: ProvenanceStage): THREE.Vector3 {
 }
 
 /* ---------------------------------------------------------------------------
-   CameraController — smooth cinematic zoom to selected node
+   CameraController — Cinematic zoom directly into the selected node
    
    Overview:  camera at [0, 1.4, 11.5], looking at [0, 0.1, 0]
-   Selected:  camera shifts X toward node, Y raises, zooms slightly
-              DNA lifts in composition leaving bottom space for detail panel
+   Selected:  camera travels smoothly to [np.x, np.y * 0.85, 4.2]
+              looking directly at [np.x, np.y, 0]
+              centering the node and zooming into it as a portal.
 --------------------------------------------------------------------------- */
 
 interface CameraControllerProps {
@@ -53,15 +54,15 @@ function CameraController({ selectedStage }: CameraControllerProps) {
   useEffect(() => {
     if (selectedStage) {
       const np = getNodePos(selectedStage)
-      // Pull camera back a little, shift toward node X, raise Y to create
-      // space at bottom for the detail panel
+      // Camera zooms in close and centers directly onto the selected node
+      // np.x = node X, np.y = node Y
       targetPos.current.set(
-        np.x * 0.12,
-        1.8,
-        10.8
+        np.x,
+        np.y * 0.65,
+        4.6
       )
-      // Look slightly lower than center so DNA sits in upper portion
-      targetLookAt.current.set(np.x * 0.08, 0.3, 0)
+      // Look directly at the node center
+      targetLookAt.current.set(np.x, np.y * 0.65, 0)
     } else {
       targetPos.current.set(0, 1.4, 11.5)
       targetLookAt.current.set(0, 0.1, 0)
@@ -69,7 +70,8 @@ function CameraController({ selectedStage }: CameraControllerProps) {
   }, [selectedStage])
 
   useFrame((_, delta) => {
-    const speed = Math.min(delta * 2.0, 0.07)
+    // Cinematic smooth damping
+    const speed = Math.min(delta * 2.8, 0.08)
     camera.position.lerp(targetPos.current, speed)
     currentLookAt.current.lerp(targetLookAt.current, speed)
     camera.lookAt(currentLookAt.current)
