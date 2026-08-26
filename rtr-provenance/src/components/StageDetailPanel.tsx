@@ -9,6 +9,7 @@ import {
 import DocumentPreviewModal from './DocumentPreviewModal'
 import LabReportModal from './LabReportModal'
 import ProductDocumentsModal from './ProductDocumentsModal'
+import { LocationMap } from './maps'
 import type {
   ProvenanceStage,
   FarmerStageData,
@@ -386,35 +387,22 @@ function LabPanelLayout({ stage, checksDone, onClose: _onClose, onOpenReport }: 
           </div>
         </motion.div>
 
-        {/* Map */}
+        {/* Real Leaflet Location Map */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.22, duration: 0.35 }}
-          style={{ borderRadius: 13, overflow: 'hidden', position: 'relative', minHeight: 85, border: `1px solid ${C}22` }}
+          style={{ borderRadius: 13, overflow: 'hidden', position: 'relative', height: 140, border: `1px solid ${C}30` }}
         >
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 40% 45%, #040d1a 0%, #020810 65%)' }} />
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.13 }}>
-            <defs><pattern id="lgrid" x="0" y="0" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M 26 0 L 0 0 0 26" fill="none" stroke={C} strokeWidth="0.5"/></pattern></defs>
-            <rect width="100%" height="100%" fill="url(#lgrid)" />
-          </svg>
-          {/* Mumbai coastline style roads */}
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}>
-            <path d="M 0,55 L 240,55"  fill="none" stroke={C} strokeWidth="1.4"/>
-            <path d="M 0,35 L 240,35"  fill="none" stroke={C} strokeWidth="0.7"/>
-            <path d="M 0,75 L 240,75"  fill="none" stroke={C} strokeWidth="0.7"/>
-            <path d="M 80,5 L 80,95"   fill="none" stroke={C} strokeWidth="0.9"/>
-            <path d="M 145,5 L 145,95" fill="none" stroke={C} strokeWidth="0.7"/>
-          </svg>
-          <div style={{ position: 'absolute', top: '42%', left: '48%', transform: 'translate(-50%,-100%)' }}>
-            <div style={{ width: 14, height: 14, borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)', background: C, boxShadow: `0 0 12px ${C}90` }} />
-          </div>
-          <div style={{ position: 'absolute', top: '42%', left: '48%', transform: 'translate(-50%,-50%)', width: 26, height: 26, borderRadius: '50%', border: `1.5px solid ${C}50`, animation: 'pulse-ring 2.2s ease-in-out infinite' }} />
-          <div style={{ position: 'absolute', bottom: 6, left: 7, right: 7, background: 'rgba(3,8,20,0.82)', borderRadius: 7, padding: '4px 9px', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', gap: 5 }}>
-            <MapPin size={8} color={C} />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: '#7dcfee', letterSpacing: '0.06em' }}>
-              {d.location.city}, {d.location.state}
-            </span>
-          </div>
+          <LocationMap
+            location={d.location}
+            type="lab"
+            label={d.labName}
+            sublabel={d.laboratoryId}
+            privacy="internal"
+            accuracyM={10}
+            statusBadge="TESTING FACILITY VERIFIED"
+            height={140}
+          />
         </motion.div>
 
         {/* Chain of custody flow */}
@@ -709,61 +697,25 @@ function FarmerPanelLayout({ stage, checksDone, onClose: _onClose, onOpenDoc }: 
           </div>
         </motion.div>
 
-        {/* Map preview */}
+        {/* Real Leaflet Location Map */}
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.24, duration: 0.35 }}
           style={{
-            flex: 1, minHeight: 90, borderRadius: 13, overflow: 'hidden',
+            height: 145, borderRadius: 13, overflow: 'hidden',
             position: 'relative', border: `1px solid ${stage.color}28`,
           }}
         >
-          {/* Dark satellite base */}
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: 'radial-gradient(ellipse at 38% 45%, #0b2208 0%, #040e02 65%)',
-          }} />
-          {/* Grid */}
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.13 }}>
-            <defs>
-              <pattern id="mgrid-farmer" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-                <path d="M 24 0 L 0 0 0 24" fill="none" stroke={stage.color} strokeWidth="0.5"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#mgrid-farmer)" />
-          </svg>
-          {/* Roads */}
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}>
-            <path d="M 0,62 C 35,57 80,53 130,59 S 200,55 240,52" fill="none" stroke={stage.color} strokeWidth="1.6"/>
-            <path d="M 55,8 L 57,92"   fill="none" stroke={stage.color} strokeWidth="0.9"/>
-            <path d="M 105,5 Q 108,46 104,92" fill="none" stroke={stage.color} strokeWidth="0.7"/>
-            <path d="M 0,38 L 200,36"  fill="none" stroke={stage.color} strokeWidth="0.7"/>
-          </svg>
-          {/* Pin */}
-          <div style={{ position: 'absolute', top: '42%', left: '48%', transform: 'translate(-50%,-100%)' }}>
-            <div style={{
-              width: 16, height: 16, borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)',
-              background: stage.color, boxShadow: `0 0 14px ${stage.color}90, 0 0 28px ${stage.color}50`,
-            }} />
-          </div>
-          {/* Pulse ring */}
-          <div style={{
-            position: 'absolute', top: '42%', left: '48%', transform: 'translate(-50%,-50%)',
-            width: 30, height: 30, borderRadius: '50%',
-            border: `1.5px solid ${stage.color}55`,
-            animation: 'pulse-ring 2.2s ease-in-out infinite',
-          }} />
-          {/* Footer chip */}
-          <div style={{
-            position: 'absolute', bottom: 6, left: 7, right: 7,
-            background: 'rgba(4,10,3,0.82)', borderRadius: 8, padding: '4px 9px',
-            backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', gap: 5,
-          }}>
-            <MapPin size={8} color={stage.color} />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: '#9fda74', letterSpacing: '0.06em' }}>
-              {d.location.city}, {d.location.state}
-            </span>
-          </div>
+          <LocationMap
+            location={d.location}
+            type="farmer"
+            label={`${d.farmerName} — Collection`}
+            sublabel={`${d.location.city}, ${d.location.state}`}
+            privacy="customer"
+            accuracyM={d.gpsAccuracyM}
+            statusBadge="GPS CAPTURED ✓ LOCATION VERIFIED ✓"
+            height={145}
+          />
         </motion.div>
 
         {/* GPS detail row */}
@@ -1105,25 +1057,21 @@ function Column2Generic({ stage }: { stage: ProvenanceStage }) {
         </div>
       </motion.div>
 
+      {/* Real Leaflet Location Map */}
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.26, duration: 0.38 }}
-        style={{ flex: 1, minHeight: 100, borderRadius: 14, overflow: 'hidden', position: 'relative', border: `1px solid ${stage.color}25` }}
+        style={{ height: 145, borderRadius: 14, overflow: 'hidden', position: 'relative', border: `1px solid ${stage.color}25` }}
       >
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 32% 42%, #0a1f06 0%, #050d02 60%)' }} />
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.12 }}>
-          <defs><pattern id={`grid-${stage.id}`} x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M 28 0 L 0 0 0 28" fill="none" stroke={stage.color} strokeWidth="0.5"/></pattern></defs>
-          <rect width="100%" height="100%" fill={`url(#grid-${stage.id})`} />
-        </svg>
-        <StageMapRoads stageId={stage.id} color={stage.color} />
-        <div style={{ position: 'absolute', top: '42%', left: '48%', transform: 'translate(-50%,-100%)' }}>
-          <div style={{ width: 16, height: 16, borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)', background: stage.color, boxShadow: `0 0 12px ${stage.color}90` }} />
-        </div>
-        <div style={{ position: 'absolute', top: '42%', left: '48%', transform: 'translate(-50%,-50%)', width: 30, height: 30, borderRadius: '50%', border: `1.5px solid ${stage.color}55`, animation: 'pulse-ring 2.2s ease-in-out infinite' }} />
-        <div style={{ position: 'absolute', bottom: 7, left: 8, right: 8, background: 'rgba(4,10,3,0.80)', borderRadius: 8, padding: '5px 9px', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', gap: 6 }}>
-          <MapPin size={8} color={stage.color} />
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8.5, color: '#9fda74', letterSpacing: '0.06em' }}>{loc.city}, {loc.state}, {loc.country}</span>
-        </div>
+        <LocationMap
+          location={loc}
+          type={stage.type as any}
+          label={loc.label}
+          sublabel={`${loc.city}, ${loc.state}`}
+          privacy="customer"
+          statusBadge="LOCATION VERIFIED"
+          height={145}
+        />
       </motion.div>
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.38, duration: 0.25 }}
@@ -1416,16 +1364,6 @@ function StageIconSmall({ type, color }: { type: string; color: string }) {
     case 'product':       return <Package      {...p} />
     default:              return <Package      {...p} />
   }
-}
-
-function StageMapRoads({ stageId, color }: { stageId: string; color: string }) {
-  const configs: Record<string, React.ReactNode> = {
-    lab: (<svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}><path d="M 20,50 L 220,50" fill="none" stroke={color} strokeWidth="1.5"/><path d="M 20,30 L 220,30" fill="none" stroke={color} strokeWidth="0.8"/><path d="M 20,70 L 220,70" fill="none" stroke={color} strokeWidth="0.8"/><path d="M 80,5 L 80,95" fill="none" stroke={color} strokeWidth="0.9"/><path d="M 140,5 L 140,95" fill="none" stroke={color} strokeWidth="0.7"/></svg>),
-    transport: (<svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}><path d="M -5,62 Q 60,55 120,58 T 250,52" fill="none" stroke={color} strokeWidth="2.0"/><path d="M -5,72 Q 60,65 120,68 T 250,62" fill="none" stroke={color} strokeWidth="0.6" strokeDasharray="4 4"/><path d="M 50,5 L 52,95" fill="none" stroke={color} strokeWidth="0.8"/><path d="M 175,5 L 178,95" fill="none" stroke={color} strokeWidth="0.8"/></svg>),
-    manufacturing: (<svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}><rect x="30" y="25" width="60" height="45" fill="none" stroke={color} strokeWidth="0.8"/><rect x="110" y="30" width="45" height="38" fill="none" stroke={color} strokeWidth="0.6"/><path d="M 0,78 L 240,78" fill="none" stroke={color} strokeWidth="1.2"/><path d="M 0,15 L 240,15" fill="none" stroke={color} strokeWidth="0.7"/></svg>),
-    product: (<svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.22 }}><path d="M 0,55 L 240,55" fill="none" stroke={color} strokeWidth="1.4"/><path d="M 0,35 L 240,35" fill="none" stroke={color} strokeWidth="0.7"/><circle cx="120" cy="55" r="18" fill="none" stroke={color} strokeWidth="0.8"/><circle cx="120" cy="55" r="8" fill="none" stroke={color} strokeWidth="0.6"/></svg>),
-  }
-  return <>{configs[stageId] ?? null}</>
 }
 
 /* Suppress unused import warnings */

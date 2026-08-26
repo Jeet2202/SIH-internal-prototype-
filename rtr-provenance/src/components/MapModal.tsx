@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { X, MapPin, Check } from 'lucide-react'
+import { LocationMap } from './maps'
 
 /* ---------------------------------------------------------------------------
    MapModal — locality view showing Khedgaon collection hub
@@ -38,89 +39,35 @@ export default function MapModal({ onClose }: MapModalProps) {
           </button>
         </div>
 
-        {/* SVG Map illustration */}
-        <div style={{ position: 'relative', marginBottom: 24 }}>
-          <svg
-            viewBox="0 0 520 300"
-            style={{ width: '100%', borderRadius: 16, display: 'block' }}
-          >
-            {/* Background */}
-            <rect width="520" height="300" fill="#0a1a08" rx="12" />
-
-            {/* Subtle grid */}
-            {[...Array(11)].map((_, i) => (
-              <line key={`v${i}`} x1={i * 52} y1={0} x2={i * 52} y2={300} stroke="rgba(255,255,255,0.04)" strokeWidth={0.5} />
-            ))}
-            {[...Array(7)].map((_, i) => (
-              <line key={`h${i}`} x1={0} y1={i * 50} x2={520} y2={i * 50} stroke="rgba(255,255,255,0.04)" strokeWidth={0.5} />
-            ))}
-
-            {/* Maharashtra state outline (simplified) */}
-            <path
-              d="M 60,210 Q 80,180 120,160 Q 160,140 200,150 Q 240,155 280,140 Q 320,128 360,140 Q 400,155 420,180 Q 440,200 430,230 Q 415,255 390,265 Q 360,278 320,270 Q 280,265 250,275 Q 210,282 180,265 Q 150,252 130,240 Q 100,225 80,230 Z"
-              fill="rgba(34,68,20,0.35)"
-              stroke="rgba(126,200,90,0.25)"
-              strokeWidth={1.5}
-            />
-
-            {/* Region label */}
-            <text x="250" y="200" textAnchor="middle" fill="rgba(126,200,90,0.5)" fontSize="11" fontFamily="monospace" letterSpacing="2">
-              MAHARASHTRA
-            </text>
-
-            {/* Jalna District marker zone */}
-            <circle cx="295" cy="160" r="28" fill="rgba(126,200,90,0.07)" stroke="rgba(126,200,90,0.25)" strokeWidth={1} strokeDasharray="4 4" />
-            <text x="295" y="200" textAnchor="middle" fill="rgba(126,200,90,0.45)" fontSize="8.5" fontFamily="monospace">
-              JALNA DISTRICT
-            </text>
-
-            {/* Collection hub pin */}
-            <circle cx="295" cy="160" r="8" fill="rgba(126,200,90,0.2)" />
-            <circle cx="295" cy="160" r="4" fill="#7ec85a" />
-            <line x1="295" y1="164" x2="295" y2="185" stroke="#7ec85a" strokeWidth={1.5} />
-            <circle cx="295" cy="185" r="2" fill="#7ec85a" />
-
-            {/* Glowing rings */}
-            <circle cx="295" cy="160" r="16" fill="none" stroke="#7ec85a" strokeWidth={0.8} opacity={0.35}>
-              <animate attributeName="r" values="16;26;16" dur="2.5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.35;0;0.35" dur="2.5s" repeatCount="indefinite" />
-            </circle>
-
-            {/* Hub label box */}
-            <rect x="170" y="88" width="180" height="48" rx="8" fill="rgba(12,22,8,0.9)" stroke="rgba(126,200,90,0.4)" strokeWidth={1} />
-            <text x="260" y="107" textAnchor="middle" fill="#7ec85a" fontSize="9" fontFamily="monospace" letterSpacing="1.5">
-              KHEDGAON
-            </text>
-            <text x="260" y="120" textAnchor="middle" fill="#9fda74" fontSize="11" fontWeight="600" fontFamily="'Instrument Sans', sans-serif">
-              Collection Hub
-            </text>
-            <text x="260" y="132" textAnchor="middle" fill="rgba(143,168,136,0.7)" fontSize="7.5" fontFamily="monospace">
-              19.83°N  75.88°E
-            </text>
-            {/* Connector */}
-            <line x1="260" y1="136" x2="295" y2="152" stroke="rgba(126,200,90,0.35)" strokeWidth={0.8} strokeDasharray="3 3" />
-
-            {/* Mumbai reference */}
-            <circle cx="140" cy="240" r="3.5" fill="rgba(78,168,210,0.6)" />
-            <text x="152" y="244" fill="rgba(78,168,210,0.55)" fontSize="9" fontFamily="monospace">Mumbai</text>
-
-            {/* Nashik reference */}
-            <circle cx="210" cy="148" r="3" fill="rgba(200,146,46,0.5)" />
-            <text x="220" y="152" fill="rgba(200,146,46,0.5)" fontSize="9" fontFamily="monospace">Nashik</text>
-
-            {/* India hint */}
-            <text x="30" y="30" fill="rgba(255,255,255,0.12)" fontSize="10" fontFamily="monospace">INDIA</text>
-          </svg>
+        {/* Real Leaflet Map */}
+        <div style={{ position: 'relative', height: '280px', marginBottom: 20, borderRadius: 16, overflow: 'hidden' }}>
+          <LocationMap
+            location={{
+              lat: 19.83,
+              lng: 75.88,
+              label: 'Khedgaon Collection Hub',
+              city: 'Jalna',
+              state: 'Maharashtra',
+              country: 'India',
+            }}
+            type="farmer"
+            label="Khedgaon MPCH"
+            sublabel="Jalna District"
+            privacy="customer"
+            zoom={10}
+            statusBadge="COLLECTION HUB VERIFIED"
+          />
 
           {/* Verification badge overlay */}
           <div style={{
-            position: 'absolute', top: 12, right: 12,
-            background: 'rgba(12,22,8,0.9)', border: '1px solid rgba(126,200,90,0.35)',
-            borderRadius: 10, padding: '8px 12px',
+            position: 'absolute', top: 12, right: 12, zIndex: 1000,
+            background: 'rgba(12,22,8,0.92)', border: '1px solid rgba(126,200,90,0.35)',
+            borderRadius: 10, padding: '6px 12px',
             display: 'flex', alignItems: 'center', gap: 6,
+            backdropFilter: 'blur(8px)',
           }}>
             <Check size={12} color="#7ec85a" strokeWidth={3} />
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#9fda74', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: '#9fda74', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
               Origin Verified
             </span>
           </div>

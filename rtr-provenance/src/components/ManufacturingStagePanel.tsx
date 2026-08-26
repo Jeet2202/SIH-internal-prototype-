@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import { MANUFACTURING_RECORD } from '../data/manufacturing'
 import type { ProcessingStep } from '../types/manufacturing'
+import { LocationMap } from './maps'
 
 /* ─── Theme ─────────────────────────────────────────────────────── */
 const AMBER   = '#c8922e'
@@ -256,6 +257,26 @@ function LeftColumn({ rec }: { rec: typeof MANUFACTURING_RECORD }) {
           <MetaRow label="Licence"         value={rec.manufacturer.licenceId}    mono />
           <MetaRow label="GMP Cert"        value={rec.manufacturer.gmpCertificate}     />
           <MetaRow label="Status"          value="VERIFIED" verified last />
+
+          {/* Real Leaflet Manufacturing Plant Location Map */}
+          <div style={{ height: 110, borderRadius: 9, overflow: 'hidden', marginTop: 8, border: `1px solid ${AMBER}35` }}>
+            <LocationMap
+              location={{
+                lat: 19.9975,
+                lng: 73.7898,
+                label: 'Himalaya Roots Formulations',
+                city: 'Nashik',
+                state: 'Maharashtra',
+                country: 'India',
+              }}
+              type="manufacturing"
+              label="Himalaya Plant M-01"
+              sublabel="Nashik, Maharashtra"
+              privacy="internal"
+              statusBadge="MANUFACTURING PLANT VERIFIED"
+              height={110}
+            />
+          </div>
         </div>
       </motion.div>
 
