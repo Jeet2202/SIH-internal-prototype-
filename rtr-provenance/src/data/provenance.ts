@@ -528,46 +528,5 @@ export const PRODUCT: ProvenanceProduct = {
         ],
       },
     },
-'30 g',
-        manufactured: 'August 2026',
-        expiry:       'July 2028',
-        qrLinkedTo:   'HIM-8F42-0614-A3',
-        location: {
-          lat:     30.9526,
-          lng:     76.7909,
-          label:   'Packaged — Baddi Plant',
-          city:    'Baddi',
-          state:   'Himachal Pradesh',
-          country: 'India',
-        },
-        chainSummary: [
-          { stage: 'Farmer / Collection',    eventId: 'EVT-KOOP-2026-0614-F', status: 'pass' },
-          { stage: 'Laboratory Testing',     eventId: 'EVT-LAB-2026-0614-Q',  status: 'pass' },
-          { stage: 'Transportation',         eventId: 'EVT-TRN-2026-0614-M',  status: 'pass' },
-          { stage: 'Manufacturing',          eventId: 'EVT-MFG-2026-0614-P',  status: 'pass' },
-          { stage: 'Final Product',          eventId: 'EVT-PROD-2026-0614-A', status: 'pass' },
-        ],
-        documents: [
-          { label: 'Finished Product Certificate of Analysis', ref: 'FPCOA-HIM-ASH-2026-0614.pdf', _proto: true },
-          { label: 'Pack Serialisation Record',                ref: 'SER-HIM-8F42-0614-A3.pdf',    _proto: true },
-          { label: 'QR Issuance Log',                          ref: 'QRLOG-2026-0614.csv',          _proto: true },
-        ],
-        blockchain: {
-          txHash:    '0xc5f8…09e34b',
-          blockNum:  '6243102',
-          timestamp: '26 Aug 2026, 08:31 PM IST',
-          network:   'Hyperledger Fabric (Permissioned)',
-          _proto:    true,
-        },
-        checks: [
-          { label: 'Pack serial uniquely registered',          detail: 'HIM-8F42-0614-A3 · 1-of-1',           status: 'pass' },
-          { label: 'QR code resolves to this provenance record', detail: 'Scan verified at lookup',             status: 'pass' },
-          { label: 'Batch fully traceable to raw material',    detail: 'MAND-ASH-2026-0614 → HIM-ASH-2026-0614', status: 'pass' },
-          { label: '5 of 5 stages verified',                   detail: 'All events anchored to ledger',         status: 'pass' },
-          { label: 'Product within expiry window',             detail: 'Expires Jul 2028',                       status: 'pass' },
-        ],
-      },
-    },
-
   ], // end stages
 }
