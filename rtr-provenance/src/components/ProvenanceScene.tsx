@@ -1,8 +1,7 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import BotanicalDNA from './BotanicalDNA'
@@ -11,12 +10,13 @@ import { PRODUCT } from '../data/provenance'
 import type { ProvenanceStage } from '../types/provenance'
 
 /* ---------------------------------------------------------------------------
-   CameraController — smooth cinematic zoom to selected node
+   Constants — keep in sync with BotanicalDNA.tsx
 --------------------------------------------------------------------------- */
+const HELIX_LENGTH = 14.0
+const NODE_Y_UP    =  1.10
+const NODE_Y_DOWN  = -1.10
 
-const HELIX_LENGTH = 6.0
-const NODE_Y_UP    =  0.80
-const NODE_Y_DOWN  = -0.80
+export { HELIX_LENGTH, NODE_Y_UP, NODE_Y_DOWN }
 
 function getNodePos(stage: ProvenanceStage): THREE.Vector3 {
   const x = stage.tPosition * HELIX_LENGTH - HELIX_LENGTH / 2
@@ -24,36 +24,52 @@ function getNodePos(stage: ProvenanceStage): THREE.Vector3 {
   return new THREE.Vector3(x, y, 0)
 }
 
+/* ---------------------------------------------------------------------------
+   CameraController — smooth cinematic zoom to selected node
+   
+   Overview:  camera at [0, 1.4, 11.5], looking at [0, 0.1, 0]
+   Selected:  camera shifts X toward node, Y raises, zooms slightly
+              DNA lifts in composition leaving bottom space for detail panel
+--------------------------------------------------------------------------- */
+
 interface CameraControllerProps {
   selectedStage: ProvenanceStage | null
-  onReady: () => void
 }
 
-function CameraController({ selectedStage, onReady }: CameraControllerProps) {
+function CameraController({ selectedStage }: CameraControllerProps) {
   const { camera } = useThree()
-  const targetPos    = useRef(new THREE.Vector3(0, 0.3, 5.5))
-  const targetLookAt = useRef(new THREE.Vector3(0, 0, 0))
-  const currentLookAt = useRef(new THREE.Vector3(0, 0, 0))
+  const targetPos    = useRef(new THREE.Vector3(0, 1.4, 11.5))
+  const targetLookAt = useRef(new THREE.Vector3(0, 0.1, 0))
+  const currentLookAt = useRef(new THREE.Vector3(0, 0.1, 0))
+  const initialized = useRef(false)
 
   useEffect(() => {
-    camera.position.set(0, 0.3, 5.5)
-    onReady()
-  }, [])
+    if (!initialized.current) {
+      camera.position.set(0, 1.4, 11.5)
+      initialized.current = true
+    }
+  }, [camera])
 
   useEffect(() => {
     if (selectedStage) {
       const np = getNodePos(selectedStage)
-      // Move camera toward the selected node's X position, slightly
-      targetPos.current.set(np.x * 0.3, np.y * 0.25 + (np.y > 0 ? 0.5 : -0.5), 4.0)
-      targetLookAt.current.set(np.x * 0.4, np.y * 0.3, 0)
+      // Pull camera back a little, shift toward node X, raise Y to create
+      // space at bottom for the detail panel
+      targetPos.current.set(
+        np.x * 0.12,
+        1.8,
+        10.8
+      )
+      // Look slightly lower than center so DNA sits in upper portion
+      targetLookAt.current.set(np.x * 0.08, 0.3, 0)
     } else {
-      targetPos.current.set(0, 0.3, 5.5)
-      targetLookAt.current.set(0, 0, 0)
+      targetPos.current.set(0, 1.4, 11.5)
+      targetLookAt.current.set(0, 0.1, 0)
     }
   }, [selectedStage])
 
   useFrame((_, delta) => {
-    const speed = Math.min(delta * 2.2, 0.08)
+    const speed = Math.min(delta * 2.0, 0.07)
     camera.position.lerp(targetPos.current, speed)
     currentLookAt.current.lerp(targetLookAt.current, speed)
     camera.lookAt(currentLookAt.current)
@@ -63,11 +79,7 @@ function CameraController({ selectedStage, onReady }: CameraControllerProps) {
 }
 
 /* ---------------------------------------------------------------------------
-   BotanicalBackground — dark forest environment (replaces stars!)
-   Creates:
-   - Large blurred botanical silhouette planes at varying depths
-   - Atmospheric fog already set on scene
-   - Floating pollen particles
+   BotanicalBackground — very dark forest environment
 --------------------------------------------------------------------------- */
 
 function BotanicalLeafPlane({ pos, rot, scale, opacity }: {
@@ -76,12 +88,11 @@ function BotanicalLeafPlane({ pos, rot, scale, opacity }: {
   scale: number
   opacity: number
 }) {
-  // Large dark leaf silhouette
   return (
     <mesh position={pos} rotation={rot} scale={scale}>
-      <planeGeometry args={[2.2, 3.0]} />
+      <planeGeometry args={[2.8, 4.0]} />
       <meshBasicMaterial
-        color={new THREE.Color('#0d1f08')}
+        color={new THREE.Color('#080f05')}
         transparent
         opacity={opacity}
         side={THREE.DoubleSide}
@@ -92,21 +103,20 @@ function BotanicalLeafPlane({ pos, rot, scale, opacity }: {
 }
 
 function BotanicalBackground() {
-  /* Large background silhouette leaves at various distances */
   const bgLeaves = [
-    { pos: [-5.5, 1.5,  -4.5] as [number,number,number], rot: [0.1, 0.3, 0.5]  as [number,number,number], scale: 3.2, opacity: 0.88 },
-    { pos: [ 5.0, 2.0,  -4.0] as [number,number,number], rot: [0.2,-0.2, 1.2]  as [number,number,number], scale: 2.8, opacity: 0.82 },
-    { pos: [-4.0,-1.5,  -3.5] as [number,number,number], rot: [0.3, 0.1,-0.6]  as [number,number,number], scale: 2.4, opacity: 0.75 },
-    { pos: [ 4.5,-1.0,  -4.2] as [number,number,number], rot: [-0.1,0.4, 0.8]  as [number,number,number], scale: 3.0, opacity: 0.78 },
-    { pos: [ 0.5, 3.2,  -5.0] as [number,number,number], rot: [0.05,-0.1,0.2]  as [number,number,number], scale: 4.0, opacity: 0.60 },
-    { pos: [-0.5,-3.0,  -4.8] as [number,number,number], rot: [0.1, 0.05,-0.3] as [number,number,number], scale: 3.5, opacity: 0.65 },
-    { pos: [-6.5, 0.5,  -6.0] as [number,number,number], rot: [0.0, 0.5, 1.1]  as [number,number,number], scale: 4.5, opacity: 0.55 },
-    { pos: [ 6.0, 0.0,  -6.5] as [number,number,number], rot: [0.1,-0.4, 0.7]  as [number,number,number], scale: 4.0, opacity: 0.50 },
-    /* Medium distance */
-    { pos: [-3.0, 2.5,  -2.5] as [number,number,number], rot: [0.4, 0.2, 1.8]  as [number,number,number], scale: 1.6, opacity: 0.45 },
-    { pos: [ 3.5,-2.2,  -2.8] as [number,number,number], rot: [0.3,-0.3,-1.2]  as [number,number,number], scale: 1.8, opacity: 0.40 },
-    { pos: [ 2.2, 2.8,  -3.2] as [number,number,number], rot: [0.5, 0.1, 2.0]  as [number,number,number], scale: 2.0, opacity: 0.38 },
-    { pos: [-2.8,-2.5,  -3.0] as [number,number,number], rot: [0.2, 0.4,-1.5]  as [number,number,number], scale: 1.9, opacity: 0.35 },
+    { pos: [-10, 2.5, -8] as [number,number,number],  rot: [0.1, 0.2, 0.6]  as [number,number,number], scale: 5.0, opacity: 0.92 },
+    { pos: [ 10, 2.5, -8] as [number,number,number],  rot: [0.2,-0.2, 1.1]  as [number,number,number], scale: 5.0, opacity: 0.88 },
+    { pos: [-8, -2.0, -7] as [number,number,number],  rot: [0.3, 0.1,-0.7]  as [number,number,number], scale: 4.2, opacity: 0.80 },
+    { pos: [ 8, -2.0, -7] as [number,number,number],  rot: [-0.1,0.4, 0.9]  as [number,number,number], scale: 4.5, opacity: 0.78 },
+    { pos: [ 0.5, 4.5, -9] as [number,number,number], rot: [0.0,-0.1,0.2]   as [number,number,number], scale: 6.0, opacity: 0.65 },
+    { pos: [-1.0,-4.0, -8] as [number,number,number], rot: [0.1, 0.05,-0.3] as [number,number,number], scale: 5.5, opacity: 0.70 },
+    { pos: [-12, 0.5, -10] as [number,number,number], rot: [0.0, 0.5, 1.2]  as [number,number,number], scale: 7.0, opacity: 0.60 },
+    { pos: [ 12, 0.0, -10] as [number,number,number], rot: [0.1,-0.4, 0.8]  as [number,number,number], scale: 6.5, opacity: 0.55 },
+    // Mid-distance
+    { pos: [-5, 3.5, -5]  as [number,number,number],  rot: [0.4, 0.2, 1.9]  as [number,number,number], scale: 2.8, opacity: 0.48 },
+    { pos: [ 6,-3.0, -5]  as [number,number,number],  rot: [0.3,-0.3,-1.3]  as [number,number,number], scale: 3.0, opacity: 0.42 },
+    { pos: [ 4, 4.0, -6]  as [number,number,number],  rot: [0.5, 0.1, 2.1]  as [number,number,number], scale: 3.2, opacity: 0.38 },
+    { pos: [-4,-3.5, -5.5] as [number,number,number], rot: [0.2, 0.4,-1.6]  as [number,number,number], scale: 3.0, opacity: 0.35 },
   ]
 
   return (
@@ -119,20 +129,20 @@ function BotanicalBackground() {
 }
 
 /* ---------------------------------------------------------------------------
-   BotanicalParticles — organic pollen/dust (NOT stars)
+   BotanicalParticles — subtle organic pollen
 --------------------------------------------------------------------------- */
 
 function BotanicalParticles() {
-  const count = 160
+  const count = 120
   const posBase = useRef<Float32Array>(null!)
   const pointsRef = useRef<THREE.Points>(null!)
 
   if (!posBase.current) {
     posBase.current = new Float32Array(count * 3)
     for (let i = 0; i < count; i++) {
-      posBase.current[i * 3 + 0] = (Math.random() - 0.5) * 14
-      posBase.current[i * 3 + 1] = (Math.random() - 0.5) * 6
-      posBase.current[i * 3 + 2] = (Math.random() - 0.5) * 5 - 1
+      posBase.current[i * 3 + 0] = (Math.random() - 0.5) * 20
+      posBase.current[i * 3 + 1] = (Math.random() - 0.5) * 8
+      posBase.current[i * 3 + 2] = (Math.random() - 0.5) * 6 - 1
     }
   }
 
@@ -140,9 +150,9 @@ function BotanicalParticles() {
     if (!pointsRef.current) return
     const pos = pointsRef.current.geometry.attributes.position as THREE.BufferAttribute
     for (let i = 0; i < count; i++) {
-      const t = state.clock.elapsedTime * 0.07 + i * 0.28
-      ;(pos.array as Float32Array)[i * 3 + 1] = posBase.current[i * 3 + 1] + Math.sin(t) * 0.12
-      ;(pos.array as Float32Array)[i * 3 + 0] = posBase.current[i * 3 + 0] + Math.cos(t * 0.7) * 0.05
+      const t = state.clock.elapsedTime * 0.055 + i * 0.22
+      ;(pos.array as Float32Array)[i * 3 + 1] = posBase.current[i * 3 + 1] + Math.sin(t) * 0.10
+      ;(pos.array as Float32Array)[i * 3 + 0] = posBase.current[i * 3 + 0] + Math.cos(t * 0.6) * 0.04
     }
     pos.needsUpdate = true
   })
@@ -152,17 +162,15 @@ function BotanicalParticles() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={count}
-          array={posBase.current}
-          itemSize={3}
+          args={[posBase.current, 3]}
         />
       </bufferGeometry>
       <pointsMaterial
-        color="#6ab832"
-        size={0.022}
+        color="#5aad2a"
+        size={0.018}
         sizeAttenuation
         transparent
-        opacity={0.30}
+        opacity={0.22}
         depthWrite={false}
       />
     </points>
@@ -170,7 +178,7 @@ function BotanicalParticles() {
 }
 
 /* ---------------------------------------------------------------------------
-   Stage-reactive lighting — subtle color shift when a stage is focused
+   StageLighting
 --------------------------------------------------------------------------- */
 
 function StageLighting({ selectedStage }: { selectedStage: ProvenanceStage | null }) {
@@ -196,9 +204,9 @@ function StageLighting({ selectedStage }: { selectedStage: ProvenanceStage | nul
   return (
     <pointLight
       ref={lightRef}
-      position={[0, 2, 2]}
-      intensity={0.8}
-      distance={8}
+      position={[0, 2, 3]}
+      intensity={1.2}
+      distance={12}
     />
   )
 }
@@ -207,52 +215,77 @@ function StageLighting({ selectedStage }: { selectedStage: ProvenanceStage | nul
    Main Scene
 --------------------------------------------------------------------------- */
 
-function Scene({ selectedStage, onSelectStage, autoRotate }: {
+function Scene({
+  selectedStage,
+  onSelectStage,
+  autoRotate,
+  dnaLiftY,
+}: {
   selectedStage: ProvenanceStage | null
   onSelectStage: (stage: ProvenanceStage | null) => void
   autoRotate: boolean
+  dnaLiftY: number
 }) {
   const dnaGroup = useRef<THREE.Group>(null!)
   const { scene } = useThree()
 
   useEffect(() => {
-    scene.fog = new THREE.FogExp2('#050f03', 0.055)
+    scene.fog = new THREE.FogExp2('#020701', 0.022)
     return () => { scene.fog = null }
   }, [scene])
 
   return (
     <>
-      {/* ── Botanical Lighting ── */}
-      <ambientLight intensity={0.18} color="#162a0c" />
-      <hemisphereLight color="#2a5018" groundColor="#050f03" intensity={0.6} />
+      {/* ── 3-Point Botanical Lighting ── */}
 
-      {/* Key light — warm botanical */}
+      {/* Ambient — very subtle, deep forest */}
+      <ambientLight intensity={0.14} color="#0d1f08" />
+      <hemisphereLight color="#2a5018" groundColor="#020501" intensity={0.55} />
+
+      {/* KEY light — warm botanical upper-front-left, casts shadows */}
       <directionalLight
-        position={[4, 5, 2]}
-        intensity={1.6}
-        color="#b0e070"
+        position={[4, 10, 5]}
+        intensity={2.4}
+        color="#c2f080"
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[2048, 2048]}
+        shadow-camera-near={0.5}
+        shadow-camera-far={40}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={5}
+        shadow-camera-bottom={-5}
       />
-      {/* Rim light — cool blue */}
-      <directionalLight
-        position={[-4, -1, -3]}
-        intensity={0.4}
-        color="#204060"
-      />
-      {/* Under glow */}
-      <pointLight position={[0, -2.5, 1]} intensity={0.35} color="#1a3a0c" distance={6} />
 
-      {/* Node accent lights */}
-      <pointLight position={[-2.5,  0.8, 0.8]} intensity={0.55} color="#7ec85a" distance={3} />
-      <pointLight position={[ 0.8, -0.8, 0.8]} intensity={0.45} color="#4ea8d2" distance={3} />
-      <pointLight position={[ 2.8,  0.8, 0.8]} intensity={0.45} color="#c8922e" distance={3} />
+      {/* FILL light — cool blue-grey opposite side, low intensity */}
+      <directionalLight
+        position={[-6, -2, -5]}
+        intensity={0.35}
+        color="#2040a0"
+      />
+
+      {/* RIM / BACK light — separates strand silhouette from dark bg */}
+      <directionalLight
+        position={[0, -3, -8]}
+        intensity={0.70}
+        color="#88ffaa"
+      />
+
+      {/* Under glow */}
+      <pointLight position={[0, -3.5, 1]} intensity={0.30} color="#0c1f06" distance={12} />
+
+      {/* Node accent spotlights at DNA helix waypoints */}
+      <pointLight position={[-5.5,  1.2, 1.5]} intensity={0.65} color="#7ec85a" distance={6} />
+      <pointLight position={[-1.8, -1.2, 1.5]} intensity={0.50} color="#4ea8d2" distance={6} />
+      <pointLight position={[ 0.2,  1.2, 1.5]} intensity={0.50} color="#c8922e" distance={6} />
+      <pointLight position={[ 3.2, -1.2, 1.5]} intensity={0.50} color="#8b6cd4" distance={6} />
+      <pointLight position={[ 5.5,  1.2, 1.5]} intensity={0.50} color="#7ec85a" distance={6} />
 
       {/* Reactive stage light */}
       <StageLighting selectedStage={selectedStage} />
 
       {/* ── DNA ── */}
-      <BotanicalDNA groupRef={dnaGroup} />
+      <BotanicalDNA groupRef={dnaGroup} liftY={dnaLiftY} />
 
       {/* ── Nodes ── */}
       {PRODUCT.stages.map((stage) => (
@@ -270,32 +303,31 @@ function Scene({ selectedStage, onSelectStage, autoRotate }: {
       <BotanicalParticles />
 
       {/* ── Camera ── */}
-      <CameraController
-        selectedStage={selectedStage}
-        onReady={() => {}}
-      />
+      <CameraController selectedStage={selectedStage} />
       <OrbitControls
         autoRotate={autoRotate && !selectedStage}
-        autoRotateSpeed={0.45}
+        autoRotateSpeed={0.35}
         enableDamping
         dampingFactor={0.06}
-        minDistance={2.5}
-        maxDistance={8.0}
-        minPolarAngle={Math.PI * 0.25}
-        maxPolarAngle={Math.PI * 0.75}
+        minDistance={4.0}
+        maxDistance={16.0}
+        minPolarAngle={Math.PI * 0.22}
+        maxPolarAngle={Math.PI * 0.78}
       />
 
       {/* ── Post processing ── */}
       <EffectComposer>
+        {/* Bloom: tight threshold catches only bright emissive areas (rim-lit ridges, glow shells) */}
         <Bloom
-          luminanceThreshold={0.32}
-          luminanceSmoothing={0.9}
-          intensity={0.65}
-          radius={0.7}
+          luminanceThreshold={0.22}
+          luminanceSmoothing={0.85}
+          intensity={1.10}
+          radius={0.55}
         />
+        {/* Vignette: darker edges push eye toward DNA center */}
         <Vignette
-          offset={0.3}
-          darkness={0.72}
+          offset={0.28}
+          darkness={0.88}
           blendFunction={BlendFunction.NORMAL}
         />
       </EffectComposer>
@@ -311,23 +343,29 @@ interface ProvenanceSceneProps {
   selectedStage: ProvenanceStage | null
   onSelectStage: (stage: ProvenanceStage | null) => void
   autoRotate: boolean
+  dnaLiftY?: number
 }
 
-export default function ProvenanceScene({ selectedStage, onSelectStage, autoRotate }: ProvenanceSceneProps) {
+export default function ProvenanceScene({
+  selectedStage,
+  onSelectStage,
+  autoRotate,
+  dnaLiftY = 0,
+}: ProvenanceSceneProps) {
   return (
     <Canvas
       id="r3f-canvas"
-      camera={{ fov: 46, near: 0.1, far: 60, position: [0, 0.3, 5.5] }}
+      camera={{ fov: 38, near: 0.1, far: 80, position: [0, 1.4, 11.5] }}
       shadows={{ type: THREE.PCFShadowMap }}
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       dpr={[1, 1.8]}
-      style={{ background: '#050f03' }}
+      style={{ background: '#030a02' }}
     >
-
       <Scene
         selectedStage={selectedStage}
         onSelectStage={onSelectStage}
         autoRotate={autoRotate}
+        dnaLiftY={dnaLiftY}
       />
     </Canvas>
   )
