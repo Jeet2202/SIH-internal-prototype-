@@ -53,10 +53,15 @@ export default function ProvenanceNode({
     return [x, y, 0]
   }, [stage, position])
 
-  const isUp = stage.nodePosition === 'up' // Keep logical 'up' for determining which side it goes on
-  // Stem goes from node to the DNA axis
+  const isUp = stage.nodePosition === 'up'
+  // Stem goes from node to the DNA axis (in local group coordinates)
   const stemH = isMobile ? (Math.abs(pos[0]) - 0.08) : (Math.abs(pos[1]) - 0.08)
-  const stemMid: [number, number, number] = isMobile ? [pos[0] / 2, pos[1], pos[2]] : [pos[0], pos[1] / 2, pos[2]]
+  const stemMid: [number, number, number] = isMobile ? [-pos[0] / 2, 0, 0] : [0, -pos[1] / 2, 0]
+
+  // Relative 3D position of the label from the node center
+  const labelPosRelative: [number, number, number] = isMobile
+    ? (isUp ? [-0.80, 0, 0] : [0.80, 0, 0])
+    : (isUp ? [0, 0.55, 0] : [0, -0.55, 0])
 
   const color = new THREE.Color(stage.color)
   // dimmed = another stage is selected, this one is NOT
@@ -68,9 +73,9 @@ export default function ProvenanceNode({
     // Subtle float
     if (coreRef.current) {
       if (isMobile) {
-        coreRef.current.position.x = pos[0] + Math.sin(t * 0.8 + stage.number * 1.2) * 0.04
+        coreRef.current.position.x = Math.sin(t * 0.8 + stage.number * 1.2) * 0.04
       } else {
-        coreRef.current.position.y = pos[1] + Math.sin(t * 0.8 + stage.number * 1.2) * 0.04
+        coreRef.current.position.y = Math.sin(t * 0.8 + stage.number * 1.2) * 0.04
       }
     }
     // Ring rotations — each ring moves at different speed/direction
@@ -95,11 +100,8 @@ export default function ProvenanceNode({
   }
   const segs = ringSegments[stage.type] || 42
 
-  /* Screen-space label offset — fixed CSS pixels, never changes with camera */
-  const labelPx = 75
-
   return (
-    <group>
+    <group position={pos}>
       {/* ── Connector stem — organic vine ── */}
       <mesh position={stemMid} rotation={isMobile ? [0, 0, Math.PI / 2] : [0, 0, 0]} castShadow>
         <cylinderGeometry args={[0.006, 0.003, stemH, 5, 2]} />
@@ -114,7 +116,7 @@ export default function ProvenanceNode({
       </mesh>
 
       {/* ── Outer ambient glow halo ── */}
-      <mesh ref={glowRef} position={pos}>
+      <mesh ref={glowRef}>
         <sphereGeometry args={[0.30, 10, 10]} />
         <meshBasicMaterial
           color={color}
@@ -126,7 +128,7 @@ export default function ProvenanceNode({
       </mesh>
 
       {/* ── Outer glow ring (widest, most transparent) ── */}
-      <mesh ref={ring3Ref} position={pos}>
+      <mesh ref={ring3Ref}>
         <ringGeometry args={[ring2R, ring2R + 0.045, segs]} />
         <meshBasicMaterial
           color={color}
@@ -138,7 +140,7 @@ export default function ProvenanceNode({
       </mesh>
 
       {/* ── Main ring ── */}
-      <mesh ref={ring1Ref} position={pos}>
+      <mesh ref={ring1Ref}>
         <ringGeometry args={[ring1R, ring1R + 0.028, segs]} />
         <meshBasicMaterial
           color={color}
@@ -149,7 +151,7 @@ export default function ProvenanceNode({
       </mesh>
 
       {/* ── Inner accent ring ── */}
-      <mesh ref={ring2Ref} position={pos}>
+      <mesh ref={ring2Ref}>
         <ringGeometry args={[ring1R - 0.050, ring1R - 0.030, segs]} />
         <meshBasicMaterial
           color={color}
@@ -162,7 +164,6 @@ export default function ProvenanceNode({
       {/* ── Core interactive sphere ── */}
       <mesh
         ref={coreRef}
-        position={pos}
         onPointerEnter={(e) => { e.stopPropagation(); setHovered(true) }}
         onPointerLeave={() => setHovered(false)}
         onClick={(e) => { e.stopPropagation(); onSelect(stage) }}
@@ -181,7 +182,6 @@ export default function ProvenanceNode({
 
       {/* ── Stage icon (HTML/SVG) inside node ── */}
       <Html
-        position={pos}
         center
         zIndexRange={[21, 31]}
         style={{ pointerEvents: 'none' }}
@@ -196,32 +196,20 @@ export default function ProvenanceNode({
       </Html>
 
       {/* ── Label: number + title + VERIFIED ── */}
-      {/* Anchor is the same 3D point as the node so projection never diverges.
-          CSS translateY/X does the visual offset in fixed screen-space pixels. */}
       <Html
-        position={pos}
+        position={labelPosRelative}
         center
         zIndexRange={[20, 30]}
         style={{ pointerEvents: 'none' }}
       >
-        <div style={{
-          display: 'flex',
-          flexDirection: isMobile ? (isUp ? 'row' : 'row-reverse') : 'column',
-          alignItems: 'center',
-          gap: isMobile ? 8 : 0,
-          transform: isMobile
-            ? (isUp ? `translateX(-${labelPx}px)` : `translateX(${labelPx}px)`)
-            : (isUp ? `translateY(-${labelPx}px)` : `translateY(${labelPx}px)`),
-        }}>
-          <NodeLabel
-            stage={stage}
-            hovered={hovered}
-            isSelected={isSelected}
-            dimmed={dimmed}
-            isUp={isUp}
-            isMobile={isMobile}
-          />
-        </div>
+        <NodeLabel
+          stage={stage}
+          hovered={hovered}
+          isSelected={isSelected}
+          dimmed={dimmed}
+          isUp={isUp}
+          isMobile={isMobile}
+        />
       </Html>
     </group>
   )
@@ -300,11 +288,13 @@ function NodeLabel({ stage, hovered, isSelected, dimmed, isUp, isMobile = false 
     <div style={{
       display:       'flex',
       flexDirection: 'column',
-      alignItems:    isMobile ? (isUp ? 'flex-start' : 'flex-end') : 'center',
+      alignItems:    'center',
       gap:           4,
       transition:    'none',
-      transform:     isSelected ? 'scale(1.15)' : hovered ? 'scale(1.05)' : 'scale(1)',
+      transform:     isSelected ? 'scale(1.12)' : hovered ? 'scale(1.05)' : 'scale(1)',
       opacity:       dimmed ? 0.35 : 1,
+      pointerEvents: 'none',
+      userSelect:    'none',
     }}>
       {/* Stage number */}
       <div style={{
@@ -319,18 +309,30 @@ function NodeLabel({ stage, hovered, isSelected, dimmed, isUp, isMobile = false 
         {stage.number}
       </div>
 
-      {/* Title */}
+      {/* Title with icon on mobile */}
       <div style={{
-        fontSize: 9.5,
-        fontWeight: 600,
-        color: '#ddebd8',
-        letterSpacing: '0.10em',
-        textTransform: 'uppercase',
-        whiteSpace: 'nowrap',
-        textShadow: '0 1px 10px #000c',
-        lineHeight: 1.2,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
       }}>
-        {stage.title}
+        {isMobile && !isUp && (
+          <StageIcon type={stage.type} color={stage.color} dim={dimmed} size={13} />
+        )}
+        <div style={{
+          fontSize: 9.5,
+          fontWeight: 600,
+          color: '#ddebd8',
+          letterSpacing: '0.10em',
+          textTransform: 'uppercase',
+          whiteSpace: 'nowrap',
+          textShadow: '0 1px 10px #000c',
+          lineHeight: 1.2,
+        }}>
+          {stage.title}
+        </div>
+        {isMobile && isUp && (
+          <StageIcon type={stage.type} color={stage.color} dim={dimmed} size={13} />
+        )}
       </div>
 
       {/* VERIFIED badge */}

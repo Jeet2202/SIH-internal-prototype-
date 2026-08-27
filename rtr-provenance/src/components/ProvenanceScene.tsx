@@ -42,118 +42,20 @@ function getNodePos(stage: ProvenanceStage, isMobile: boolean): THREE.Vector3 {
 --------------------------------------------------------------------------- */
 
 interface CameraControllerProps {
-  selectedStage: ProvenanceStage | null
   isMobile: boolean
-  controlsRef: React.RefObject<any>
 }
 
-function CameraController({ selectedStage, isMobile, controlsRef }: CameraControllerProps) {
+function CameraController({ isMobile }: CameraControllerProps) {
   const { camera } = useThree()
-  const targetPos    = useRef(new THREE.Vector3(0, 1.4, 11.5))
-  const targetLookAt = useRef(new THREE.Vector3(0, 0.1, 0))
-  const currentLookAt = useRef(new THREE.Vector3(0, 0.1, 0))
   const initialized = useRef(false)
-
-  // Track whether we are actively resetting OrbitControls orientation
-  const resettingOrbit = useRef(false)
 
   useEffect(() => {
     if (!initialized.current) {
       camera.position.set(0, isMobile ? 2.8 : 1.4, isMobile ? 11.5 : 11.5)
-      targetPos.current.set(0, isMobile ? 2.8 : 1.4, isMobile ? 11.5 : 11.5)
-      targetLookAt.current.set(0, isMobile ? 2.8 : 0.1, 0)
-      currentLookAt.current.set(0, isMobile ? 2.8 : 0.1, 0)
+      camera.lookAt(0, isMobile ? 2.8 : 0.1, 0)
       initialized.current = true
     }
   }, [camera, isMobile])
-
-  useEffect(() => {
-    if (selectedStage) {
-      const np = getNodePos(selectedStage, isMobile)
-      // Camera zooms in close and centers directly onto the selected node
-      targetPos.current.set(np.x, np.y * 0.65, 4.6)
-      targetLookAt.current.set(np.x, np.y * 0.65, 0)
-
-      // Simultaneously begin resetting OrbitControls to neutral overview orientation.
-      // This runs concurrently with the camera zoom — by the time the info panel
-      // opens the orbit is already at neutral, so closing never causes a DNA snap.
-      resettingOrbit.current = true
-    } else {
-      targetPos.current.set(camera.position.x, camera.position.y, camera.position.z)
-      // don't force it back to center, let OrbitControls maintain it
-    }
-  }, [selectedStage])
-
-  const prevSelected = useRef<ProvenanceStage | null>(null)
-
-  useFrame((_, delta) => {
-    const controls = controlsRef.current
-
-    if (selectedStage) {
-      // Cinematic smooth damping to the selected node
-      const speed = Math.min(delta * 2.8, 0.08)
-      camera.position.lerp(targetPos.current, speed)
-      currentLookAt.current.lerp(targetLookAt.current, speed)
-      camera.lookAt(currentLookAt.current)
-      prevSelected.current = selectedStage
-
-      // Concurrently smooth OrbitControls back to the neutral overview orientation.
-      // We directly lerp the internal spherical angles and target toward zero.
-      if (resettingOrbit.current && controls) {
-        const orbitSpeed = Math.min(delta * 2.5, 0.07)
-
-        // Lerp the orbit target back to world origin
-        controls.target.lerp(new THREE.Vector3(0, isMobile ? 2.8 : 0.1, 0), orbitSpeed)
-
-        // Read the camera's current spherical coords relative to target
-        // and nudge azimuth + polar toward the neutral overview values.
-        // OrbitControls stores offset internally — we drive it via camera position
-        // relative to target and then call update() which re-syncs spherical.
-        // The cleanest approach: snap sphericalDelta to 0 each frame to prevent
-        // orbit drift accumulation while CameraController owns the camera.
-        if (controls.sphericalDelta) {
-          controls.sphericalDelta.theta *= (1 - orbitSpeed)
-          controls.sphericalDelta.phi   *= (1 - orbitSpeed)
-        }
-
-        controls.update()
-
-        // Once the orbit target is close to neutral, stop resetting
-        const tgt = controls.target as THREE.Vector3
-        if (tgt.distanceTo(new THREE.Vector3(0, isMobile ? 2.8 : 0.1, 0)) < 0.05) {
-          resettingOrbit.current = false
-        }
-      }
-
-    } else if (prevSelected.current !== null) {
-      // Just deselected — smooth return to overview.
-      // OrbitControls is already at neutral from the concurrent reset above,
-      // so ONLY the camera moves — DNA/labels do not rotate or transition.
-      const speed = Math.min(delta * 2.0, 0.05)
-      targetPos.current.set(0, isMobile ? 2.8 : 1.4, isMobile ? 11.5 : 11.5)
-      targetLookAt.current.set(0, isMobile ? 2.8 : 0.1, 0)
-      camera.position.lerp(targetPos.current, speed)
-      currentLookAt.current.lerp(targetLookAt.current, speed)
-      camera.lookAt(currentLookAt.current)
-
-      // Suppress any residual OrbitControls drift during return
-      if (controls?.sphericalDelta) {
-        controls.sphericalDelta.theta = 0
-        controls.sphericalDelta.phi   = 0
-      }
-
-      // Once close enough to target, stop animating and let OrbitControls handle it
-      if (camera.position.distanceTo(targetPos.current) < 0.05) {
-        prevSelected.current = null
-        // Sync OrbitControls to the camera's returned position
-        if (controls) {
-          controls.target.set(0, isMobile ? 0.1 : 0.1, 0)
-          controls.update()
-        }
-      }
-    }
-    // Otherwise: no stage selected, not returning — let OrbitControls fully control the camera
-  })
 
   return null
 }
@@ -381,10 +283,11 @@ function Scene({
     let lastY: number | null = null
 
     const onTouchStart = (e: TouchEvent) => {
+      if (selectedStage) return
       if (e.touches.length === 1) lastY = e.touches[0].clientY
     }
     const onTouchMove = (e: TouchEvent) => {
-      if (e.touches.length !== 1 || lastY === null || !controlsRef.current) return
+      if (selectedStage || e.touches.length !== 1 || lastY === null || !controlsRef.current) return
       e.preventDefault()
       const dy = (lastY - e.touches[0].clientY) * 0.025
       lastY = e.touches[0].clientY
@@ -406,7 +309,7 @@ function Scene({
       canvas.removeEventListener('touchmove', onTouchMove)
       canvas.removeEventListener('touchend', onTouchEnd)
     }
-  }, [isMobile])
+  }, [isMobile, selectedStage])
 
   return (
     <>
@@ -479,9 +382,10 @@ function Scene({
       <BotanicalParticles />
 
       {/* ── Camera ── */}
-      <CameraController selectedStage={selectedStage} isMobile={isMobile} controlsRef={controlsRef} />
+      <CameraController isMobile={isMobile} />
       <OrbitControls
         ref={controlsRef}
+        enabled={!selectedStage}
         autoRotate={autoRotate && !selectedStage && isIdle}
         autoRotateSpeed={1.2}
         enableDamping
@@ -496,7 +400,7 @@ function Scene({
         enablePan={true}
         panSpeed={1.2}
         screenSpacePanning={true}
-        touches={isMobile ? { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN } : undefined}
+        touches={isMobile ? { ONE: THREE.TOUCH.NONE, TWO: THREE.TOUCH.DOLLY_ROTATE } : undefined}
       />
 
       {/* ── Post processing ── */}
