@@ -400,7 +400,8 @@ function Scene({
         enablePan={true}
         panSpeed={1.2}
         screenSpacePanning={true}
-        touches={isMobile ? { ONE: THREE.TOUCH.NONE, TWO: THREE.TOUCH.DOLLY_ROTATE } : undefined}
+        // Workaround for missing THREE.TOUCH.NONE in TypeScript definitions
+        touches={isMobile ? { ONE: 99 as unknown as THREE.TOUCH, TWO: THREE.TOUCH.DOLLY_ROTATE } : undefined}
       />
 
       {/* ── Post processing ── */}
