@@ -95,8 +95,8 @@ export default function ProvenanceNode({
   }
   const segs = ringSegments[stage.type] || 42
 
-  /* HTML label offset — push further from DNA center */
-  const labelOffset = isUp ? 0.55 : -0.55
+  /* Screen-space label offset — fixed CSS pixels, never changes with camera */
+  const labelPx = 75
 
   return (
     <group>
@@ -183,7 +183,6 @@ export default function ProvenanceNode({
       <Html
         position={pos}
         center
-        distanceFactor={5.5}
         zIndexRange={[21, 31]}
         style={{ pointerEvents: 'none' }}
         occlude={false}
@@ -197,10 +196,11 @@ export default function ProvenanceNode({
       </Html>
 
       {/* ── Label: number + title + VERIFIED ── */}
+      {/* Anchor is the same 3D point as the node so projection never diverges.
+          CSS translateY/X does the visual offset in fixed screen-space pixels. */}
       <Html
-        position={isMobile ? [pos[0] + labelOffset * 1.2, pos[1], pos[2]] : [pos[0], pos[1] + labelOffset, pos[2]]}
+        position={pos}
         center
-        distanceFactor={6}
         zIndexRange={[20, 30]}
         style={{ pointerEvents: 'none' }}
       >
@@ -209,6 +209,9 @@ export default function ProvenanceNode({
           flexDirection: isMobile ? (isUp ? 'row' : 'row-reverse') : 'column',
           alignItems: 'center',
           gap: isMobile ? 8 : 0,
+          transform: isMobile
+            ? (isUp ? `translateX(-${labelPx}px)` : `translateX(${labelPx}px)`)
+            : (isUp ? `translateY(-${labelPx}px)` : `translateY(${labelPx}px)`),
         }}>
           <NodeLabel
             stage={stage}
@@ -299,12 +302,9 @@ function NodeLabel({ stage, hovered, isSelected, dimmed, isUp, isMobile = false 
       flexDirection: 'column',
       alignItems:    isMobile ? (isUp ? 'flex-start' : 'flex-end') : 'center',
       gap:           4,
-      transition:    'all 0.3s ease',
+      transition:    'none',
       transform:     isSelected ? 'scale(1.15)' : hovered ? 'scale(1.05)' : 'scale(1)',
       opacity:       dimmed ? 0.35 : 1,
-      // On desktop, push up or down. On mobile, push left or right.
-      marginTop:     !isMobile ? (isUp ? -12 : 12) : 0,
-      marginLeft:    isMobile ? (isUp ? 12 : -12) : 0,
     }}>
       {/* Stage number */}
       <div style={{
